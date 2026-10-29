@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code permissions: a starter allow and deny list</title>
+<meta name="description" content="How Claude Code permission rules work, where they live, and a short allow, ask and deny list you can paste into settings.json and adapt.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-permissions-starter">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/permisos-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-permissions-starter">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code permissions: a starter allow and deny list">
+<meta property="og:description" content="How Claude Code permission rules work, where they live, and a short allow, ask and deny list you can paste into settings.json and adapt.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-permissions-starter">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/claude-md-checklist">CLAUDE.md checklist</a><a href="/stop-claude-code-loops">Stop loops</a><a href="/claude-code-session-handoff">Handoff notes</a><a href="/claude-code-ask-before-building">Ask first</a><a href="/how-to-write-a-claude-code-skill">Write a skill</a><a href="/claude-code-permissions-starter" class="on">Permissions</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code permissions: a starter allow and deny list</h1>
+<p class="lead">Permission rules decide what Claude Code may do without asking. They are short, they live in a JSON file, and they are enforced by the program, not by the model.</p>
+<h2>The three lists</h2>
+<ul>
+<li><b>allow</b>: runs without a prompt.</li>
+<li><b>ask</b>: always prompts, even if an allow rule also matches.</li>
+<li><b>deny</b>: blocked.</li>
+</ul>
+<p>They are checked in the order deny, then ask, then allow, and the first match wins. Two consequences: a broad deny cannot be undone by a narrower allow, and a deny in any settings file beats an allow in another one.</p>
+<h2>Where the rules go</h2>
+<ul>
+<li><code>~/.claude/settings.json</code>: yours, for every project.</li>
+<li><code>.claude/settings.json</code>: the project's, safe to commit so the team shares it.</li>
+<li><code>.claude/settings.local.json</code>: yours, for this project only. Not for committing.</li>
+</ul>
+<p>Type <code>/permissions</code> in a session to see every rule and which file it came from.</p>
+<h2>A starter list</h2>
+<pre><code>{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm run test *)",
+      "Bash(git commit *)"
+    ],
+    "ask": [
+      "Bash(git push *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./secrets/**)"
+    ]
+  }
+}</code></pre>
+<p>Read it line by line. Build and test run freely. Commits run freely. A push always stops and asks. The <code>.env</code> file and the <code>secrets/</code> folder are off limits to Claude's file tools.</p>
+<h2>How the patterns work</h2>
+<ul>
+<li>A bare name such as <code>Bash</code> matches every use of that tool. With parentheses it matches one kind of use.</li>
+<li>For Bash, <code>*</code> matches any text, spaces included. Put it <b>after the subcommand</b>: <code>Bash(git log *)</code> allows only <code>git log</code>, while <code>Bash(git *)</code> allows every git command.</li>
+<li>A rule with no <code>*</code> matches that exact command only.</li>
+<li>File rules take paths: <code>Read(./.env)</code>, <code>Read(./secrets/**)</code>. Web fetches take a domain: <code>WebFetch(domain:example.com)</code>.</li>
+</ul>
+<h2>Modes are a separate switch</h2>
+<p>Rules say what is allowed. The mode sets how often it asks. The names are <code>default</code> (asks on first use of each tool), <code>acceptEdits</code> (accepts file edits in the working directory), <code>plan</code> (explores and reads, does not edit your files), <code>auto</code>, <code>dontAsk</code> (refuses anything that would prompt) and <code>bypassPermissions</code>. Set a starting mode with <code>defaultMode</code>. Keep <code>bypassPermissions</code> for containers and throwaway virtual machines, where a mistake cannot reach anything you care about.</p>
+<h2>What rules do not do</h2>
+<ul>
+<li><b>A line in CLAUDE.md is not a rule.</b> It shapes what Claude tries. Only a rule in settings changes what is allowed.</li>
+<li><b>A Bash deny is not airtight.</b> It does not match the same program called by another route, for example <code>git -C . push</code> against a rule for <code>git push</code>, or a command wrapped in <code>sh -c</code>. Treat rules as a seatbelt. For anything that must not happen, add a sandbox or keep the credential out of reach.</li>
+<li><b>A <code>.claudeignore</code> file does nothing.</b> Move its entries into <code>Read</code> deny rules.</li>
+<li><b>Syntax changes between versions.</b> A rule Claude Code cannot use is skipped with a warning at startup, and <code>claude doctor</code> shows your resolved settings, so check after editing.</li>
+</ul>
+<h2>Check it works</h2>
+<ol>
+<li>Add the rules to <code>.claude/settings.local.json</code> in a scratch project first.</li>
+<li>Run <code>/permissions</code> and confirm each rule is listed.</li>
+<li>Ask for something each rule should stop, and something it should allow. Both should behave.</li>
+</ol>
+<p>This page follows <a href="https://code.claude.com/docs/en/permissions">Anthropic's permissions documentation</a> as we read it in October 2026. That page is the authority, and we are not affiliated with Anthropic. We wrote this from the documentation and have not security-tested the starter list.</p>
+<p>If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
