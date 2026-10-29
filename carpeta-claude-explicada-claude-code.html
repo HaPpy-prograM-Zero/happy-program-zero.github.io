@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La carpeta .claude explicada y lo que guarda Claude Code</title>
+<meta name="description" content="Qué hace cada archivo de la carpeta .claude, cuáles subir a git y qué escribe Claude Code en tu disco mientras trabajas: transcripciones en texto plano, cuánto duran y cómo borrarlas.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/carpeta-claude-explicada-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-folder-explained-claude-code">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/carpeta-claude-explicada-claude-code">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="La carpeta .claude explicada y lo que guarda Claude Code">
+<meta property="og:description" content="Qué hace cada archivo de la carpeta .claude, cuáles subir a git y qué escribe Claude Code en tu disco mientras trabajas: transcripciones en texto plano, cuánto duran y cómo borrarlas.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/carpeta-claude-explicada-claude-code">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>La carpeta .claude explicada y lo que guarda Claude Code</h1>
+<p class="lead">Claude Code lee sus instrucciones, ajustes, skills, subagentes y memoria de dos sitios: una carpeta <code>.claude</code> en tu proyecto y otra <code>.claude</code> en tu carpeta personal. También escribe archivos ahí mientras trabajas. Saber cuál es cuál te dice qué editar, qué subir a git y qué limpiar.</p>
+<h2>Dos carpetas, dos trabajos</h2>
+<ul>
+<li><b>En tu proyecto:</b> configuración compartida. Súbela a git y tu equipo también la tiene.</li>
+<li><b>En tu carpeta personal (<code>~/.claude</code>):</b> tu configuración personal, para todos los proyectos. En Windows es <code>%USERPROFILE%\.claude</code>.</li>
+</ul>
+<p>La mayoría solo edita <code>CLAUDE.md</code> y <code>settings.json</code>. Lo demás es opcional: añádelo cuando lo necesites. Si tu repositorio ya tiene un <code>AGENTS.md</code> escrito para otros agentes de programación, Claude Code puede leerlo en lugar de un <code>CLAUDE.md</code>.</p>
+<h2>Los archivos que escribes tú</h2>
+<ul class="plain">
+<li><span class="n"><code>CLAUDE.md</code></span><span class="d">Instrucciones que se cargan en cada sesión. De proyecto o globales. Sube a git el del proyecto.</span></li>
+<li><span class="n"><code>CLAUDE.local.md</code></span><span class="d">Tus preferencias privadas para un proyecto, que se cargan junto a <code>CLAUDE.md</code>. Lo creas tú y lo añades a <code>.gitignore</code>.</span></li>
+<li><span class="n"><code>rules/*.md</code></span><span class="d">Instrucciones repartidas por tema, que opcionalmente se limitan a ciertas rutas.</span></li>
+<li><span class="n"><code>settings.json</code></span><span class="d">Permisos, hooks, variables de entorno y valores de modelo por defecto. Sube a git el del proyecto.</span></li>
+<li><span class="n"><code>settings.local.json</code></span><span class="d">Tus cambios personales para un proyecto. No está pensado para git.</span></li>
+<li><span class="n"><code>.mcp.json</code></span><span class="d">Servidores MCP compartidos con el equipo. Solo de proyecto. Está en la raíz del proyecto, no dentro de <code>.claude</code>.</span></li>
+<li><span class="n"><code>skills/&lt;nombre&gt;/SKILL.md</code></span><span class="d">Instrucciones reutilizables que llamas con <code>/nombre</code> o que Claude recoge por su cuenta.</span></li>
+<li><span class="n"><code>commands/*.md</code></span><span class="d">Peticiones de un solo archivo. Mismo mecanismo que las skills.</span></li>
+<li><span class="n"><code>agents/*.md</code></span><span class="d">Subagentes, cada uno con su propia instrucción y herramientas.</span></li>
+<li><span class="n"><code>output-styles/*.md</code></span><span class="d">Conjuntos de instrucciones que cambian cómo responde Claude.</span></li>
+<li><span class="n"><code>~/.claude.json</code></span><span class="d">Estado de la app, datos de la cuenta y servidores MCP personales. Solo global. No va a git.</span></li>
+<li><span class="n"><code>keybindings.json</code></span><span class="d">Tus atajos de teclado. Solo global.</span></li>
+</ul>
+<p>¿No sabes dónde va un cambio? Permitir o bloquear una herramienta: permisos de <code>settings.json</code> o un hook. Ejecutar un script alrededor de las llamadas a herramientas: un hook. Mantener tus cambios personales fuera de git: <code>settings.local.json</code>. Una instrucción que llamas con <code>/nombre</code>: una skill. Los ajustes de archivos distintos pueden chocar, así que mira <a href="/settings-json-claude-code-cual-manda">qué archivo de ajustes manda</a>. Para elegir entre instrucciones, skills y hooks, mira <a href="/claude-md-skill-o-hook-cual-usar">CLAUDE.md, skill, hook o subagente</a>.</p>
+<h2>Lo que escribe Claude Code mientras trabajas</h2>
+<p>Además de lo que escribes tú, <code>~/.claude</code> se llena de archivos que crea Claude Code:</p>
+<ul>
+<li><b>Transcripciones</b> en <code>projects/&lt;proyecto&gt;/</code>: los mensajes, las llamadas a herramientas y sus resultados de cada sesión, más la instrucción del sistema, las definiciones de herramientas y los archivos de instrucciones que cargó.</li>
+<li><b>Copias</b> en <code>file-history/</code>: copias de los archivos antes de que Claude los editara, que usa <a href="/deshacer-cambios-claude-code-rewind">/rewind</a>. Cubren los 100 puntos de control más recientes.</li>
+<li><b>Planes</b> del modo plan, pegados grandes, registros de depuración (solo mientras esté activada la depuración) y otros archivos de trabajo.</li>
+<li><b>Historial de peticiones</b> en <code>history.jsonl</code>: lo que escribiste, con fecha y hora y la ruta del proyecto.</li>
+<li><b>Memoria automática</b> en <code>projects/&lt;proyecto&gt;/memory/</code>: las notas que Claude se deja a sí mismo entre sesiones.</li>
+</ul>
+<h2>Lo que hay que leer dos veces: es texto plano</h2>
+<p>La documentación dice que las transcripciones y el historial no están cifrados en el disco, y que los permisos de archivo de tu ordenador son la única protección. Si una herramienta lee un archivo <code>.env</code> o un comando imprime una credencial, ese valor se escribe en la transcripción de la sesión. Conviene pensar quién puede leer esa carpeta y qué copias de seguridad la incluyen.</p>
+<h2>Cuánto duran las cosas</h2>
+<ul>
+<li>La mayoría de los archivos de trabajo (transcripciones, copias, planes, registros de depuración, pegados) se borran solos cuando pasan de <code>cleanupPeriodDays</code>. Por defecto son 30 días, y el mínimo es 1. Poner 0 se rechaza.</li>
+<li>Algunos archivos se quedan hasta que los borres tú, entre ellos <code>history.jsonl</code> y la caché de estadísticas de uso.</li>
+<li>Los archivos de memoria automática no los barre esa limpieza.</li>
+<li>Ejecutar <code>claude -p</code> con <code>--bare</code> se salta la limpieza por antigüedad en esa sesión.</li>
+</ul>
+<h2>Reducir lo que se guarda</h2>
+<ul>
+<li>Baja <code>cleanupPeriodDays</code> para conservar las transcripciones menos días.</li>
+<li>Pon la variable de entorno <code>CLAUDE_CODE_SKIP_PROMPT_HISTORY</code> para que no se escriban transcripciones ni historial. En ejecuciones no interactivas, <code>--no-session-persistence</code> junto a <code>-p</code> hace lo mismo. Mira <a href="/ejecutar-claude-code-desde-un-script">ejecuta Claude Code desde un script</a>.</li>
+<li>Deniega la lectura de archivos de credenciales con una regla de permisos. Mira <a href="/permisos-claude-code">una lista de partida de reglas de permisos</a>.</li>
+<li>Para borrar lo que Claude Code guarda de un proyecto, usa <code>claude purge</code>. Borra las transcripciones, la memoria automática, las entradas de tareas, depuración y copias por sesión de ese proyecto, las líneas correspondientes del historial y la entrada del proyecto en <code>~/.claude.json</code>. Muestra el plan completo y te pide confirmar antes, y <code>--dry-run</code> enseña el plan sin borrar nada. Las versiones antiguas lo llamaban <code>claude project purge</code>.</li>
+</ul>
+<h2>Esto no lo borres</h2>
+<p>Las cachés y los archivos de bloqueo se pueden quitar sin problema. Conserva <code>.credentials.json</code> (tu inicio de sesión), <code>agent-memory/</code> (memoria de subagentes) y las carpetas <code>jobs/</code> y <code>daemon/</code> (estado de las sesiones en segundo plano).</p>
+<h2>Pruébalo con algo inofensivo</h2>
+<ol>
+<li>Abre tu carpeta <code>~/.claude</code> y mira los nombres. No abras nada que no quieras tener en pantalla.</li>
+<li>Busca <code>settings.json</code> en la carpeta <code>.claude</code> de un proyecto y comprueba si está subido a git.</li>
+<li>Ejecuta <code>claude purge &lt;ruta de un proyecto de pruebas&gt; --dry-run</code> y lee el plan. No borra nada.</li>
+</ol>
+<h2>Límites</h2>
+<ul>
+<li>Los nombres de archivo, las ubicaciones y las reglas de conservación cambian entre versiones, y algunos detalles piden una versión mínima. La página de documentación es la que manda.</li>
+<li>Es información general sobre una herramienta, no asesoramiento legal ni de privacidad.</li>
+</ul>
+<p>Esta página sigue <a href="https://code.claude.com/docs/en/claude-directory">la documentación del directorio .claude de Anthropic</a> tal como la leemos en octubre de 2026. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todos los casos.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
