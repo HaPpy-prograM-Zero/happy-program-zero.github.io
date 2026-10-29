@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A 40-line handoff note for Claude Code sessions</title>
+<meta name="description" content="How to end a Claude Code session with a short HANDOFF.md that a new session can check and continue from: six headings, two rules and an example.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-session-handoff">
+
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="A 40-line handoff note for Claude Code sessions">
+<meta property="og:description" content="How to end a Claude Code session with a short HANDOFF.md that a new session can check and continue from: six headings, two rules and an example.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-session-handoff">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/claude-md-checklist">CLAUDE.md checklist</a><a href="/stop-claude-code-loops">Stop loops</a><a href="/claude-code-session-handoff" class="on">Handoff notes</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>The 40-line note that lets a new Claude Code session pick up where the last one stopped</h1>
+<p class="lead">You close a session on a Thursday night with one test still red. On Friday you open a new one and type "continue". It does not know there was a test, or that you already tried the obvious fix, or that one folder must not be touched.</p>
+<p>The usual advice is "keep a notes file". That works until the notes file is a wall of text written from memory at 11 pm. What helped us was making the note small, fixed in shape, and checkable.</p>
+<h2>Six headings, under 40 lines</h2>
+<p>At the end of a session we write a <code>HANDOFF.md</code> with exactly these headings:</p>
+<ul>
+<li><b>Done:</b> up to five bullets, each one something you can verify ("added <code>parse.py</code>, tests pass").</li>
+<li><b>Not done:</b> what is left, in order.</li>
+<li><b>Decisions:</b> each one with its reason, on one line. The reason is the part people lose first.</li>
+<li><b>Files touched:</b> real paths, taken from <code>git status</code>, not from memory.</li>
+<li><b>First command:</b> the one command the next session should run before anything else.</li>
+<li><b>Do not touch:</b> files or actions that must stay as they are, and why.</li>
+</ul>
+<p>If it grows past 40 lines, cut "Done" first. The next session can read the code. It cannot read your head.</p>
+<h2>Two rules that make it trustworthy</h2>
+<p><b>Collect facts with commands.</b> <code>git status --short</code> and <code>git log --oneline -5</code> tell you what changed. If you write the file list from memory, it will be wrong about one file, and the next session will believe it.</p>
+<p><b>Check the note before you close it.</b> Confirm every path exists, run the "First command" yourself, and write the result on the last line. A handoff that says "tests pass" when they do not is worse than no handoff.</p>
+<h2>What it looks like</h2>
+<pre><code># Handoff 2026-10-29 17:40
+Done
+- export.py writes CSV; 6 of 7 tests pass
+Not done
+1. Fix test_unicode_names (fails on "Zoë")
+2. Add --out flag to cli.py
+Decisions
+- Used csv module, not pandas: no new dependency for a 30-line job
+Files touched
+- export.py (new), tests/test_export.py (new), cli.py (read only)
+First command
+- pytest tests/test_export.py -x
+Do not touch
+- legacy/old_export.py: still used by the nightly job
+Checked: pytest tests/test_export.py -x -&gt; 1 failed, 6 passed</code></pre>
+<p>The next morning the new session reads that, runs the first command, sees the same failure, and starts on the Unicode bug.</p>
+<h2>As a skill</h2>
+<p>We turned this into a plain-text skill so we stop retyping the instructions: <a href="https://github.com/happy-program-zero/loop-stop/tree/main/session-handoff">session-handoff</a>, one <code>SKILL.md</code> you can read in a minute plus a short <code>WHY.md</code>. MIT licence, free to copy into <code>~/.claude/skills/</code>.</p>
+<h2>Honest notes</h2>
+<p>We tested it by hand on our own projects. We have not measured it with other people's workflows, so we cannot promise it will save you time. It does not replace good commit messages or a README.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
