@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Claude Code sandbox, in plain words</title>
+<meta name="description" content="What the Claude Code sandbox does and does not cover, how to turn it on with /sandbox, the two modes, how to widen or narrow what commands can reach, and its limits.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-sandbox">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/sandbox-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-sandbox">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="The Claude Code sandbox, in plain words">
+<meta property="og:description" content="What the Claude Code sandbox does and does not cover, how to turn it on with /sandbox, the two modes, how to widen or narrow what commands can reach, and its limits.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-sandbox">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>The Claude Code sandbox, in plain words</h1>
+<p class="lead">The sandbox is a boundary that your operating system enforces around the shell commands Claude runs. You decide which files and network domains those commands can reach. Because the operating system applies the limits while a command runs, Claude Code can run sandboxed commands without asking you to approve each one. It is off by default.</p>
+<h2>What it covers, and what it does not</h2>
+<p>The sandbox wraps <strong>shell commands</strong> (Bash, PowerShell and Monitor commands) and the processes they start. Everything else follows other rules:</p>
+<ul>
+<li>The built-in file and web tools (Read, Edit, Write, WebFetch, WebSearch) follow <a href="/claude-code-permissions-starter">permission rules</a>, not the sandbox. A sandbox read restriction does not stop the Read tool.</li>
+<li>Hooks, local MCP servers, LSP servers and helper commands such as your <a href="/claude-code-status-line">status line</a> command run with your full access.</li>
+<li>Commands you type yourself at the <code>!</code> shell prompt usually run unsandboxed.</li>
+</ul>
+<p>It runs on <strong>macOS, Linux and WSL2</strong>. On native Windows, Claude Code runs commands unsandboxed; the docs say to use WSL2 if you want the sandbox on a Windows machine. On Linux and WSL2 it needs two packages, <code>bubblewrap</code> and <code>socat</code>, for example <code>sudo apt-get install bubblewrap socat</code> on Ubuntu or Debian.</p>
+<h2>Turn it on</h2>
+<pre><code>/sandbox</code></pre>
+<p>The panel has tabs for <strong>Mode</strong> (how sandboxed commands are approved), <strong>Overrides</strong> (whether a failed command may fall back to running unsandboxed) and <strong>Config</strong> (the settings in effect). On Linux or WSL2 it also tells you if a dependency is missing. You can instead set <code>sandbox.enabled</code> to <code>true</code> in a settings file such as <code>~/.claude/settings.json</code> to turn it on for every project; see <a href="/claude-code-settings-precedence">which settings file wins</a>.</p>
+<p>One thing to know: if the sandbox cannot start because a dependency is missing or the platform is not supported, Claude Code by default runs commands <em>without</em> sandboxing. Setting <code>sandbox.failIfUnavailable</code> to <code>true</code> makes it exit at startup instead.</p>
+<h2>What commands can reach by default</h2>
+<ul>
+<li><strong>Writes:</strong> the working directory, a per-user temp directory and any directories you added.</li>
+<li><strong>Reads:</strong> most of the machine, <em>including credential files</em> such as <code>~/.ssh</code> and <code>~/.aws/credentials</code>. Reading is not restricted unless you restrict it.</li>
+<li><strong>Network:</strong> no direct route out. Connections go through a proxy on your machine that checks each host against your allowed domains, which start empty. What happens to a host that is not on the list depends on your permission mode: in manual mode you get a prompt, in auto mode it is refused unless the command named the host and the classifier approved it.</li>
+<li><strong>Environment variables:</strong> inherited from Claude Code, including any secrets in its environment.</li>
+</ul>
+<h2>Check that it works</h2>
+<p>Ask Claude to run these two commands. Typing them yourself at the <code>!</code> prompt does not test the sandbox.</p>
+<pre><code>touch ~/sandbox-probe
+curl --noproxy '*' https://example.com</code></pre>
+<p>Inside the sandbox the first fails (<code>Operation not permitted</code> on macOS, <code>Read-only file system</code> on Linux and WSL2) and the second fails with <code>Could not resolve host</code>. If Claude asks to retry a failed command outside the sandbox, decline. If the <code>touch</code> succeeds, delete the file and check <code>/sandbox</code>.</p>
+<h2>Two modes</h2>
+<ul>
+<li><strong>Auto-allow:</strong> a command that runs inside the sandbox is approved without a prompt. Deny rules still apply, and ask rules such as <code>Bash(git push *)</code> still prompt. Note that this includes commands that change files inside the boundary, even in manual permission mode where the file-edit tools would ask.</li>
+<li><strong>Regular permissions:</strong> every Bash command goes through the normal permission flow, even when sandboxed. More control, more prompts.</li>
+</ul>
+<p>The sandbox's auto-allow mode is not the same thing as the permission mode called auto. Auto-allow approves a command because the sandbox contains it; auto mode uses a classifier to review actions. They work independently and can be combined. See <a href="/claude-code-permission-modes">permission modes</a>.</p>
+<h2>The escape hatch</h2>
+<p>When a command fails inside the sandbox, Claude can ask to retry it outside. Who approves that depends on your permission mode, and an allow rule that matches the command also approves the retry without a prompt. If you do not want that route to exist, set <code>"allowUnsandboxedCommands": false</code> in the sandbox settings (the Overrides tab calls it strict sandbox mode). Commands that match <code>excludedCommands</code> also run outside the sandbox.</p>
+<h2>Widen or narrow it</h2>
+<p>Tools that must write outside the working directory need a specific path, rather than being excluded from the sandbox:</p>
+<pre><code>{
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "allowWrite": ["~/.kube", "/tmp/build"]
+    }
+  }
+}</code></pre>
+<p>To stop sandboxed commands reading your whole home directory while keeping the project readable, put this in the <em>project's</em> <code>.claude/settings.json</code> (there, <code>.</code> means the project root):</p>
+<pre><code>{
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "denyRead": ["~/"],
+      "allowRead": ["."]
+    }
+  }
+}</code></pre>
+<p>Sandbox paths use ordinary conventions (<code>~/.kube</code> is under your home directory, <code>/tmp/build</code> is absolute), which differ from the path style in Read and Edit permission rules. Network access is widened with <code>network.allowedDomains</code>.</p>
+<h2>Its limits</h2>
+<p>The docs are direct about this: sandboxing reduces risk but is not a complete isolation boundary.</p>
+<ul>
+<li>The network proxy decides from the hostname and by default does not inspect encrypted traffic. Allowing a broad domain such as <code>github.com</code> can create a path for data to leave.</li>
+<li>Allowing a Unix socket such as Docker's can effectively hand over the host. Broad write access to directories on your <code>PATH</code> or to files like <code>.bashrc</code> can lead to code running outside the boundary.</li>
+<li>Effective sandboxing needs both file and network isolation. Check that a wide <code>allowWrite</code>, a broad domain or an <code>excludedCommands</code> entry does not undo a restriction on the other side.</li>
+</ul>
+<p>The sandbox works alongside permission rules, not instead of them: rules decide which tools Claude may use and are checked before a tool runs, while the operating system enforces the sandbox on the running process. For anything security-related you want both. See <a href="/claude-code-best-practices">best practices</a> for how deny rules, hooks and the sandbox fit together, and <a href="/debug-claude-code-configuration">debug your configuration</a> if a setting seems ignored. The docs' troubleshooting section covers tools that need special handling, such as <code>docker</code> and git over SSH.</p>
+<p>This follows <a href="https://code.claude.com/docs/en/sandboxing">Anthropic's sandboxing documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case (we could not test the sandbox on every platform). Settings and platform support change between versions, and where this page and the documentation disagree, the documentation wins. This page is general information, not a security audit of your setup.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
