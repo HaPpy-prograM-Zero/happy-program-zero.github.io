@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://happy-program-zero.github.io/sitemap.xml

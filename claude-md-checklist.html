@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A CLAUDE.md checklist: 10 checks before you trust your Claude Code setup</title>
+<meta name="description" content="Ten practical checks for your CLAUDE.md: length, verifiable rules, real commands, no contradictions, no secrets, and how to see what Claude actually loaded.">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-md-checklist">
+
+<meta property="og:title" content="A CLAUDE.md checklist: 10 checks before you trust your Claude Code setup">
+<meta property="og:description" content="Ten practical checks for your CLAUDE.md: length, verifiable rules, real commands, no contradictions, no secrets, and how to see what Claude actually loaded.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-md-checklist">
+<style>:root{--bg:#faf8f4;--fg:#1d1b18;--mu:#6b655c;--card:#fff;--line:#e4dfd6;--ac:#b4530b;--ac-fg:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#16161a;--fg:#ece8e1;--mu:#a29c91;--card:#202026;--line:#33333b;--ac:#f0a060;--ac-fg:#16161a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 Georgia,"Times New Roman",serif;padding-block:32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:660px;margin:0 auto}
+h1{font-size:32px;line-height:1.15;margin:0 0 8px;text-wrap:balance}
+h2{font-size:21px;line-height:1.25;margin:34px 0 8px;text-wrap:balance}
+p,li{margin:0 0 12px}ol,ul{padding-left:22px}
+.lead{color:var(--mu);font-size:18px}
+a{color:var(--ac)}
+.links{display:grid;gap:10px;margin-top:8px}
+a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;color:var(--fg);text-decoration:none}
+a.card:hover,a.card:focus-visible{border-color:var(--ac)}
+a.card b{display:block;font:600 16px/1.3 system-ui,sans-serif}
+a.card span{display:block;color:var(--mu);font-size:15px;margin-top:3px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:22px 0}
+.note,small{color:var(--mu);font-size:14px}
+code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:.92em}
+nav{font:14px system-ui,sans-serif;margin-bottom:22px}nav a{margin-right:14px}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/">Plain Skills</a><a href="/claude-md-checklist">CLAUDE.md checklist</a><a href="/stop-claude-code-loops">Stop loops</a><a href="/es">Español</a></nav>
+<h1>A CLAUDE.md checklist: 10 checks before you trust your setup</h1>
+<p class="lead">CLAUDE.md is the file Claude Code reads at the start of every session to learn how your project works. A weak one is easy to write and hard to notice. Use these ten checks.</p>
+<p class="note">Based on our own daily use and on Anthropic's official page about memory, <a href="https://code.claude.com/docs/en/memory">code.claude.com/docs/en/memory</a>. Check that page for the current details.</p>
+<ol>
+<li><h2>Is it short?</h2><p>Anthropic's guidance is to aim for under 200 lines per file. Longer files use more context and make it less likely that each rule is followed. If a rule matters for only one folder, move it into a path-scoped rule instead of the main file.</p></li>
+<li><h2>Can every rule be checked?</h2><p>"Run <code>npm test</code> before committing" can be verified. "Test your changes" cannot. Rewrite each vague line until you could tell, from the result, whether it was followed.</p></li>
+<li><h2>Are the commands real?</h2><p>Copy build, test and lint commands from your README or CI, then run each once. A wrong command in CLAUDE.md is followed faithfully.</p></li>
+<li><h2>Do any rules contradict each other?</h2><p>If two instructions conflict, Claude may pick one arbitrarily. Search the file for "always" and "never" and read those lines side by side.</p></li>
+<li><h2>Is there a map of where things live?</h2><p>One line per important folder ("API handlers live in <code>src/api/handlers/</code>") saves the assistant from guessing and saves you tokens.</p></li>
+<li><h2>Does it say what not to touch, and is that enforced elsewhere?</h2><p>CLAUDE.md is context, not enforced configuration. It asks; it does not block. For something that must never happen, use permissions or a hook, not only a sentence in this file.</p></li>
+<li><h2>Is it free of secrets?</h2><p>It is plain text and often committed to the repository. No keys, tokens, passwords or personal data, ever. Point to where the secret is kept instead.</p></li>
+<li><h2>Is it organised?</h2><p>Group related rules under short headers and bullets. Organised sections are easier to follow than dense paragraphs.</p></li>
+<li><h2>Do you know what was actually loaded?</h2><p>Run <code>/context</code> in a session and look at the list under Memory files. If a file you expected is missing, that is your first clue.</p></li>
+<li><h2>When did you last review it?</h2><p>A stale rule is worse than none. Put a monthly reminder in your calendar, and delete a line each time you add one.</p></li>
+</ol>
+<div class="box">
+<p><b>Want a head start?</b> <code>/init</code> generates a first CLAUDE.md from your codebase; refine it with what Claude cannot discover on its own.</p>
+<p>Free and open source: <a href="https://github.com/happy-program-zero/loop-stop">Loop-Stop</a>, a skill that gives a long task a brief, a limit and a stop rule. If you want ready-made help with this exact job, our <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> reviews your CLAUDE.md and permission settings, and the <a href="https://buy.polar.sh/polar_cl_ku5n5rd7aow1FRLluJXxOGiQ85A1w8EAfoUCz2OdubK">Project Starter Kit</a> gives 10 CLAUDE.md templates. They are plain-text files you read and adapt; we have tested them by hand but have not measured results on other projects, and we promise none. <a href="https://plainskills.gumroad.com">All products</a>.</p>
+</div>
+<p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p>
+</main>
+</body>
+</html>
