@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Debug your Claude Code configuration</title>
+<meta name="description" content="What to do when Claude Code ignores your CLAUDE.md, settings, hooks, MCP servers or skills: see what actually loaded, check the usual causes, and test against a clean configuration.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/debug-claude-code-configuration">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/depurar-configuracion-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/debug-claude-code-configuration">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Debug your Claude Code configuration">
+<meta property="og:description" content="What to do when Claude Code ignores your CLAUDE.md, settings, hooks, MCP servers or skills: see what actually loaded, check the usual causes, and test against a clean configuration.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/debug-claude-code-configuration">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Debug your Claude Code configuration</h1>
+<p class="lead">When Claude ignores an instruction, or a hook, skill or MCP server you set up does nothing, the cause is usually one of three things: the file did not load, it loaded from a different place than you expected, or another file overrode it. Claude Code has commands that show what it actually loaded, so you can stop guessing.</p>
+<h2>Step 1: see what loaded</h2>
+<p>Run <code>/context</code> first. It breaks down what fills the context window: the system prompt, tools, MCP tools, subagents, memory files, skills and the conversation. If your <code>CLAUDE.md</code> or a skill is missing from the list, it did not load. Then use the command for the specific thing:</p>
+<ul>
+<li><code>/memory</code>: where your memory files are, with a way to open each one.</li>
+<li><code>/skills</code>: the skills available from project, user and plugin sources.</li>
+<li><code>/hooks</code>: the hooks that are active.</li>
+<li><code>/mcp</code>: connected MCP servers and their status.</li>
+<li><code>/permissions</code>: the allow and deny rules in effect.</li>
+<li><code>/status</code>: which settings sources are active, including whether managed settings apply.</li>
+<li><code>/doctor</code>: a checkup that looks for invalid settings files and other problems, and proposes fixes.</li>
+<li><code>/debug</code>: turns on debug logging for the session and asks Claude to read it.</li>
+</ul>
+<p>Folder-level <code>CLAUDE.md</code> files in subdirectories load on demand, not at session start, so they do not appear in <code>/context</code> until Claude reads something in that folder.</p>
+<h2>It loaded but Claude still ignores it</h2>
+<p>Then the problem is probably how the instruction is written, not whether it loaded. The documentation lists three causes: the instruction is vague enough to read two ways, two files contradict each other, or the file has grown so long that individual rules get less attention. See <a href="/claude-code-memory-claude-md-vs-auto-memory">the memory guide</a>. And if something must happen every time, do not rely on CLAUDE.md: permissions and hooks enforce limits whatever Claude decides. <a href="/claude-md-vs-skill-vs-hook">This guide</a> explains which to use.</p>
+<h2>Settings: which value wins</h2>
+<p>Settings merge across managed, user, project and local scopes. Managed settings apply first when present. Among the rest, local overrides project, and project overrides user. Command-line flags and environment variables can override again. So a value you set is often just being overridden somewhere else. Run <code>claude doctor</code> in your terminal for read-only diagnostics, including invalid settings files, without starting a session. More in <a href="/claude-code-settings-precedence">the settings guide</a>.</p>
+<h2>MCP servers that do not show up</h2>
+<ul>
+<li>Servers in a project's <code>.mcp.json</code> need a one-time approval. If you dismissed the prompt, approve the server from <code>/mcp</code>.</li>
+<li>A server that fails to start is marked failed in <code>/mcp</code>. Relative paths in <code>command</code> or <code>args</code> are a common cause, because they resolve from where you launched Claude Code, not from the <code>.mcp.json</code> file.</li>
+<li>Connected but zero tools: choose <strong>Reconnect</strong> in <code>/mcp</code>. If it stays at zero, run <code>claude --debug=mcp</code> and read the server's errors in the debug log.</li>
+<li>Project servers belong in a <code>.mcp.json</code> at the repository root, under the <code>mcpServers</code> key, not inside <code>.claude/</code> and not in <code>settings.json</code>.</li>
+</ul>
+<p>See <a href="/add-mcp-server-claude-code">adding an MCP server</a>.</p>
+<h2>Hooks that never fire</h2>
+<p>Run <code>/hooks</code>. If your hook is not listed, it did not load. Hooks go under the <code>"hooks"</code> key in a settings file, not in a standalone file. If it is listed but never fires, look at the matcher:</p>
+<ul>
+<li>Use a single string, not a JSON array. To match several tools, join them with <code>|</code>, for example <code>"Edit|Write"</code>.</li>
+<li>Matching is case-sensitive. Tool names are capitalized: <code>Bash</code>, <code>Edit</code>, <code>Write</code>, <code>Read</code>.</li>
+<li>A misspelled tool name matches nothing, and the hook fails silently.</li>
+</ul>
+<p>To watch it live, start a session with <code>claude --debug</code> and trigger the tool call. The log shows which matchers were checked and the hook's exit code. See <a href="/claude-code-hooks-three-to-paste">the hooks guide</a>.</p>
+<h2>Other usual suspects</h2>
+<ul>
+<li>Permissions or hooks you put in <code>~/.claude.json</code> are ignored. That file holds app state. They belong in <code>~/.claude/settings.json</code>, a different file.</li>
+<li>A value in <code>settings.json</code> seems ignored: check <code>settings.local.json</code>, which overrides it.</li>
+<li>A skill does not appear in <code>/skills</code>: it must be a folder with a <code>SKILL.md</code> inside, such as <code>.claude/skills/name/SKILL.md</code>, not a loose <code>name.md</code>. See <a href="/how-to-write-a-claude-code-skill">writing a skill</a>.</li>
+<li>A subagent ignores CLAUDE.md: the built-in Explore and Plan agents skip it at startup, so restate the instruction in your prompt. For your own subagent, put critical instructions in the agent file. See <a href="/write-a-claude-code-subagent">writing a subagent</a>.</li>
+<li>A <code>Bash(rm *)</code> deny rule does not stop <code>/bin/rm</code> or <code>find -delete</code>, because Bash rules match the literal command text. For a hard guarantee, use a hook or the sandbox. See <a href="/claude-code-permissions-starter">the permissions guide</a>.</li>
+</ul>
+<h2>Test against a clean configuration</h2>
+<p>Start with <code>claude --safe-mode</code>. It launches a session with your customizations turned off: CLAUDE.md, skills, plugins, hooks, MCP servers, custom commands and agents, output styles and keybindings. Login, model choice, built-in tools and permissions work as normal, and managed policy from your organization still applies. If the problem disappears, it is one of the things that were switched off, and you can check them one by one with the steps above.</p>
+<p>If it persists, start with none of your own configuration at all. In an empty directory, point Claude Code at a fresh config folder and turn off project settings:</p>
+<pre><code>CLAUDE_CONFIG_DIR=~/claude-clean/config claude --setting-sources user</code></pre>
+<p>In PowerShell, set <code>$env:CLAUDE_CONFIG_DIR = "$HOME/claude-clean/config"</code> first. It stays set for that window until you run <code>Remove-Item Env:CLAUDE_CONFIG_DIR</code>. Expect the first-run setup screens again; that tells you the clean folder is in use. If the problem is gone there, copy your files across one at a time to find the culprit. If it stays, the cause is outside your own configuration, for example managed settings or an environment variable.</p>
+<h2>Good to know</h2>
+<ul>
+<li>This page covers configuration. Installation and login problems have their own troubleshooting pages.</li>
+<li>Some commands and fixes depend on your version, so run <code>claude --version</code> and check the documentation if one is missing.</li>
+</ul>
+<h2>Try it on something harmless</h2>
+<ol>
+<li>Run <code>/context</code> and find your CLAUDE.md in the list.</li>
+<li>Run <code>/doctor</code> and read what it reports.</li>
+<li>Run <code>claude --safe-mode</code> once and notice what is missing.</li>
+</ol>
+<p>This follows <a href="https://code.claude.com/docs/en/debug-your-config">Anthropic's documentation on debugging your configuration</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
