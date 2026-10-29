@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dictado por voz en Claude Code: activarlo, modos, idiomas y arreglos</title>
+<meta name="description" content="Cómo dictar tus prompts en el terminal de Claude Code: los requisitos y el punto de privacidad (el audio va a los servidores de Anthropic), activarlo con /voice, modo mantener frente a modo tocar, cancelar una grabación, cambiar el idioma del dictado, reasignar la tecla y los arreglos habituales cuando no graba.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-dictado-por-voz">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-voice-dictation">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-code-dictado-por-voz">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Dictado por voz en Claude Code: activarlo, modos, idiomas y arreglos">
+<meta property="og:description" content="Cómo dictar tus prompts en el terminal de Claude Code: los requisitos y el punto de privacidad (el audio va a los servidores de Anthropic), activarlo con /voice, modo mantener frente a modo tocar, cancelar una grabación, cambiar el idioma del dictado, reasignar la tecla y los arreglos habituales cuando no graba.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-dictado-por-voz">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Dictado por voz en Claude Code: activarlo, modos, idiomas y arreglos</h1>
+<p class="lead">Puedes dictar tus prompts a Claude Code en vez de escribirlos. Tu voz se convierte en texto en directo dentro del prompt, así que puedes mezclar hablar y teclear en el mismo mensaje. Aquí tienes cómo activarlo, qué modo elegir y qué mirar cuando no graba.</p>
+<h2>Antes de empezar: los requisitos</h2>
+<ul>
+<li><strong>Tu audio sale de tu equipo.</strong> El dictado envía la grabación a los servidores de Anthropic para transcribirla; nada se transcribe en local. Si eso es un problema para lo que vas a decir, no lo uses, y lee la página de uso de datos de la documentación.</li>
+<li><strong>Necesitas iniciar sesión con Claude.ai.</strong> Según la documentación, tal como la leemos, no está disponible cuando Claude Code usa una clave de API directamente o funciona a través de Amazon Bedrock, Agent Platform de Google Cloud o Microsoft Foundry.</li>
+<li><strong>Necesitas un micrófono en el mismo equipo.</strong> No funciona en sesiones en la nube ni por SSH. En WSL hace falta WSL2 con WSLg. La extensión de VS Code también lo admite, pero no en las sesiones remotas de VS Code (SSH, Dev Containers, Codespaces), porque el micrófono está en tu equipo y la extensión se ejecuta en otro sitio.</li>
+<li>La transcripción no gasta mensajes ni tokens de Claude y no cuenta para los límites que muestra <code>/usage</code>.</li>
+</ul>
+<h2>Activarlo</h2>
+<p>Ejecuta <code>/voice</code>. Claude Code hace una comprobación del micrófono y, en un Mac, tu terminal puede pedirte permiso de micrófono. Puedes añadir un modo: <code>/voice hold</code>, <code>/voice tap</code> o <code>/voice off</code>. La elección se recuerda entre sesiones. También puedes fijarlo en tus ajustes de usuario con un bloque <code>voice</code> (<code>enabled</code> y <code>mode</code>). La transcripción está afinada para palabras de programación como regex, OAuth, JSON y localhost, y toma el nombre de tu proyecto y de tu rama como pistas.</p>
+<h2>¿Mantener o tocar?</h2>
+<ul>
+<li><strong>Modo mantener (el predeterminado)</strong> es pulsar para hablar: mantén <kbd>Espacio</kbd> mientras hablas y suéltalo para parar. Hay un breve calentamiento porque Claude Code detecta una tecla mantenida mirando la repetición de tecla. El texto aparece atenuado en el prompt y luego se asienta. Al soltar, espera a que pulses <kbd>Enter</kbd>, salvo que pongas <code>autoSubmit</code> en true, que lo envía si la transcripción tiene al menos tres palabras.</li>
+<li><strong>Modo tocar</strong> (<code>/voice tap</code>): toca <kbd>Espacio</kbd> con el prompt vacío para empezar y vuelve a tocar para parar y enviar. No hay calentamiento. Las transcripciones de menos de tres palabras se insertan pero no se envían, así que un toque suelto no manda una palabra al azar. La grabación también se para tras 15 segundos de silencio o dos minutos en total.</li>
+<li>Para evitar el calentamiento del modo mantener, usa el modo tocar o reasigna la tecla a una combinación con modificador (abajo).</li>
+</ul>
+<h2>Cancelar una grabación</h2>
+<p>Pulsa <kbd>Esc</kbd> o <kbd>Ctrl</kbd>+<kbd>C</kbd> para cancelar un dictado: para el micrófono, descarta la transcripción y deja tu prompt como estaba. Ninguna de las dos teclas hace otra cosa en esa pulsación, así que <kbd>Esc</kbd> no interrumpirá la respuesta de Claude y <kbd>Ctrl</kbd>+<kbd>C</kbd> no borrará el prompt.</p>
+<h2>Idioma</h2>
+<p>El dictado sigue el mismo ajuste <code>language</code> que las respuestas de Claude, que se cambia en <code>/config</code> o en los ajustes (por nombre, como «spanish», o por código de idioma). Si está vacío, el dictado usa inglés, así que si el texto sale ininteligible, fija primero el idioma. La documentación lista los idiomas admitidos, entre ellos español, francés, alemán, portugués, italiano, neerlandés, japonés y coreano; comprueba esa lista para el tuyo, porque un idioma no admitido vuelve al inglés para el dictado (las respuestas escritas de Claude no se ven afectadas).</p>
+<h2>Reasignar la tecla</h2>
+<p>La tecla es la acción <code>voice:pushToTalk</code> en el contexto <code>Chat</code>, y sustituye a <kbd>Espacio</kbd> cuando asignas otra. Una combinación con modificador como <code>meta+k</code> empieza a grabar a la primera pulsación y sin calentamiento. En el modo mantener, evita una letra suelta, porque la letra se escribe en el prompt durante el calentamiento. Algunas teclas, como Bloq Mayús, nunca llegan a los programas de terminal y no se pueden asignar. Más en <a href="/atajos-personalizados-claude-code">personalizar los atajos de teclado</a>.</p>
+<h2>Cuando no funciona</h2>
+<ul>
+<li><strong>«Unknown command: /voice»:</strong> no has iniciado sesión con una cuenta de Claude.ai, o una clave de API o un proveedor externo tiene prioridad. Ejecuta <code>/login</code> y quita la otra credencial.</li>
+<li><strong>«Microphone access is denied»:</strong> permite tu terminal en los ajustes de privacidad de micrófono del sistema y vuelve a ejecutar <code>/voice</code>. Si un terminal de Mac no aparece en esa lista, la documentación tiene un procedimiento de reinicio; usa el comando exacto que da y evita reiniciar el permiso de micrófono de todas las aplicaciones.</li>
+<li><strong>Linux:</strong> si el grabador integrado no carga, Claude Code recurre a <code>arecord</code> o <code>rec</code> e imprime un comando de instalación cuando no existe ninguno. En WSL, SoX necesita su componente de PulseAudio; la documentación da los nombres de los paquetes.</li>
+<li><strong>No pasa nada al mantener Espacio:</strong> si se acumulan espacios, el dictado está apagado, así que ejecuta <code>/voice hold</code>. Si solo aparecen uno o dos espacios, tu terminal no envía repetición de tecla; pasa al modo tocar.</li>
+<li><strong>«No audio detected» o «No speech detected»:</strong> comprueba que el dispositivo de entrada correcto es el predeterminado del sistema y no está silenciado, habla más cerca y asegúrate de que el idioma del dictado coincide con el tuyo.</li>
+<li><strong>Errores de conexión o de certificado:</strong> revisa tu red. Detrás de un proxy que inspecciona TLS, la documentación remite a la página de VS Code para el arreglo. Una conexión rechazada suele indicar un inicio de sesión caducado, así que prueba <code>/login</code>.</li>
+</ul>
+<p>Todas las guías están en el <a href="/guias">índice de guías</a>, y las teclas del día a día en <a href="/atajos-de-teclado-claude-code">atajos de teclado que merece la pena aprender</a>. Esta página sigue <a href="https://code.claude.com/docs/en/voice-dictation">la documentación de dictado por voz de Anthropic</a> tal como la leemos en octubre de 2026, acortada a propósito. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todas las configuraciones ni micrófonos. Los ajustes, los idiomas admitidos y los mensajes cambian, y donde esta página y la documentación no coincidan, manda la documentación.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
