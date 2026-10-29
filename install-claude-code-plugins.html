@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install and manage Claude Code plugins</title>
+<meta name="description" content="How to install, scope, update and remove Claude Code plugins: marketplaces, the /plugin panel, user, project and local scope, what a plugin adds to your context, and what to check before you install one.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/install-claude-code-plugins">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/instalar-plugins-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/install-claude-code-plugins">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Install and manage Claude Code plugins">
+<meta property="og:description" content="How to install, scope, update and remove Claude Code plugins: marketplaces, the /plugin panel, user, project and local scope, what a plugin adds to your context, and what to check before you install one.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/install-claude-code-plugins">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Install and manage Claude Code plugins</h1>
+<p class="lead">A plugin is a package that adds skills, agents, hooks and MCP servers to Claude Code in one step. It comes from a <strong>marketplace</strong>, which is a catalog of plugins. This page covers installing one, choosing who gets it, keeping it updated, and removing it, with the checks worth making first.</p>
+<h2>Install a plugin</h2>
+<p>Anthropic's official marketplace (<code>claude-plugins-official</code>) is added for you the first time you open an interactive Claude Code session. As an example, this installs <code>commit-commands</code>, which adds commands for committing, pushing and opening pull requests:</p>
+<pre><code>/plugin install commit-commands@claude-plugins-official</code></pre>
+<p>In a session this does not install immediately. It opens the <code>/plugin</code> panel on that plugin's details so you can review it and choose a scope first. To browse instead, run <code>/plugin</code> with no name: the Discover tab lists the plugins from your marketplaces, and you can type to search.</p>
+<p>The details pane can show <strong>Will install</strong> (the commands, agents, skills, hooks and servers it adds) and, for plugins in the official marketplace, a <strong>Context cost</strong> with two token estimates: what the plugin adds to every message, and what its skills and agents add once loaded. Those estimates appear when you open the plugin by naming its marketplace, as above, but not from the Discover list. <strong>Read the pane before you install.</strong> A plugin can run hooks and MCP servers, so treat it like any code you let run on your machine; the docs have a separate page on plugin security and trust.</p>
+<h2>Choose a scope</h2>
+<ul>
+<li><strong>User:</strong> you get it in every project on this machine. Recorded under <code>enabledPlugins</code> in <code>~/.claude/settings.json</code>.</li>
+<li><strong>Project:</strong> enabled for everyone who works in the repository. Recorded in <code>.claude/settings.json</code>, which you commit. Committing it turns the plugin on for collaborators but does not download it to their machines; each one also runs <code>claude plugin install &lt;name&gt;@&lt;marketplace&gt; --scope project</code> once.</li>
+<li><strong>Local:</strong> you get it in this repository only. Recorded in <code>.claude/settings.local.json</code>.</li>
+</ul>
+<p>See <a href="/claude-code-settings-precedence">which settings file wins</a> if the same plugin is set in more than one place.</p>
+<h2>Check that it worked</h2>
+<p>The last line of the install summary says whether the plugin is usable yet: <em>active now</em>, <em>active but a bundled server needs setup</em> (use Configure on the Installed tab), <em>reload needed</em> (Claude Code normally runs <code>/reload-plugins</code> for you), or <em>couldn't be loaded</em> (open the Errors tab in <code>/plugin</code>). Then type <code>/</code> and look for the plugin's skills in the form <code>/&lt;plugin&gt;:&lt;skill&gt;</code>, such as <code>/commit-commands:commit</code>. <code>claude plugin list</code> in your shell shows version, scope and status.</p>
+<h2>From your shell</h2>
+<pre><code>claude plugin install formatter@your-org --scope project</code></pre>
+<p>This installs without starting a session, for example from a setup script. The default scope is user. Plugins load the next time you start Claude Code, or when you run <code>/reload-plugins</code> in an open session. Some plugins install by running a command their marketplace names; Claude Code shows it and asks you to accept it, and a script passes <code>--yes</code> to accept.</p>
+<h2>Add a marketplace</h2>
+<p>You only need this for plugins that are not in the official marketplace, such as one a coworker published. Claude Code has to know about a marketplace before you can install from it:</p>
+<pre><code>/plugin marketplace add owner/repo
+/plugin marketplace add owner/repo#v1.2.0
+/plugin marketplace add https://example.com/marketplace.json
+/plugin marketplace add ./my-marketplace</code></pre>
+<p>The source can be a GitHub repository (add <code>#ref</code> to pin a branch or tag), a git URL, a local directory or file (start a relative path with <code>./</code>, because a bare <code>name/name</code> is read as a GitHub repository), or a hosted <code>marketplace.json</code>. Include <code>https://</code> on every URL. From the shell, <code>claude plugin marketplace add</code> takes the same sources. A marketplace is code you are choosing to trust, so add only ones you know.</p>
+<h2>Manage what is installed</h2>
+<ul>
+<li>The <strong>Installed</strong> tab in <code>/plugin</code> lists your plugins. <code>Space</code> enables or disables the selected one, <code>Enter</code> opens its details with <strong>Update now</strong> and <strong>Uninstall</strong>.</li>
+<li>From the shell: <code>claude plugin disable|enable|uninstall &lt;name&gt;@&lt;marketplace&gt;</code>, with <code>--scope</code> to target one scope.</li>
+<li>If you uninstall a plugin that the repository's <code>.claude/settings.json</code> enables, Claude Code asks whether to <em>disable it for you</em> (leaves it installed for the project) or <em>uninstall it for everyone</em>.</li>
+<li>Removing a marketplace uninstalls every plugin you installed from it.</li>
+</ul>
+<h2>Watch what it costs you</h2>
+<p>Plugins add to your context. <code>claude plugin details &lt;name&gt;</code> shows the tokens a plugin adds to every session where it is enabled and which component contributes most. On the Installed tab, plugins you have not used recently appear under a <strong>Not used recently</strong> header, which is a good place to disable or remove what you no longer need. See <a href="/reduce-claude-code-token-usage">using less quota</a> and <a href="/claude-code-context-window-what-survives-compact">the context window</a>.</p>
+<h2>Updates</h2>
+<p>Plugins update automatically when their marketplace has auto-update turned on. According to the docs it is on by default for Anthropic's official marketplaces and for ones added from claude.ai, and off for every other marketplace, including the community marketplace, third-party ones and local ones. A running session keeps the versions it already loaded; you see a message and run <code>/reload-plugins</code> to apply, or the next session loads the new versions. To update one plugin now, choose <strong>Update now</strong> or run <code>claude plugin update &lt;plugin&gt;@&lt;marketplace&gt;</code>. There is no command that updates every plugin at once, but on the Marketplaces tab you can choose <strong>Update marketplace</strong> to update the plugins you installed from one marketplace.</p>
+<h2>Good to know</h2>
+<ul>
+<li>A cloud session does not load plugins installed on your own machine, nor those your repository's settings turn on.</li>
+<li>Plugin hooks and local MCP servers run outside the <a href="/claude-code-sandbox">sandbox</a>.</li>
+<li>If a plugin seems to do nothing, see <a href="/debug-claude-code-configuration">debugging your configuration</a>.</li>
+</ul>
+<p>To understand the parts a plugin bundles, see <a href="/how-to-write-a-claude-code-skill">skills</a>, <a href="/claude-code-hooks-three-to-paste">hooks</a>, <a href="/add-mcp-server-claude-code">MCP servers</a> and <a href="/write-a-claude-code-subagent">subagents</a>, and <a href="/claude-code-best-practices">best practices</a> for when to use which. All the guides are in the <a href="/guides">guides index</a>.</p>
+<p>This follows <a href="https://code.claude.com/docs/en/discover-plugins">Anthropic's plugins documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Commands, marketplaces and defaults change between versions (some install forms need a recent version), and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
