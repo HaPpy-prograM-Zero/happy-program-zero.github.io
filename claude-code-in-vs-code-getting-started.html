@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code in VS Code: install, first prompt and fixes</title>
+<meta name="description" content="How to use the Claude Code extension in VS Code: install it, open the panel, sign in, give Claude the right files with @-mentions, review edits, resume or rewind a conversation, the shortcuts worth knowing, how the extension differs from the CLI, and what to try when the Spark icon is missing.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-in-vs-code-getting-started">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-code-en-vs-code-primeros-pasos">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-in-vs-code-getting-started">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code in VS Code: install, first prompt and fixes">
+<meta property="og:description" content="How to use the Claude Code extension in VS Code: install it, open the panel, sign in, give Claude the right files with @-mentions, review edits, resume or rewind a conversation, the shortcuts worth knowing, how the extension differs from the CLI, and what to try when the Spark icon is missing.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-in-vs-code-getting-started">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code in VS Code: install, first prompt and fixes</h1>
+<p class="lead">The VS Code extension puts Claude Code in a panel next to your code, with diffs you can read before accepting. It is the same Claude Code underneath, with a few differences from the terminal version that trip people up. Here is the short path from install to a first useful prompt, and what to check when something is missing.</p>
+<h2>Before you install</h2>
+<ul>
+<li><strong>A recent VS Code.</strong> As we read the docs, the minimum is 1.94.0. Check <em>Help &gt; About</em> if the extension won't show up.</li>
+<li><strong>An account.</strong> A paid Claude subscription or a Claude Console account works, and you do not need an API key. You sign in from the panel the first time you open it.</li>
+<li><strong>The extension carries its own copy of the CLI.</strong> That copy runs the chat panel only. It does <strong>not</strong> put <code>claude</code> on your PATH, so typing <code>claude</code> in a terminal still needs the standalone install (see <a href="/fix-claude-command-not-found">fix “command not found: claude”</a>).</li>
+</ul>
+<h2>Install and open it</h2>
+<ol>
+<li>Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> (<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> on Mac), search for <strong>Claude Code</strong> and click <strong>Install</strong>. It also installs in other VS Code-based editors such as Cursor; if one can't install it at all, run the CLI in that editor's terminal instead.</li>
+<li>If nothing appears afterwards, restart VS Code or run <strong>Developer: Reload Window</strong> from the Command Palette (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>).</li>
+<li>Open the panel with the <strong>Spark icon</strong> at the top right of the editor. That icon only shows when a file is open. Other ways in: the Spark icon in the Activity Bar (it lists your sessions), the Command Palette (type “Claude Code”), or <strong>✻ Claude Code</strong> in the Status Bar, which works even with no file open.</li>
+<li>Click <strong>Sign in</strong> and finish in your browser. If you set <code>ANTHROPIC_API_KEY</code> in your shell but still see the sign-in screen, VS Code may not have inherited your environment: start it from a terminal with <code>code .</code>, or sign in with your account.</li>
+</ol>
+<h2>Your first prompt</h2>
+<p>Ask the way you would in the terminal: explain this function, find why this test fails, make this change. Two things help right away:</p>
+<ul>
+<li><strong>Claude sees your selection.</strong> Highlight code and the prompt box shows how many lines are attached. It also knows which file you have open. <kbd>Alt</kbd>+<kbd>K</kbd> (<kbd>Option</kbd>+<kbd>K</kbd> on Mac) inserts a reference with the file and line numbers, like <code>@app.ts#5-10</code>.</li>
+<li><strong>Look at the mode.</strong> The permission mode sits at the bottom of the prompt box. In manual mode Claude shows a side-by-side diff of each proposed edit and waits for your answer; in an automatic mode it edits files without asking; in plan mode it writes a plan first and waits for approval. The starting mode can differ by version and plan, so read the indicator instead of assuming. Details in <a href="/claude-code-permission-modes">permission modes</a>.</li>
+</ul>
+<h2>Give it the right context</h2>
+<ul>
+<li><code>@auth</code> fuzzy-matches a file or folder name. Add a trailing slash for a folder: <code>@src/components/</code>.</li>
+<li><code>@terminal:name</code> pulls in the output of a terminal by its title, so you don't copy and paste errors.</li>
+<li>Paste an image from your clipboard to attach it, or hold <kbd>Shift</kbd> while dragging files into the box.</li>
+<li><kbd>Shift</kbd>+<kbd>Enter</kbd> adds a new line without sending.</li>
+<li>Don't want your selection or open file attached to every message? There are settings to turn off <strong>Attach Selection</strong> and <strong>Attach Open File</strong> in the extension's settings.</li>
+</ul>
+<h2>Resume, rewind, branch</h2>
+<ul>
+<li><strong>Session history</strong>, the button at the top of the panel, lets you search and reopen old conversations. Old inactive ones are archived automatically after a while, and you can unarchive them.</li>
+<li>The extension and the CLI share one history. To carry on an extension conversation in a terminal, run <code>claude --resume</code> and pick it.</li>
+<li><strong>Rewind:</strong> hover over a message and click the rewind button. You can fork the conversation from there, rewind the code to that point, or do both. See <a href="/undo-claude-code-changes-rewind">undoing changes with rewind</a>.</li>
+</ul>
+<h2>Shortcuts worth knowing</h2>
+<ul>
+<li><kbd>Ctrl</kbd>+<kbd>Esc</kbd> (<kbd>Cmd</kbd>+<kbd>Esc</kbd> on Mac) toggles focus between the editor and Claude.</li>
+<li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Esc</kbd> opens a new conversation as an editor tab.</li>
+<li><kbd>Ctrl</kbd>+<kbd>N</kbd> starts a new conversation, but only while Claude is focused and the <code>enableNewConversationShortcut</code> setting is on.</li>
+<li>Everything else is in the Command Palette: type “Claude Code” to list the extension's commands.</li>
+</ul>
+<h2>Extension or CLI?</h2>
+<p>As we read the docs, the extension supports a subset of commands and skills (type <code>/</code> to see yours), and a few terminal conveniences are CLI only, such as the <code>!</code> shell shortcut and tab completion. To use the full CLI without leaving VS Code, open the integrated terminal with <kbd>Ctrl</kbd>+<kbd>`</kbd> (<kbd>Cmd</kbd>+<kbd>`</kbd> on Mac) and run <code>claude</code>; it connects to the editor for diffs and diagnostics. From an external terminal, run <code>/ide</code> to connect it to VS Code. See also <a href="/claude-code-slash-commands-worth-knowing">the slash commands worth knowing</a> and <a href="/claude-code-terminal-setup">terminal setup</a>.</p>
+<h2>When something is missing</h2>
+<ul>
+<li><strong>No Spark icon:</strong> open a file (a folder alone is not enough), check the VS Code version, run <strong>Developer: Reload Window</strong>, temporarily disable other AI extensions that may conflict, and make sure the workspace is trusted, because the extension does not work in Restricted Mode. The Status Bar button and the Command Palette work without it.</li>
+<li><strong>Extension won't install:</strong> compatible VS Code version, permission to install extensions, or try the Marketplace page directly.</li>
+<li><strong><kbd>Cmd</kbd>+<kbd>Esc</kbd> does nothing on a Mac:</strong> a recent macOS binds that key to the Game Overlay. Clear that shortcut in System Settings, or rebind <em>Claude Code: Focus input</em> in VS Code's Keyboard Shortcuts editor.</li>
+<li><strong>Errors such as “Could not locate the Claude CLI on PATH”, a 403 after sign-in or certificate errors:</strong> the docs have a table that points each message to its fix, so search for the exact text there.</li>
+<li><strong>A stuck or slow session:</strong> <strong>Show Logs</strong> in the Command Palette shows the extension's debug logs.</li>
+</ul>
+<p>All the guides are in the <a href="/guides">guides index</a>. If you are new to all of this, start with <a href="/how-claude-code-works">how Claude Code works</a> and <a href="/claude-code-common-workflows">everyday workflows</a>; MCP servers and plugins work here too: <a href="/add-mcp-server-claude-code">add an MCP server</a>, <a href="/install-claude-code-plugins">install plugins</a>. This follows <a href="https://code.claude.com/docs/en/vs-code">Anthropic's VS Code documentation</a> as we read it in October 2026, shortened on purpose. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every setup or operating system. The extension changes often, many features are limited to recent versions, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
