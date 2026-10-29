@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run Claude Code sessions in parallel with git worktrees</title>
+<meta name="description" content="How to give each Claude Code session its own copy of your files with git worktrees: the --worktree flag, what a worktree shares with your main checkout, copying a .env, cleanup and subagent isolation.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-git-worktrees-parallel-sessions">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/worktrees-claude-code-sesiones-en-paralelo">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-git-worktrees-parallel-sessions">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Run Claude Code sessions in parallel with git worktrees">
+<meta property="og:description" content="How to give each Claude Code session its own copy of your files with git worktrees: the --worktree flag, what a worktree shares with your main checkout, copying a .env, cleanup and subagent isolation.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-git-worktrees-parallel-sessions">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Run Claude Code sessions in parallel with git worktrees</h1>
+<p class="lead">Two Claude Code sessions editing the same folder will trip over each other. A git worktree fixes that: it is a separate working directory with its own files and its own branch, sharing the same repository history and remote. Run each session in its own worktree and one can build a feature while another fixes a bug.</p>
+<h2>Start a session in a worktree</h2>
+<p>Pass <code>--worktree</code> (or <code>-w</code>) with a name:</p>
+<pre><code>claude --worktree feature-auth</code></pre>
+<p>By default the worktree is created under <code>.claude/worktrees/feature-auth/</code> at your repository root, on a new branch named <code>worktree-feature-auth</code>. Run the command again with another name in a second terminal and you have a second isolated session. If you leave the name out, Claude makes one up.</p>
+<ul>
+<li>Add <code>.claude/worktrees/</code> to your <code>.gitignore</code> so the worktree contents do not show up as untracked files in your main checkout.</li>
+<li>The first time in a directory, run <code>claude</code> once and accept the trust dialog, or an interactive <code>--worktree</code> exits with an error asking you to.</li>
+<li>You can also ask in a session: "work in a worktree".</li>
+</ul>
+<h2>A worktree is a fresh checkout</h2>
+<p>Gitignored files such as <code>.env</code> are not there, and dependencies are not installed. Ask Claude to install them, or run your setup in the worktree folder. To copy gitignored files in automatically, put a <code>.worktreeinclude</code> file at the repository root, written like a <code>.gitignore</code>:</p>
+<pre><code>.env
+.env.local</code></pre>
+<p>Only files that match a pattern <em>and</em> are gitignored get copied, so tracked files are never duplicated. It copies rather than links, so keep it to the few small files you need. The documentation's own example lists a secrets config, so think before you add anything sensitive. For big folders such as <code>node_modules</code>, the docs point to a <code>worktree.symlinkDirectories</code> setting, or you can keep the install command in your CLAUDE.md.</p>
+<h2>Which branch does it start from?</h2>
+<p>By default a new worktree branches from the repository's default branch on the remote, usually <code>main</code>, so it starts clean. If it should carry your unpushed commits instead, set <code>worktree.baseRef</code> to <code>"head"</code> in your settings. The setting takes those two values only. To start from a particular existing branch, create the worktree with git yourself.</p>
+<h2>What a worktree shares with your main checkout</h2>
+<ul>
+<li>The repository's <code>.git</code> directory, so <code>git commit</code> works from inside a worktree.</li>
+<li>Plugins installed at project scope.</li>
+<li>Permission approvals. Choosing "Yes, and don't ask again" for a command in a worktree session saves the rule to the main checkout's <code>.claude/settings.local.json</code>, so it applies in every worktree of the repository and outlives the worktree. On Windows, and in a few other setups, the rule stays with that worktree instead. See <a href="/claude-code-permission-modes">the permission modes guide</a> for how permissions work.</li>
+<li>Project skills, agents and commands, in some cases, when the worktree has none of its own.</li>
+</ul>
+<h2>It keeps the session inside its worktree</h2>
+<p>While a session is isolated, Claude Code blocks edits that target a path in the main checkout, commands whose working directory resolves to the main checkout, and git commands redirected into it. The documentation is clear about the limit of this: it reads paths and command text, and does not track which files a shell command writes. A plain <code>cp</code> or a shell redirect into the main checkout is not refused by these checks. Those commands fall under your normal permissions and sandbox settings.</p>
+<h2>Cleaning up</h2>
+<p>When you exit an interactive worktree session, Claude Code checks for work that removal would delete. If the worktree is clean and the session was unnamed, it removes the worktree and its branch. A named session asks you first. If there are changes or new commits, it asks whether to keep or remove it, and removing deletes the directory and its branch along with that work. To come back to a kept worktree, run the <code>claude --worktree &lt;name&gt; --resume</code> command it prints on exit.</p>
+<p>One exception: a non-interactive run (<code>claude -p --worktree</code>, see <a href="/run-claude-code-from-a-script">running from a script</a>) has no exit prompt, so you remove those yourself with <code>git worktree remove &lt;path&gt;</code>. If git says the worktree is locked, run <code>git worktree unlock &lt;path&gt;</code> first.</p>
+<h2>Subagents in their own worktrees</h2>
+<p>Ask Claude to "use worktrees for your agents", or make it permanent for a <a href="/write-a-claude-code-subagent">custom subagent</a> by adding <code>isolation: worktree</code> to its frontmatter. Each subagent gets a temporary worktree that is removed automatically when it finishes without changes.</p>
+<h2>Good to know</h2>
+<ul>
+<li>Worktrees isolate file edits only. Subagents split work inside one session, and the documentation compares the approaches on its parallel agents page.</li>
+<li>They need a git repository. Other version control systems need hooks to replace the git steps.</li>
+<li>Some behavior changed between versions, so check the documentation for yours.</li>
+</ul>
+<h2>Try it on something harmless</h2>
+<ol>
+<li>In a small test repository, add <code>.claude/worktrees/</code> to <code>.gitignore</code>.</li>
+<li>Run <code>claude -w try-one</code>, ask for a tiny change, and exit. Choose to keep the worktree when asked.</li>
+<li>Run <code>git worktree list</code> to see it, then <code>claude -w try-one --resume</code> to go back.</li>
+</ol>
+<p>This follows <a href="https://code.claude.com/docs/en/worktrees">Anthropic's worktrees documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
