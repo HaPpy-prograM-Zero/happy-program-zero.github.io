@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code en GitHub Actions: menciones @claude, instalación y costes</title>
+<meta name="description" content="Cómo funciona la GitHub Action de Claude Code: instalación rápida y manual, los dos secretos y dónde van, menciones interactivas frente a automatización con un prompt, quién puede activarla, cómo contener los costes, los arreglos habituales cuando @claude no responde y cómo desinstalar limpiamente.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-github-actions-menciones-claude">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-github-actions-claude-mentions">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-code-github-actions-menciones-claude">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code en GitHub Actions: menciones @claude, instalación y costes">
+<meta property="og:description" content="Cómo funciona la GitHub Action de Claude Code: instalación rápida y manual, los dos secretos y dónde van, menciones interactivas frente a automatización con un prompt, quién puede activarla, cómo contener los costes, los arreglos habituales cuando @claude no responde y cómo desinstalar limpiamente.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-github-actions-menciones-claude">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code en GitHub Actions: menciones @claude, instalación y costes</h1>
+<p class="lead">Con la GitHub Action de Claude Code puedes escribir <code>@claude</code> en el comentario de una issue o una pull request y hacer que Claude lea el código, haga un cambio y lo suba. También puede ejecutar un prompt con un horario o ante cualquier evento de GitHub. Aquí tienes cómo instalarla, cuánto cuesta, quién puede activarla y qué mirar cuando se queda callada.</p>
+<h2>Qué es (y qué no es)</h2>
+<p>Varios productos comparten el nombre Claude Code. Esta guía trata de la integración <code>claude-code-action</code>, que se configura con archivos de workflow en tu repositorio. Según la documentación, tal como la leemos, son cosas distintas: <strong>Code Review</strong> (revisión automática de cada pull request sin escribir un workflow), <strong>Claude Code en la nube</strong> (sesiones en máquinas de la nube) y el <strong>Agent SDK</strong> (automatización a medida fuera de GitHub Actions, sobre el que está construida esta action). GitLab tiene su propia página de CI/CD.</p>
+<h2>Instalarla</h2>
+<p>En cualquier caso necesitas acceso de administrador al repositorio.</p>
+<ul>
+<li><strong>Instalación rápida.</strong> En el repositorio, abre <code>claude</code> y ejecuta <code>/install-github-app</code>. Solo funciona con repositorios de github.com y espera que tengas la CLI de GitHub instalada y con sesión iniciada con <code>gh auth login</code>. Instala la app de GitHub de Claude, guarda tu credencial como secreto del repositorio, sube una rama con los archivos de workflow que elijas y abre una pull request. Fusiona esa pull request y <code>@claude</code> funciona. Si paras a medias con <kbd>Esc</kbd>, el mensaje final lista lo que ya se hizo.</li>
+<li><strong>Instalación manual.</strong> Instala la app de GitHub de Claude en el repositorio, añade tú el secreto y copia el <code>claude.yml</code> oficial de la carpeta de ejemplos de la action en <code>.github/workflows/</code>. La documentación lo llama un workflow que funciona, no solo un ejemplo. Usa este camino si no ejecutas Claude Code en local, si el comando falla o si quieres control total.</li>
+</ul>
+<h2>La credencial</h2>
+<ul>
+<li>Añade uno de dos secretos del repositorio: <code>ANTHROPIC_API_KEY</code> (una clave de API de la Claude Console) o <code>CLAUDE_CODE_OAUTH_TOKEN</code> (un token de tu suscripción de Claude en Pro, Max, Team o Enterprise, que se genera ejecutando <code>claude setup-token</code> en local).</li>
+<li>En el workflow, pasa el secreto a la entrada que le corresponde: <code>anthropic_api_key</code> o <code>claude_code_oauth_token</code>.</li>
+<li><strong>Nunca subas una clave ni un token al repositorio.</strong> Guárdalo como GitHub Secret, referéncialo desde el workflow y dale solo los permisos que necesita.</li>
+<li>Para un secreto compartido entre muchos repositorios, la documentación recomienda una clave de API mejor que un token OAuth, porque el token OAuth está ligado a la suscripción de quien lo generó.</li>
+</ul>
+<h2>Usarla</h2>
+<p>Comenta en una issue o pull request, por ejemplo <code>@claude arregla el TypeError del componente del panel de usuario</code>. Claude responde en un comentario y lo va actualizando mientras trabaja. También reacciona a un comentario de revisión, a una revisión de pull request, o al título o cuerpo de una issue recién abierta.</p>
+<ul>
+<li><strong>Modo interactivo:</strong> tu workflow no tiene entrada <code>prompt</code>, así que Claude espera la frase de activación, por defecto <code>@claude</code>.</li>
+<li><strong>Modo automático:</strong> tu workflow da un <code>prompt</code>, así que Claude se ejecuta sin esperar una mención, por ejemplo con un horario. Por defecto el resultado va al registro de ejecución del workflow y no a un comentario, salvo que el prompt le diga que publique y tenga forma de hacerlo.</li>
+</ul>
+<p>Las reglas del proyecto, ponlas en <code>CLAUDE.md</code> en la raíz del repositorio: Claude las sigue al abrir pull requests (mira <a href="/memoria-claude-code-claude-md-y-memoria-automatica">CLAUDE.md y memoria</a>).</p>
+<h2>Quién puede activarla</h2>
+<ul>
+<li>Quien comenta necesita <strong>acceso de escritura</strong> al repositorio. Hay una entrada <code>allowed_non_write_users</code> para excepciones, que además requiere tu propio <code>github_token</code>. Los eventos sin autor humano, como un horario, se saltan esta comprobación.</li>
+<li><strong>Los bots se rechazan</strong> salvo que los pongas en <code>allowed_bots</code>, para evitar que unos bots activen a Claude en bucle. Una ejecución programada se atribuye a un usuario del repositorio, normalmente quien cambió por última vez la línea cron, así que si ese usuario es un bot, inclúyelo.</li>
+</ul>
+<h2>Cuánto cuesta</h2>
+<p>Cada ejecución usa dos cosas: minutos de GitHub Actions en el runner alojado, y tokens (o el uso de tu suscripción, si te autenticas con el token OAuth). La documentación sugiere formas de acotar los dos:</p>
+<ul>
+<li>Escribe peticiones <code>@claude</code> concretas y usa plantillas de issues para dar el contexto desde el principio.</li>
+<li>Mantén <code>CLAUDE.md</code> corto, porque se lee en cada ejecución.</li>
+<li>Pon <code>--max-turns</code> en <code>claude_args</code> para limitar las iteraciones.</li>
+<li>Usa tiempos máximos del workflow y los controles de concurrencia de GitHub para evitar trabajos descontrolados o en paralelo.</li>
+</ul>
+<p>Formas más generales de gastar menos están en <a href="/gastar-menos-cuota-claude-code">gastar menos cuota</a>.</p>
+<h2>Cuando no responde</h2>
+<ul>
+<li><strong>Sin respuesta a <code>@claude</code>:</strong> comprueba que la app está instalada en el repositorio, que los workflows están activados, que existe el secreto, que el comentario contiene <code>@claude</code> como palabra completa (no <code>/claude</code> ni <code>@claude-bot</code>) y que quien comenta tiene acceso de escritura.</li>
+<li><strong>Tu CI no se ejecuta con los commits de Claude:</strong> GitHub no lanza workflows para commits hechos con el <code>GITHUB_TOKEN</code> por defecto. Si le pasas ese token a la action, quítalo para que se autentique como la app de GitHub de Claude, y comprueba que los disparadores de tu CI incluyen los eventos que producen los pushes de Claude.</li>
+<li><strong>Errores de autenticación:</strong> prueba la clave o el token en local con <code>claude</code> antes de depurar el workflow.</li>
+</ul>
+<h2>Con un proveedor de nube, y desinstalar</h2>
+<p>Amazon Bedrock, Agent Platform de Google Cloud y Microsoft Foundry se admiten con entradas como <code>use_bedrock</code>, con federación OIDC en vez de una clave de API guardada. Para quitarlo todo: borra los archivos de workflow (<code>claude.yml</code> y, si lo elegiste, <code>claude-code-review.yml</code>), borra el secreto del repositorio y de los secretos de la organización, y desinstala la app de GitHub solo si ninguna otra función de Claude la usa. Borrar un secreto no revoca la credencial, así que retira también la clave de API en la Console.</p>
+<p>Todas las guías están en el <a href="/guias">índice de guías</a>. Si además quieres a Claude con horario desde tu propio equipo, mira <a href="/ejecutar-claude-code-desde-un-script">ejecutar Claude Code desde un script</a> y <a href="/permisos-claude-code">la guía de permisos</a>. Esta página sigue <a href="https://code.claude.com/docs/en/github-actions">la documentación de GitHub Actions de Anthropic</a> tal como la leemos en octubre de 2026, acortada a propósito. No tenemos relación con Anthropic ni con GitHub. La escribimos a partir de la documentación y no hemos probado todas las configuraciones. Los nombres de las entradas, las versiones y los valores por defecto cambian, y donde esta página y la documentación no coincidan, manda la documentación. Nunca pegues una clave real en un prompt, una issue ni un archivo del repositorio.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
