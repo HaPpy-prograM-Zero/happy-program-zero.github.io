@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run Claude Code on a schedule with /loop</title>
+<meta name="description" content="How to make Claude Code repeat a prompt: /loop with a fixed or self-chosen interval, a default loop.md, one-time reminders, how to stop a loop, the seven-day expiry, jitter, cron syntax and the limits of session-scoped scheduling.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-loop-scheduled-tasks">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/programar-tareas-loop-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-loop-scheduled-tasks">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Run Claude Code on a schedule with /loop">
+<meta property="og:description" content="How to make Claude Code repeat a prompt: /loop with a fixed or self-chosen interval, a default loop.md, one-time reminders, how to stop a loop, the seven-day expiry, jitter, cron syntax and the limits of session-scoped scheduling.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-loop-scheduled-tasks">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Run Claude Code on a schedule with /loop</h1>
+<p class="lead">Sometimes you want Claude to check something again in five minutes, or every hour: is the deploy done, did CI pass, are there new review comments. <code>/loop</code> does that inside the session you already have open. This page covers how it works, how to stop it and where it stops working.</p>
+<h2>First, decide where it should run</h2>
+<p>As we read the docs, there are three options with different trade-offs:</p>
+<ul>
+<li><strong>Cloud:</strong> runs in the cloud, so your machine and your session can be off; no local files (it works on a fresh clone); shortest interval 1 hour.</li>
+<li><strong>Desktop:</strong> runs on your machine, which must be on, but no open session is needed; local files yes; shortest interval 1 minute when Claude sets it.</li>
+<li><strong><code>/loop</code>:</strong> runs on your machine and needs the session open; local files yes; shortest interval 1 minute.</li>
+</ul>
+<p>Cloud for work that must run without your computer, desktop for local files and tools, <code>/loop</code> for quick polling while you work. The rest of this page is about <code>/loop</code>.</p>
+<h2>The three ways to start one</h2>
+<ul>
+<li><code>/loop 5m check the deploy</code>: an interval and a prompt, on a <strong>fixed schedule</strong>.</li>
+<li><code>/loop check the deploy</code>: a prompt only. Claude <strong>picks the interval</strong> each time.</li>
+<li><code>/loop</code> alone (or with only an interval): runs a <strong>built-in maintenance prompt</strong>, or your own <code>loop.md</code>.</li>
+</ul>
+<p>You can also loop a skill: <code>/loop 20m /review-pr 1234</code>. A scheduled run only executes skills Claude is allowed to call on its own; built-in commands such as <code>/clear</code> or <code>/model</code>, skills marked <code>disable-model-invocation</code> and MCP prompts reach Claude as plain text instead.</p>
+<h2>Fixed interval</h2>
+<p>Write the interval as a leading token (<code>30m</code>) or a trailing clause (<code>every 2 hours</code>). Units are <code>s</code>, <code>m</code>, <code>h</code> and <code>d</code>. Cron works in whole minutes, so seconds are rounded up, and intervals that don't fit a clean step (<code>7m</code>, <code>90m</code>) are rounded to the nearest one that does; Claude tells you what it picked.</p>
+<h2>Let Claude choose</h2>
+<p>With no interval, Claude waits between one minute and one hour after each pass, depending on what it saw: short while a build finishes or a PR is busy, longer when nothing is pending. It prints the delay and the reason at the end of every iteration. If the Monitor tool is available, Claude may use it instead of polling at all: it runs a background script and streams each output line back, which can be cheaper and quicker than re-running a prompt.</p>
+<h2>The default prompt and loop.md</h2>
+<p>A bare <code>/loop</code> works through, in order: unfinished work from the conversation, the current branch's pull request (review comments, failed CI, merge conflicts), then cleanup passes when nothing else is pending. It does not start new projects, and irreversible actions such as pushing or deleting only go ahead when they continue something the transcript already authorized.</p>
+<p>To replace that with your own default, create a plain Markdown file at <code>.claude/loop.md</code> (project) or <code>~/.claude/loop.md</code> (all projects; the project one wins). Write it as if you were typing the <code>/loop</code> prompt. Edits apply on the next iteration, and anything past 25,000 bytes is cut. It is one default prompt, not a list of tasks, and it is ignored whenever you give a prompt on the command line.</p>
+<pre><code>Check the release/next PR. If CI is red, read the failing log,
+diagnose and push a minimal fix. If new review comments arrived,
+address each one. If everything is green and quiet, say so in one line.</code></pre>
+<h2>Stopping a loop</h2>
+<ul>
+<li><strong>Self-paced loop:</strong> while it waits for its next pass, press <kbd>Esc</kbd>. Claude can also end it itself when the task is done.</li>
+<li><strong>Fixed-interval loop:</strong> ask Claude to cancel it ("cancel the deploy check loop"). <kbd>Esc</kbd> and <kbd>Ctrl</kbd>+<kbd>C</kbd> don't stop it.</li>
+<li><strong>Otherwise it expires:</strong> recurring tasks delete themselves after seven days, firing once more first. For longer, recreate the task before then, or use a cloud or desktop task.</li>
+</ul>
+<p>A loop that never ends is the usual way to burn quota; <a href="/stop-claude-code-loops">how to stop agents from looping</a> covers the habits that prevent it.</p>
+<h2>One-time reminders and managing tasks</h2>
+<p>For a one-off, just say it: <code>remind me at 3pm to push the release branch</code> or <code>in 45 minutes, check whether the integration tests passed</code>. Claude schedules a single run that deletes itself. To see or remove tasks, ask: <code>what scheduled tasks do I have?</code>, <code>cancel the deploy check job</code>. Behind that are three tools, <code>CronCreate</code>, <code>CronList</code> and <code>CronDelete</code>, and a session holds up to 50 tasks.</p>
+<h2>How the runs behave</h2>
+<ul>
+<li>Runs fire between your turns, never mid-answer. If Claude is busy, the prompt waits.</li>
+<li>Times are your local timezone: <code>0 9 * * *</code> is 9am where you are, not UTC.</li>
+<li><strong>Jitter:</strong> to avoid everyone hitting the API at once, a recurring task can start late, by up to half the gap to the next run and at most 30 minutes. The exception is every five minutes, which starts about 15 seconds sooner each time.</li>
+<li>A one-time task set for :00 or :30 can run up to 90 seconds early. If timing matters, pick an odd minute: <code>3 9 * * *</code> rather than <code>0 9 * * *</code>.</li>
+</ul>
+<h2>Limits to know</h2>
+<ul>
+<li>Tasks fire only while Claude Code is running and idle. Close the terminal and they stop (backgrounding the session keeps <code>/loop</code> tasks alive).</li>
+<li>No catch-up: if a run comes due while Claude is busy, it fires once when Claude is free, not once per missed interval.</li>
+<li>With <code>--resume</code> or <code>--continue</code>, tasks created with <code>CronCreate</code> are restored unless expired; a self-paced <code>/loop</code> is not, so run <code>/loop</code> again. Background commands that were running are not restarted.</li>
+<li>To switch the whole scheduler off, set <code>CLAUDE_CODE_DISABLE_CRON=1</code>.</li>
+</ul>
+<h2>Cron cheat sheet</h2>
+<p>Five fields: minute, hour, day of month, month, day of week (0 or 7 is Sunday). Wildcards, steps, ranges and lists work; <code>L</code>, <code>W</code>, <code>?</code> and names like <code>MON</code> don't.</p>
+<ul>
+<li><strong>Nube:</strong> se ejecuta en la nube, así que tu máquina y tu sesión pueden estar apagadas; sin archivos locales (trabaja sobre una copia nueva); intervalo mínimo de 1 hora.</li>
+<li><strong>Escritorio:</strong> se ejecuta en tu máquina, que debe estar encendida, pero no hace falta sesión abierta; archivos locales, sí; intervalo mínimo de 1 minuto cuando lo fija Claude.</li>
+<li><strong><code>/loop</code>:</strong> se ejecuta en tu máquina y necesita la sesión abierta; archivos locales, sí; intervalo mínimo de 1 minuto.</li>
+</ul>
+<p>If both day of month and day of week are set, a date matches when either one matches.</p>
+<p>All the guides are in the <a href="/guides">guides index</a>; for scheduling outside a session, see <a href="/claude-code-common-workflows">everyday workflows</a> and <a href="/run-claude-code-from-a-script">running Claude Code from a script</a>. This follows <a href="https://code.claude.com/docs/en/scheduled-tasks">Anthropic's scheduled tasks documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Intervals, limits and some features depend on your version, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
