@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spend less of your Claude Code quota</title>
+<meta name="description" content="Habits from Anthropic's cost documentation for using fewer tokens in Claude Code: how to see where they go, why long sessions cost more, and what to change.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/reduce-claude-code-token-usage">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/gastar-menos-cuota-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/reduce-claude-code-token-usage">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Spend less of your Claude Code quota">
+<meta property="og:description" content="Habits from Anthropic's cost documentation for using fewer tokens in Claude Code: how to see where they go, why long sessions cost more, and what to change.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/reduce-claude-code-token-usage">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Spend less of your Claude Code quota</h1>
+<p class="lead">Claude Code charges by tokens, and on a subscription those tokens count against your plan limits. The more context Claude has to read, the more it uses. Most of the savings come from keeping that context small.</p>
+<h2>First, see where it goes</h2>
+<ul>
+<li><code>/usage</code> shows the current session's token use. On a Pro, Max, Team or Enterprise plan it also shows what recent usage went to skills, subagents, plugins and MCP servers, with suggested changes. The dollar figure is for API users and is only an estimate.</li>
+<li><code>/context</code> shows what is taking space in the conversation.</li>
+<li>The number beside the spinner is a live, approximate count of the output of the current turn. It does not include what you sent in.</li>
+</ul>
+<h2>Why a long session costs more than it looks</h2>
+<ul>
+<li>Claude Code sends the whole conversation with each request. Caching makes the repeated part cheaper, but a one-line question at the end of a day-long session still carries all of it.</li>
+<li>If you leave a session idle for longer than the cache lasts, your next message reprocesses the full context.</li>
+<li>A scheduled task or loop keeps firing in an idle session, and each run sends your full context. So does a message from another of your sessions.</li>
+<li>Every subagent sends its own requests on top of the main conversation.</li>
+<li><code>/compact</code> has to read what it summarizes, so compacting a huge context is itself a big request. <code>/clear</code> costs nothing.</li>
+</ul>
+<h2>The habits</h2>
+<ul class="plain">
+<li><span class="n">Clear between tasks</span><span class="d"><code>/clear</code> when you switch to unrelated work. Stale context is paid for on every later message. Use <code>/rename</code> first if you want to find the session again with <code>/resume</code>.</span></li>
+<li><span class="n">Steer the summary</span><span class="d"><code>/compact Focus on code samples and API usage</code> tells Claude what to keep. You can also add a "Compact instructions" section to CLAUDE.md.</span></li>
+<li><span class="n">Match the model to the job</span><span class="d">The documentation says Sonnet handles most coding tasks well and costs less than Opus, which it suggests keeping for hard design or multi-step reasoning. Switch with <code>/model</code>. For simple subagents, set <code>model: haiku</code>.</span></li>
+<li><span class="n">Lower the effort</span><span class="d">Extended thinking is on by default and its tokens are billed as output. For simple work lower the level with <code>/effort</code>. Some models always think.</span></li>
+<li><span class="n">Keep CLAUDE.md short</span><span class="d">It loads every session. Aim for under 200 lines and move workflow-specific instructions into skills, which load only when used.</span></li>
+<li><span class="n">Trim MCP</span><span class="d">Tool definitions are deferred by default, so idle servers cost little. Command-line tools such as <code>gh</code> add no per-tool listing at all, and <code>/mcp</code> lets you disable servers you are not using.</span></li>
+<li><span class="n">Filter before Claude reads</span><span class="d">A hook can cut a 10,000-line log down to the error lines before they reach the conversation. See <a href="/claude-code-hooks-three-to-paste">three hooks to paste</a>.</span></li>
+<li><span class="n">Send noisy jobs to a subagent</span><span class="d">Test runs and log reading stay in its context and only a summary returns. Its requests still draw on your usage, so give it a smaller model. See <a href="/write-a-claude-code-subagent">write your first subagent</a>.</span></li>
+<li><span class="n">Ask specific things</span><span class="d">"Improve this codebase" makes Claude scan broadly. "Add input validation to the login function in auth.ts" does not.</span></li>
+<li><span class="n">Plan first on big tasks</span><span class="d">Shift+Tab switches to plan mode, where Claude explores and proposes before it edits, which avoids expensive rework if the first direction was wrong.</span></li>
+<li><span class="n">Stop early</span><span class="d">Escape stops a wrong turn at once. <code>/rewind</code> or a double Escape restores the conversation and code to an earlier checkpoint.</span></li>
+<li><span class="n">Give it a way to check</span><span class="d">Test cases or the expected output in the prompt let Claude catch its own mistakes. Test one file at a time.</span></li>
+<li><span class="n">Stop what you no longer need</span><span class="d">A forgotten loop keeps spending. See <a href="/stop-claude-code-loops">how to stop an agent from looping</a>.</span></li>
+</ul>
+<h2>Background use</h2>
+<p>Session recaps, idle compaction and prompt suggestions can also use tokens while you are away. The documentation says where to turn each one off.</p>
+<h2>A number, with context</h2>
+<p>Anthropic says that across enterprise deployments the average cost is around $13 per developer per active day, and below $30 per active day for 90% of users. That is API billing for companies, not a forecast for your plan, and it varies with model, codebase and how many instances you run.</p>
+<h2>Limits</h2>
+<ul>
+<li>We have not measured how much any of these saves. Anthropic's page is the authority, and commands, defaults and plan limits change.</li>
+<li>Smaller models and lower effort can give weaker answers on hard problems. Try one change at a time.</li>
+<li>None of this is a guarantee about your bill or your limits.</li>
+</ul>
+<p>This follows <a href="https://code.claude.com/docs/en/costs">Anthropic's "Manage costs effectively" page</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every habit on every plan.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
