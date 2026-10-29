@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code in a monorepo or large codebase: keep it focused</title>
+<meta name="description" content="How to keep Claude Code focused in a big repository: where to start it, layered CLAUDE.md files, excluding the ones you never need, blocking reads of generated and vendored code, a language-server plugin, sparse worktrees, access to sibling packages and how to plan changes that span packages.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-monorepo-large-codebase">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-code-monorepo-codigo-grande">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-monorepo-large-codebase">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code in a monorepo or large codebase: keep it focused">
+<meta property="og:description" content="How to keep Claude Code focused in a big repository: where to start it, layered CLAUDE.md files, excluding the ones you never need, blocking reads of generated and vendored code, a language-server plugin, sparse worktrees, access to sibling packages and how to plan changes that span packages.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-monorepo-large-codebase">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code in a monorepo or large codebase: keep it focused</h1>
+<p class="lead">Claude Code works at any size, but in a repository with many packages the defaults tuned for small projects can fill the context window with instructions and file reads that have nothing to do with the task. That costs tokens and can make answers worse. The fix is to scope Claude to the part of the code you are touching. These are the settings that do it, in the order most people need them.</p>
+<h2>1. Choose where to start Claude</h2>
+<p>Where you run <code>claude</code> decides what it can read and edit without a further permission grant, which CLAUDE.md files load at launch and which project settings apply.</p>
+<ul>
+<li><strong>From the repository root:</strong> every file is reachable, only the root CLAUDE.md loads at launch, and subdirectory ones load on demand. Good when a task spans packages.</li>
+<li><strong>From a subdirectory:</strong> only that subtree is reachable until you grant more, and that directory's CLAUDE.md plus every parent's load. Good when the work lives in one package.</li>
+</ul>
+<p>One trap, as we read the docs: <code>.claude/settings.json</code> is <em>not</em> inherited from parent directories the way CLAUDE.md files are. If you start from <code>packages/api/</code>, that package's own <code>.claude/</code> is the one that counts. See <a href="/claude-code-settings-precedence">which settings file wins</a>.</p>
+<h2>2. Layer CLAUDE.md files by directory</h2>
+<p>One giant root file either grows to cover every subsystem, wasting context on things unrelated to today's task, or stays too vague to help. Split it in two levels instead:</p>
+<ul>
+<li><strong>Root <code>CLAUDE.md</code>:</strong> rules that apply everywhere, such as coding standards and commit conventions.</li>
+<li><strong>A <code>CLAUDE.md</code> in each package or subsystem:</strong> the conventions of that stack, for example “copy <code>.env.example</code> to <code>.env</code> before running anything” or “never edit a migration after it has merged”.</li>
+</ul>
+<p>Start Claude in <code>packages/api/</code> and it loads that file plus the root one, with nothing from <code>packages/web/</code>. To check what actually loaded, run <code>/context</code> and look at the memory files list. Commit these files so teammates inherit them, and let each directory's owner maintain theirs.</p>
+<p>The alternative is path-scoped rules in a central <code>.claude/rules/</code> folder, which load when Claude touches a file matching a <code>paths:</code> pattern. Per-directory files keep conventions next to the code; rules keep everything in one place. More on choosing in <a href="/claude-md-vs-skill-vs-hook">CLAUDE.md vs skill vs hook</a> and <a href="/claude-code-memory-claude-md-vs-auto-memory">memory</a>.</p>
+<h2>3. Exclude the CLAUDE.md files you never need</h2>
+<p>Started from the root, Claude can load any subdirectory's CLAUDE.md on demand. The <code>claudeMdExcludes</code> setting skips files by glob so they never load, which suits other teams' packages, legacy code and vendored trees. Patterns match absolute paths, so start relative-looking ones with <code>**/</code>:</p>
+<pre><code>{
+  "claudeMdExcludes": [
+    "**/packages/web/**"
+  ]
+}</code></pre>
+<p>Put it in <code>.claude/settings.local.json</code> if it is only for you. The list is static, not a per-task switch: to focus on a different package tomorrow, start Claude from that package instead of editing exclusions.</p>
+<h2>4. Stop it reading generated and vendored code</h2>
+<p>Content searches respect <code>.gitignore</code>, so <code>node_modules/</code>, <code>dist/</code> and <code>build/</code> are already out of the way if they are ignored. Things that are checked in, such as a vendored SDK or committed generated code, need <code>Read</code> deny rules:</p>
+<pre><code>{
+  "permissions": {
+    "deny": [
+      "Read(./**/dist/**/*)",
+      "Read(./**/*.generated.*)",
+      "Read(./**/vendor/**/*)"
+    ]
+  }
+}</code></pre>
+<ul>
+<li>Directory patterns end in <code>/**/*</code> so the contents are blocked but Claude can still list or enter the directory.</li>
+<li>Commit the rules to <code>.claude/settings.json</code> for everyone, or use <code>.claude/settings.local.json</code> for yourself. Relative patterns anchor at the directory you start in, so if you start from subdirectories, write personal rules as <code>//</code>-absolute paths.</li>
+<li>Deny rules cover Claude's file tools and the file commands it recognizes in Bash, like <code>cat</code> and <code>grep</code> with a denied path as an argument. They do not cover subprocesses that open files themselves, and a broad <code>grep -r</code> over a directory can still surface denied files. Treat them as a strong guard rail, not a vault. For the syntax, see <a href="/claude-code-permissions-starter">the permissions starter</a>.</li>
+</ul>
+<h2>5. Let a language server find definitions</h2>
+<p>In a big tree, finding where a symbol is defined or used can cost many file reads. Code intelligence plugins connect Claude to a language server so it can jump to definitions and references and see type errors directly. The official marketplace has plugins for TypeScript, Python, Go, Rust and others, and each needs that language's server binary on your machine. How plugins install is in <a href="/install-claude-code-plugins">installing plugins</a>. To enable one for the whole team, add it to the project's <code>enabledPlugins</code> setting.</p>
+<h2>6. Smaller worktrees, wider access</h2>
+<ul>
+<li><strong>Sparse worktrees.</strong> <code>claude --worktree</code> starts a session in a new git worktree, which by default checks out the whole repository. The <code>worktree.sparsePaths</code> setting lists the directories to write to disk, plus root-level files, so worktrees start faster and use less space. Background in <a href="/claude-code-git-worktrees-parallel-sessions">worktrees and parallel sessions</a>.</li>
+<li><strong>Sibling packages.</strong> Started from <code>packages/api/</code>, Claude can only touch that directory. For a change that also needs <code>packages/shared/</code>, use <code>--add-dir</code> or put <code>"permissions": { "additionalDirectories": ["../shared", "../web"] }</code> in that package's settings. Relative paths resolve from where you start Claude. The same works for a second repository.</li>
+</ul>
+<h2>7. Changes that span packages</h2>
+<ul>
+<li>Give Claude the whole change in one session, the shared edit and its call sites together, so the decisions behind each edit stay consistent.</li>
+<li>Plan first in plan mode. Claude writes the plan to a file, and Claude Code re-injects that file after each compaction, so the plan survives even when the conversation history does not. See <a href="/claude-code-context-window-what-survives-compact">what survives a compact</a>.</li>
+</ul>
+<h2>Keep it from rotting</h2>
+<ul>
+<li>Review CLAUDE.md changes in pull requests like any documentation.</li>
+<li>Revisit after major model releases: a rule that worked around an old limitation can become pure overhead.</li>
+<li>Run <code>/doctor</code> on a CLAUDE.md that has grown too big.</li>
+</ul>
+<p>All the guides are in the <a href="/guides">guides index</a>, and the token side of this is in <a href="/reduce-claude-code-token-usage">reducing token usage</a>. This follows <a href="https://code.claude.com/docs/en/large-codebases">Anthropic's large-codebase documentation</a> as we read it in October 2026, shortened on purpose. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every repository layout. Setting names and behavior can change, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
