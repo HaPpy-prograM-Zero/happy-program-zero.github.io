@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buenas prácticas de Claude Code: la versión corta</title>
+<meta name="description" content="La versión corta y en llano de las buenas prácticas de Claude Code: dile lo que no puede ver, dale una comprobación que ejecutar, haz cumplir las reglas sin excepciones y sabe qué dejar de hacer.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/buenas-practicas-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-best-practices">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/buenas-practicas-claude-code">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Buenas prácticas de Claude Code: la versión corta">
+<meta property="og:description" content="La versión corta y en llano de las buenas prácticas de Claude Code: dile lo que no puede ver, dale una comprobación que ejecutar, haz cumplir las reglas sin excepciones y sabe qué dejar de hacer.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/buenas-practicas-claude-code">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Buenas prácticas de Claude Code: la versión corta</h1>
+<p class="lead">Según la documentación de Anthropic, en la mayoría de los casos tu primera petición normal en una sesión nueva ya hace lo correcto. Preparar cosas compensa cuando tu proyecto tiene algo que Claude no puede ver solo con el código: un proceso de despliegue que está en la cabeza de alguien, un archivo que nunca debe leer, una comprobación que tiene que pasar, un presupuesto. Esta página es la versión corta, con enlaces a las guías largas.</p>
+<h2>Cuando una sesión sale mal, casi siempre es una de cuatro cosas</h2>
+<ol>
+<li><strong>Claude construyó algo distinto de lo que tenías en mente</strong>, o redescubre el mismo dato en cada sesión. Le falta información que no puede sacar del repositorio.</li>
+<li><strong>Dijo que había terminado y no era verdad</strong>, normalmente porque no tenía forma de comprobar su propio trabajo.</li>
+<li><strong>Hizo algo que nunca debe pasar</strong>, o se saltó un paso que siempre debe darse. Una petición sola no garantiza ninguna de las dos cosas.</li>
+<li><strong>Lo hizo bien, pero costó más tiempo, tokens o avisos de permisos de lo que valía la tarea.</strong></li>
+</ol>
+<h2>Dos tipos de instrucción</h2>
+<p>Todo lo que le dices a Claude Code es de uno de dos tipos. <strong>Decide Claude:</strong> tu petición, <code>CLAUDE.md</code>, una skill. Suele seguirlas, pero nada lo garantiza. <strong>Lo hace cumplir Claude Code:</strong> un hook, una regla de denegación, un ajuste gestionado. Se aplican siempre, decida lo que decida el modelo. Casi siempre quieres que decida Claude. Deja el tipo obligatorio para reglas sin excepciones. Si sigues añadiendo énfasis a una línea de <code>CLAUDE.md</code> y Claude la sigue saltando, según la documentación esa línea probablemente es un hook. Y al revés: un hook que solo impone una preferencia sobra.</p>
+<h2>1. Dile a Claude lo que no puede ver</h2>
+<p>Claude lee bien tu código, así que escribe solo lo que no puede encontrar, o lo que perdería tiempo en redescubrir en cada sesión. Una prueba antes de escribir nada: ¿lo encontraría leyendo el código y de verdad iría a mirar? Si las dos respuestas son sí, déjalo fuera.</p>
+<ul>
+<li><strong>Sé concreto en la petición.</strong> Nombra el archivo, describe el síntoma, di cómo se ve «arreglado». «Arregla el error de exportar» pasa a ser «el botón de exportar no hace nada con informes de más de 1.000 filas; el controlador está en <code>src/export/</code>; escribe primero un test que falle y luego arréglalo».</li>
+<li><strong>Entrega las cosas en vez de describirlas.</strong> Escribe <code>@</code> y una ruta para incluir un archivo, pega una captura, o pasa la salida por tubería: <code>cat error.log | claude -p "qué está pasando aquí"</code>.</li>
+<li><strong>Si aún no sabes lo que quieres,</strong> pídele a Claude que te entreviste hasta poder escribir la especificación, y que la guarde en un archivo como <code>SPEC.md</code>. Luego construye desde ese archivo en una sesión nueva.</li>
+<li><strong>Mantén <code>CLAUDE.md</code> corto.</strong> Cada línea gasta un poco de atención en cada tarea. Buen contenido: los comandos exactos de tests, comprobación de tipos y lint, los sitios donde el código engaña, las decisiones que no están en el repositorio, lo que has tenido que corregir dos veces. <code>/init</code> escribe uno de partida; el trabajo es después sobre todo borrar líneas. Las preferencias personales van en <code>CLAUDE.local.md</code>, fuera de git.</li>
+<li><strong>Limita las reglas a una parte del código</strong> con un archivo en <code>.claude/rules/</code> con un filtro <code>paths:</code>, para que solo se cargue cuando Claude trabaje ahí.</li>
+<li><strong>Los procedimientos del equipo, en skills.</strong> Una lista de pasos de publicación dentro de una skill no pesa en las tareas ajenas como lo haría en <code>CLAUDE.md</code>. Para un flujo con efectos secundarios, añade <code>disable-model-invocation: true</code> y solo se ejecuta cuando tú lo escribes.</li>
+<li><strong>Conecta lo que vive en otro sitio.</strong> Una herramienta de línea de comandos en la que ya has iniciado sesión (como <code>gh</code>) suele ser la entrada más fácil; si no, añade un servidor MCP. Los servidores añaden los nombres de sus herramientas al contexto aunque no los uses, así que desactiva los que no necesites en <code>/mcp</code>.</li>
+</ul>
+<pre><code># Commands
+- Run one test file: npm test -- path/to/file.test.js
+- Typecheck: npx tsc --noEmit
+
+# Gotchas
+- src/legacy/ is still live, but do not copy its patterns into new code
+- Integration tests need DATABASE_URL, see .env.example</code></pre>
+<p>Mira <a href="/memoria-claude-code-claude-md-y-memoria-automatica">la guía de memoria</a> y <a href="/como-escribir-una-skill-claude-code">cómo escribir una skill</a>.</p>
+<h2>2. Dale a Claude una comprobación que ejecutar</h2>
+<p>Claude para cuando el trabajo parece terminado. Si no tiene nada que ejecutar que responda «pasa» o «falla», «parece terminado» es lo único que tiene, y el test eres tú. Dale un archivo de tests, el código de salida de una compilación, un linter, o un script que compare la salida con un archivo esperado, y podrá hacer un cambio, ejecutar la comprobación, leer lo que falló y arreglarlo. Si tu repositorio ya tiene una, la línea más útil de <code>CLAUDE.md</code> es el comando que la ejecuta.</p>
+<p>Tú eliges lo estricto que quieres ser:</p>
+<ul>
+<li><strong>En la petición:</strong> «ejecuta después los tests de autenticación y sigue hasta que pasen». Claude decide cuándo está satisfecho.</li>
+<li><strong>Con un objetivo:</strong> las versiones recientes tienen un comando <code>/goal</code> que fija una condición que otro modelo comprueba tras cada turno. Importa sobre todo en ejecuciones largas sin supervisión.</li>
+<li><strong>Con un hook <code>Stop</code>:</strong> tu script se ejecuta cuando Claude intenta terminar y lo devuelve al trabajo si el script sale con código 2. Esto sí lo hace cumplir Claude Code. Tras varios bloqueos seguidos deja que el turno acabe, así que no puede quedarse en bucle para siempre.</li>
+<li><strong>Con un revisor nuevo:</strong> una segunda sesión, o una revisión en un subagente que no vio la conversación, no se deja influir por el razonamiento que produjo el código. Dile qué comprobar y que se salte el estilo, o siempre encontrará algo.</li>
+</ul>
+<p>Elijas lo que elijas, pide pruebas: el comando que ejecutó y su salida. «Todos los tests pasan» a secas dice poco.</p>
+<pre><code>{
+  "hooks": {
+    "Stop": [
+      { "hooks": [ { "type": "command", "command": "npx tsc --noEmit 1&gt;&amp;2 || exit 2" } ] }
+    ]
+  }
+}</code></pre>
+<p>Eso va en <code>.claude/settings.json</code>. La salida del compilador se redirige a stderr porque es lo que recibe Claude como motivo de que aún no puede terminar. Más en <a href="/hooks-claude-code-tres-para-pegar">tres hooks para pegar</a>.</p>
+<h2>3. Haz cumplir las reglas que no admiten excepciones</h2>
+<p>«Nunca leas .env», «ejecuta siempre el formateador», «no toques la carpeta de migraciones»: Claude las seguirá casi siempre. Cuando «casi» no basta, sácalas de <code>CLAUDE.md</code> y llévalas a una configuración que aplique Claude Code por sí mismo.</p>
+<ul>
+<li><strong>Los hooks</strong> ejecutan tu comando en puntos fijos: antes o después de una llamada a una herramienta, cuando Claude intenta parar, al empezar la sesión. Un hook <code>PostToolUse</code> con el patrón <code>Edit|Write</code> puede ejecutar tu formateador tras cada edición, se acuerde Claude de la regla o no. Para cumplimiento real usa un hook de comando o HTTP; uno que pide a otro modelo que decida no es determinista.</li>
+<li><strong>Las reglas de denegación</strong> valen en todos los modos de permisos. <code>"deny": ["Read(./.env)", "Read(./secrets/**)"]</code> en tus ajustes bloquea la herramienta Read y los comandos habituales de lectura de archivos como <code>cat .env</code>. Las reglas casan con llamadas a herramientas, no con intenciones: un script que abre el archivo no se detecta, y una denegación de dominio para descargas web no hace nada contra <code>curl</code> si el sandbox no está activo.</li>
+<li><strong>El sandbox</strong> (<code>/sandbox</code>) limita el acceso a archivos y red a nivel de sistema operativo. La documentación indica macOS, Linux y WSL2.</li>
+<li><strong>El modo automático es un clasificador,</strong> un modelo que juzga cada acción, no una regla dura. Pon tus «nunca» en reglas de denegación o en hooks.</li>
+</ul>
+<p>Dónde vive una regla decide a quién se aplica: <code>.claude/settings.local.json</code> y <code>~/.claude/settings.json</code> son solo tuyos, <code>.claude/settings.json</code> del repositorio se aplica a todos los que trabajan ahí (sus reglas de permitir y sus hooks esperan a que cada persona acepte la carpeta), y los ajustes gestionados pertenecen a una organización. Mantén pequeño el conjunto obligatorio; cada hook y regla de denegación saltará alguna vez cuando no debe, y alguien tiene que mantenerlo. Mira <a href="/permisos-claude-code">un archivo de permisos de partida</a>, los <a href="/modos-de-permisos-claude-code">modos de permisos</a> y <a href="/settings-json-claude-code-cual-manda">qué archivo de ajustes manda</a>.</p>
+<h2>4. Dirige la sesión y controla el gasto</h2>
+<ul>
+<li><strong>Vigila el primer minuto</strong> y pulsa <code>Esc</code> en cuanto Claude se desvíe. Se detiene a mitad de acción y conserva todo hasta ese punto.</li>
+<li><strong><code>/rewind</code></strong> (o <code>Esc</code> dos veces con la entrada vacía) devuelve el código, la conversación o ambos a una petición anterior, así que probar el enfoque más atrevido tiene poco riesgo. Los puntos de control cubren los archivos editados con las herramientas de archivos de Claude, no los que solo tocó un comando de shell, y funcionan junto a git, no en su lugar.</li>
+<li><strong>Tras dos correcciones fallidas, <code>/clear</code></strong> y escribe una petición mejor que incluya lo que aprendiste. Una tercera corrección sobre todo añade más a una conversación que ya contiene dos intentos fallidos.</li>
+<li><strong><code>/clear</code> entre tareas distintas.</strong> Cada petición envía toda la conversación, así que una sesión que ha juntado tres tareas relee las tres en la cuarta. <code>/usage</code> muestra en qué se fue tu uso, y <code>/compact</code> acepta un enfoque como «conserva los cambios de la API y los comandos de test».</li>
+<li><strong>Ponle nombre al trabajo largo.</strong> <code>/rename oauth-migration</code> dentro de la sesión, y luego <code>claude --resume oauth-migration</code> desde tu shell la retoma más tarde.</li>
+</ul>
+<p>Mira <a href="/deshacer-cambios-claude-code-rewind">deshacer cambios</a> y <a href="/gastar-menos-cuota-claude-code">gastar menos cuota</a>.</p>
+<h2>Antes de dejar una ejecución sin supervisión</h2>
+<p>Repasa cinco preguntas para esa tarea concreta: ¿sabe cómo se ve «terminado»?; ¿puede comprobar su propio trabajo?; ¿qué puede tocar?; ¿qué lo para (un tope de turnos o de gasto)?; y ¿adónde va el resultado y quién lo aprueba? Claude llevará una tarea larga hasta el final por sí solo. Lo que sigue siendo tuyo es arrancarla, decidir qué significa «terminado» esta vez y aprobar la fusión. Mira <a href="/ejecutar-claude-code-desde-un-script">ejecutar desde un script</a> y <a href="/worktrees-claude-code-sesiones-en-paralelo">sesiones en paralelo con worktrees</a>.</p>
+<h2>Lo que ya puedes dejar de hacer</h2>
+<ul>
+<li><strong>Gritar en mayúsculas</strong> (IMPORTANT, ALWAYS). Los modelos actuales siguen una línea bien redactada, y el énfasis excesivo tiende a que Claude aplique la regla de más. Si una regla no puede ceder, hazla un hook o una regla de denegación; si una línea se pierde, el archivo es demasiado largo.</li>
+<li><strong>«Piensa a fondo» y «sé minucioso».</strong> Es texto normal de la petición. El control de cuánto piensa Claude es el nivel de esfuerzo.</li>
+<li><strong>«Sigue, no seas vago».</strong> Darle a Claude una comprobación que pasar es distinto, y sigue valiendo la pena.</li>
+<li><strong>Describir tu arquitectura y la estructura de archivos en <code>CLAUDE.md</code>.</strong> Claude lee el repositorio por sí mismo.</li>
+</ul>
+<p>Para ver cómo encajan las piezas, mira <a href="/como-funciona-claude-code">cómo funciona Claude Code</a>. Si algo no se comporta, <a href="/depurar-configuracion-claude-code">depura la configuración</a>. Todas las guías están en el <a href="/guias">índice de guías</a>.</p>
+<p>Esta página sigue <a href="https://code.claude.com/docs/en/best-practices">la documentación de buenas prácticas de Anthropic</a> tal como la leemos en octubre de 2026. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todos los casos. Los comandos, los valores por defecto y el modo de permisos con el que empieza una sesión cambian entre versiones, y donde esta página y la documentación no coincidan, manda la documentación.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>

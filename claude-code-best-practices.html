@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code best practices: the short version</title>
+<meta name="description" content="A short, plain version of Claude Code's best practices: tell it what it can't see, give it a check to run, enforce the rules that can't have exceptions, and know what to stop doing.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-best-practices">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/buenas-practicas-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-best-practices">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code best practices: the short version">
+<meta property="og:description" content="A short, plain version of Claude Code's best practices: tell it what it can't see, give it a check to run, enforce the rules that can't have exceptions, and know what to stop doing.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-best-practices">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code best practices: the short version</h1>
+<p class="lead">Per Anthropic's documentation, in most cases your first plain prompt in a fresh session already does the right thing. Setup pays off where your project has something Claude cannot see from the code alone: a deploy process that lives in someone's head, a file it must never read, a check that has to pass, a budget. This page is the short version, with links to the longer guides.</p>
+<h2>When a session goes wrong, it is usually one of four things</h2>
+<ol>
+<li><strong>Claude built something different from what you had in mind</strong>, or it rediscovers the same fact every session. It is missing information it cannot get from the repo.</li>
+<li><strong>It said it was done and it was not</strong>, usually because it had no way to check its own work.</li>
+<li><strong>It did something that must never happen</strong>, or skipped a step that must always happen. A prompt alone cannot guarantee either.</li>
+<li><strong>It got it right, but cost more time, tokens or permission prompts than the task was worth.</strong></li>
+</ol>
+<h2>Two kinds of instruction</h2>
+<p>Everything you tell Claude Code is one of two kinds. <strong>Claude decides:</strong> your prompt, <code>CLAUDE.md</code>, a skill. It usually follows them, but nothing guarantees it. <strong>Claude Code enforces:</strong> a hook, a deny rule, a managed setting. These apply every time, whatever the model decided. Most of the time you want Claude to decide. Keep the enforced kind for rules with no exceptions. If you keep adding emphasis to a <code>CLAUDE.md</code> line and Claude still misses it, the docs say that line probably belongs in a hook. The reverse holds too: a hook that only enforces a preference should go.</p>
+<h2>1. Tell Claude what it cannot see</h2>
+<p>Claude reads your code well, so write down only what it cannot find, or what it would spend time rediscovering every session. A test before you write anything: could it find this by reading the code, and would it actually go and look? If both are yes, leave it out.</p>
+<ul>
+<li><strong>Be specific in the prompt.</strong> Name the file, describe the symptom, say what "fixed" looks like. "Fix the export bug" becomes "the export button does nothing for reports over 1,000 rows; the handler is in <code>src/export/</code>; write a failing test first, then fix it".</li>
+<li><strong>Hand things over instead of describing them.</strong> Type <code>@</code> and a path to include a file, paste a screenshot, or pipe output in: <code>cat error.log | claude -p "what is going on here"</code>.</li>
+<li><strong>If you do not know what you want yet,</strong> ask Claude to interview you until it could write the spec, and write it to a file such as <code>SPEC.md</code>. Then build from that file in a fresh session.</li>
+<li><strong>Keep <code>CLAUDE.md</code> short.</strong> Every line takes a little attention on every task. Good content: the exact test, typecheck and lint commands, places where the code is misleading, decisions that are not in the repo, anything you had to correct twice. <code>/init</code> writes a starter; the work is then mostly deleting lines. Personal preferences go in <code>CLAUDE.local.md</code>, kept out of git.</li>
+<li><strong>Scope rules to one part of the code</strong> with a file in <code>.claude/rules/</code> that has a <code>paths:</code> filter, so it loads only when Claude works there.</li>
+<li><strong>Put team procedures in skills.</strong> A release checklist in a skill does not weigh on unrelated tasks the way it would in <code>CLAUDE.md</code>. For a workflow with side effects, add <code>disable-model-invocation: true</code> so it only runs when you type it.</li>
+<li><strong>Connect what lives elsewhere.</strong> A command-line tool you are signed in to (such as <code>gh</code>) is usually the easiest way in; otherwise add an MCP server. Servers add their tool names to the context even when unused, so turn off the ones you do not need in <code>/mcp</code>.</li>
+</ul>
+<pre><code># Commands
+- Run one test file: npm test -- path/to/file.test.js
+- Typecheck: npx tsc --noEmit
+
+# Gotchas
+- src/legacy/ is still live, but do not copy its patterns into new code
+- Integration tests need DATABASE_URL, see .env.example</code></pre>
+<p>See <a href="/claude-code-memory-claude-md-vs-auto-memory">the memory guide</a> and <a href="/how-to-write-a-claude-code-skill">how to write a skill</a>.</p>
+<h2>2. Give Claude a check to run</h2>
+<p>Claude stops when the work looks done. If it has nothing to run that comes back pass or fail, "looks done" is all it has, and you become the test suite. Give it a test file, a build's exit code, a linter, or a script that compares output with an expected file, and it can make a change, run the check, read what broke and fix it. If your repo already has one, the most useful line in <code>CLAUDE.md</code> is the command that runs it.</p>
+<p>You choose how strict to be:</p>
+<ul>
+<li><strong>In the prompt:</strong> "run the auth tests afterwards and keep going until they pass". Claude decides when it is satisfied.</li>
+<li><strong>With a goal:</strong> recent versions have a <code>/goal</code> command that sets a condition a separate model checks after every turn. It matters mostly for long unattended runs.</li>
+<li><strong>With a <code>Stop</code> hook:</strong> your script runs whenever Claude tries to finish and sends it back to work if the script exits with code 2. Claude Code enforces this one. After several blocks in a row it lets the turn end, so it cannot loop forever.</li>
+<li><strong>With a fresh reviewer:</strong> a second session, or a review in a subagent that never saw the conversation, is not swayed by the reasoning that produced the code. Tell it what to check, and to skip style, or it will always find something.</li>
+</ul>
+<p>Whichever you pick, ask for evidence: the command it ran and its output. "All tests pass" alone tells you little.</p>
+<pre><code>{
+  "hooks": {
+    "Stop": [
+      { "hooks": [ { "type": "command", "command": "npx tsc --noEmit 1&gt;&amp;2 || exit 2" } ] }
+    ]
+  }
+}</code></pre>
+<p>That goes in <code>.claude/settings.json</code>. The compiler output is redirected to stderr because that is what Claude receives as the reason it cannot finish yet. More in <a href="/claude-code-hooks-three-to-paste">three hooks to paste</a>.</p>
+<h2>3. Enforce the rules that cannot have exceptions</h2>
+<p>"Never read .env", "always run the formatter", "do not touch the migrations folder": Claude will follow these almost every time. Where "almost" is not good enough, move them out of <code>CLAUDE.md</code> and into configuration that Claude Code applies itself.</p>
+<ul>
+<li><strong>Hooks</strong> run your command at fixed points: before or after a tool call, when Claude tries to stop, at session start. A <code>PostToolUse</code> hook with the matcher <code>Edit|Write</code> can run your formatter after every edit, whether or not Claude remembers the rule. Use a command or HTTP hook for real enforcement; a hook that asks another model to decide is not deterministic.</li>
+<li><strong>Deny rules</strong> hold in every permission mode. <code>"deny": ["Read(./.env)", "Read(./secrets/**)"]</code> in your settings blocks the Read tool and common file-reading commands such as <code>cat .env</code>. Rules match tool calls, not intent: a script that opens the file is not caught, and a domain deny rule on web fetches does nothing about <code>curl</code> unless the sandbox is on.</li>
+<li><strong>The sandbox</strong> (<code>/sandbox</code>) limits file and network access at operating-system level. The docs list macOS, Linux and WSL2 as supported.</li>
+<li><strong>Auto mode is a classifier,</strong> a model judging each action, not a hard rule. Put your "never" rules in deny rules or hooks.</li>
+</ul>
+<p>Where a rule lives decides who it applies to: <code>.claude/settings.local.json</code> and <code>~/.claude/settings.json</code> are yours alone, <code>.claude/settings.json</code> in the repo applies to everyone who works there (its allow rules and hooks wait until each person accepts the folder), and managed settings belong to an organization. Keep the enforced set small; every hook and deny rule will occasionally fire when it should not, and someone has to maintain it. See <a href="/claude-code-permissions-starter">a starter permissions file</a>, <a href="/claude-code-permission-modes">permission modes</a> and <a href="/claude-code-settings-precedence">which settings file wins</a>.</p>
+<h2>4. Steer, and keep cost down</h2>
+<ul>
+<li><strong>Watch the first minute</strong> and press <code>Esc</code> as soon as Claude drifts. It stops mid-action and keeps everything up to that point.</li>
+<li><strong><code>/rewind</code></strong> (or <code>Esc</code> twice on an empty prompt) rolls the code, the conversation or both back to an earlier prompt, so trying the bolder approach is low-risk. Checkpoints cover files edited with Claude's file tools, not files only a shell command touched, and they work alongside git, not instead of it.</li>
+<li><strong>After two failed corrections, <code>/clear</code></strong> and write one better prompt that includes what you learned. A third correction mostly adds to a conversation that already holds two failed attempts.</li>
+<li><strong><code>/clear</code> between unrelated tasks.</strong> Every request sends the whole conversation, so a session that has collected three tasks re-reads all three on the fourth. <code>/usage</code> shows where your usage went, and <code>/compact</code> accepts a focus such as "keep the API changes and the test commands".</li>
+<li><strong>Name long work.</strong> <code>/rename oauth-migration</code> in the session, then <code>claude --resume oauth-migration</code> from your shell picks it up later.</li>
+</ul>
+<p>See <a href="/undo-claude-code-changes-rewind">undoing changes</a> and <a href="/reduce-claude-code-token-usage">using less quota</a>.</p>
+<h2>Before you leave a run unattended</h2>
+<p>Go through five questions for that specific task: does it know what done looks like; can it check its own work; what is it allowed to touch; what stops it (a turn or spend cap); and where does the result go, and who signs off. Claude will carry a long task through on its own. The parts that stay with you are starting it, deciding what "done" means this time, and approving the merge. See <a href="/run-claude-code-from-a-script">running from a script</a> and <a href="/claude-code-git-worktrees-parallel-sessions">parallel sessions with worktrees</a>.</p>
+<h2>What you can stop doing</h2>
+<ul>
+<li><strong>Shouting in capitals</strong> (IMPORTANT, ALWAYS). Current models follow a plainly worded line, and heavy emphasis tends to make Claude over-apply the rule. If a rule cannot bend, make it a hook or a deny rule; if a line gets lost, the file is too long.</li>
+<li><strong>"Think hard" and "be thorough".</strong> That is ordinary prompt text. The control for how hard Claude thinks is the effort level.</li>
+<li><strong>"Keep going, do not be lazy".</strong> Giving Claude a check to pass is different, and still worth doing.</li>
+<li><strong>Describing your architecture and file layout in <code>CLAUDE.md</code>.</strong> Claude reads the repo itself.</li>
+</ul>
+<p>For how the pieces fit together, see <a href="/how-claude-code-works">how Claude Code works</a>. If something is not behaving, <a href="/debug-claude-code-configuration">debug your configuration</a>. All the guides are in the <a href="/guides">guides index</a>.</p>
+<p>This follows <a href="https://code.claude.com/docs/en/best-practices">Anthropic's best practices documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Commands, defaults and the permission mode a session starts in change between versions, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
