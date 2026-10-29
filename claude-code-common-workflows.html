@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code everyday workflows</title>
+<meta name="description" content="Prompts and habits for everyday work in Claude Code: learn a codebase, fix a bug, refactor, write tests, open a pull request, use images and @ references, resume a session, plan first, and run Claude on a schedule.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-common-workflows">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/flujos-habituales-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-common-workflows">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code everyday workflows">
+<meta property="og:description" content="Prompts and habits for everyday work in Claude Code: learn a codebase, fix a bug, refactor, write tests, open a pull request, use images and @ references, resume a session, plan first, and run Claude on a schedule.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-common-workflows">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code everyday workflows</h1>
+<p class="lead">Most days you do the same handful of things: understand code, fix something, change something, test it, ship it. Here is a short set of prompts and habits for each, with the flags and shortcuts that save time. The wording of the prompts is yours to change; the pattern is what matters.</p>
+<h2>Learn a codebase</h2>
+<p>Start wide, then narrow. Each question builds on the last answer.</p>
+<pre><code>give me an overview of this codebase
+explain the main architecture patterns here
+how is authentication handled?
+find the files that handle login, then trace a login from the page to the database</code></pre>
+<p>Use the words your project uses, and ask for a short glossary of its own terms. For how Claude explores on its own, see <a href="/how-claude-code-works">how Claude Code works</a>.</p>
+<h2>Fix a bug</h2>
+<p>Give Claude the command that reproduces the problem and the error it prints. Say whether it happens every time or only sometimes. Then ask for options before edits:</p>
+<pre><code>npm test fails with the error below. Suggest two or three possible causes and how you would check each.
+(then) apply the second fix and run the test again</code></pre>
+<h2>Refactor in small steps</h2>
+<p>Ask for the change and the check in the same breath, and keep each step small enough to review.</p>
+<pre><code>find deprecated API calls in this repo
+refactor utils.js to use modern syntax and keep the behaviour the same
+run the tests for the files you changed</code></pre>
+<p>If a step goes wrong, <a href="/undo-claude-code-changes-rewind">rewind</a> to before it.</p>
+<h2>Write tests</h2>
+<pre><code>which functions in this file have no tests?
+add tests for them, following the style of the existing test files
+now add cases for edge conditions: empty input, boundaries, errors
+run the new tests and fix any that fail</code></pre>
+<p>Claude reads your existing tests and follows their framework and style, so point it at a good example. Be specific about what behaviour should be checked.</p>
+<h2>Open a pull request</h2>
+<p>You can ask directly ("create a pr") or go step by step: summarize the change, create the PR, then ask for a better description. Read the result before you submit and ask Claude to point out risks. As we read it, Claude Code links the session to the pull request when Claude creates it with <code>gh pr create</code> (or <code>glab mr create</code> on GitLab), and <code>claude --from-pr 1234</code>, with your own number, opens the session picker filtered to the sessions linked to that PR.</p>
+<h2>Documentation, images and notes</h2>
+<ul>
+<li><strong>Docs:</strong> ask which functions lack comments, name the style you want (JSDoc, docstrings), then ask for examples and a check against your project's standards.</li>
+<li><strong>Images:</strong> drag a picture into the window, paste it with <kbd>Ctrl</kbd>+<kbd>V</kbd> (<kbd>Alt</kbd>+<kbd>V</kbd> on Windows and WSL), or give a file path. Useful for an error screenshot, a design mockup or a diagram.</li>
+<li><strong>Not just code:</strong> Claude Code works in any folder. Run it in a notes folder or a pile of markdown files to search and reorganize them.</li>
+</ul>
+<h2>Point at files with @</h2>
+<p>Type <code>@</code> and a path to include a file or folder without waiting for Claude to go and read it: <code>explain the logic in @src/utils/auth.js</code>. A file is included when it fits the read limit (a text file over 256KB is not); a folder gives a listing, not contents. It also pulls in the <code>CLAUDE.md</code> files in that file's directory and its parents. You can reference MCP resources the same way, as <code>@server:resource</code>.</p>
+<p>One caution: because an @ reference makes no tool call, your <code>PreToolUse</code> hooks don't run for it. If you use hooks to control what Claude may read, add a <code>Read</code> deny rule for those paths too (see <a href="/claude-code-permissions-starter">the permissions starter</a> and <a href="/claude-code-hooks-three-to-paste">the hooks guide</a>). The docs also describe an environment variable, <code>CLAUDE_CODE_DISABLE_FILE_MENTIONS</code>, that stops @ references from including content; it needs a recent version.</p>
+<h2>Pick up tomorrow</h2>
+<pre><code>claude --continue     # the most recent session in this folder
+claude --resume       # choose from a list (or /resume inside a session)</code></pre>
+<p>If there is nothing to continue, Claude Code says so and exits. For a clean restart with a summary, see <a href="/claude-code-session-handoff">the handoff note</a>.</p>
+<h2>Plan first, then edit</h2>
+<p>When you want to review the plan before anything touches disk, use plan mode: start with <code>claude --permission-mode plan</code>, or press <kbd>Shift</kbd>+<kbd>Tab</kbd> in a session until the status bar shows plan mode. Claude reads and proposes; it edits after you approve. More in <a href="/claude-code-permission-modes">permission modes</a>.</p>
+<h2>Keep your main chat clean</h2>
+<p>Reading a lot of files fills the context. Hand the exploring to a helper: <code>use a subagent to investigate how token refresh works in our auth code</code>. It reads in its own window and sends back a summary. See <a href="/write-a-claude-code-subagent">writing a subagent</a>.</p>
+<h2>Two sessions at once</h2>
+<p><code>claude --worktree feature-auth</code> starts a session in its own checkout on its own branch; run it with another name in a second terminal for a parallel one. The repository needs at least one commit first. See <a href="/claude-code-git-worktrees-parallel-sessions">worktrees</a>.</p>
+<h2>Use it in a pipeline</h2>
+<pre><code>git log --oneline -20 | claude -p "summarize these recent commits"</code></pre>
+<p>The <code>-p</code> flag runs once and prints, so it fits scripts, hooks and CI. More in <a href="/run-claude-code-from-a-script">running Claude Code from a script</a>.</p>
+<h2>Run it on a schedule</h2>
+<p>The docs list four places a recurring task can live:</p>
+<ul>
+<li><strong>Cloud scheduled tasks:</strong> run even when your computer is off, and can also start from an API call or a GitHub event.</li>
+<li><strong>Desktop scheduled tasks:</strong> run on your machine, so they can touch local files and uncommitted changes.</li>
+<li><strong>GitHub Actions:</strong> for jobs tied to repository events or a cron schedule that lives next to your workflow config.</li>
+<li><strong><code>/loop</code>:</strong> quick polling while a CLI session stays open.</li>
+</ul>
+<p>A scheduled task can't ask you questions, so write the prompt like a brief: what success looks like and what to do with the result.</p>
+<p>All the guides are in the <a href="/guides">guides index</a>; for the habits behind these prompts see <a href="/claude-code-best-practices">best practices</a>. This follows <a href="https://code.claude.com/docs/en/common-workflows">Anthropic's common workflows documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Flags and features change between versions, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
