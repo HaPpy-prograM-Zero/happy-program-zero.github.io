@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code permission modes, explained</title>
+<meta name="description" content="The six Claude Code permission modes in plain words: what each one allows without asking, how to switch, how plan mode works, and why bypass is for isolated machines only.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-permission-modes">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/modos-de-permisos-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-permission-modes">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code permission modes, explained">
+<meta property="og:description" content="The six Claude Code permission modes in plain words: what each one allows without asking, how to switch, how plan mode works, and why bypass is for isolated machines only.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-permission-modes">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code permission modes, explained</h1>
+<p class="lead">A permission mode decides how much Claude Code may do before it stops and asks you. Picking the right one for the job saves you from both constant interruptions and unpleasant surprises.</p>
+<h2>The six modes</h2>
+<ul class="plain">
+<li><span class="n">Manual (<code>default</code>)</span><span class="d">Runs reads without asking and asks for the rest. Use it to review every action or for sensitive work.</span></li>
+<li><span class="n">Accept edits (<code>acceptEdits</code>)</span><span class="d">Also approves file edits and common file commands such as <code>mkdir</code>, <code>mv</code> and <code>cp</code> inside the working directory. Good for iterating on code you are reviewing as you go.</span></li>
+<li><span class="n">Plan (<code>plan</code>)</span><span class="d">Claude reads and explores, then writes a plan. It does not edit your source until you approve the plan.</span></li>
+<li><span class="n">Auto (<code>auto</code>)</span><span class="d">Runs without asking, with a separate classifier model reviewing each action before it runs. For long tasks where constant prompts get in the way.</span></li>
+<li><span class="n">Don't ask (<code>dontAsk</code>)</span><span class="d">Allows only reads and tools you pre-approved, and denies everything else. Meant for locked-down CI and scripts.</span></li>
+<li><span class="n">Bypass permissions (<code>bypassPermissions</code>)</span><span class="d">Runs everything with no prompts. The documentation says to use it only in isolated containers and virtual machines.</span></li>
+</ul>
+<p>Deny rules block in every mode, bypass included. Allow rules have no effect in bypass mode.</p>
+<p>Which mode a new session starts in depends on your version, plan and settings. The documentation lists the order: the command-line flag first, then <code>permissions.defaultMode</code> in a settings file, then the built-in default.</p>
+<h2>How to switch</h2>
+<ul>
+<li><b>Shift+Tab</b> cycles through the modes in the terminal. Auto shows up in the cycle when it is available, and bypass only if you enabled it when you launched Claude Code. Don't ask never appears in the cycle.</li>
+<li><b>At launch:</b> <code>claude --permission-mode plan</code>.</li>
+<li><b>As a default:</b> set <code>permissions.defaultMode</code> in a settings file. A project's <code>.claude/settings.json</code> or <code>.claude/settings.local.json</code> ignores <code>auto</code> and <code>bypassPermissions</code>.</li>
+<li>VS Code, the desktop app and the web app have a mode selector next to the prompt box.</li>
+</ul>
+<h2>Plan mode, step by step</h2>
+<ol>
+<li>Press Shift+Tab until you are in plan mode, or type <code>/plan</code>, or launch with <code>--permission-mode plan</code>.</li>
+<li>Ask for what you want. Claude explores and writes a plan.</li>
+<li>Press <code>Ctrl+G</code> if you want to edit the plan in your editor first.</li>
+<li>Choose: approve and continue with auto mode, approve and review each edit yourself, or keep planning and give feedback. If auto mode is not available, the first option reads "Yes, auto-accept edits".</li>
+</ol>
+<p>Shift+Tab again leaves plan mode without approving anything. If you want Claude to question you before it builds, see <a href="/claude-code-ask-before-building">make Claude Code ask first</a>.</p>
+<h2>What auto mode is, and is not</h2>
+<p>A separate classifier model reviews actions before they run. By default it blocks things such as piping a download into a shell, sending sensitive data out, production deploys, force pushes and commands such as <code>git reset --hard</code> that would throw away uncommitted work. It allows things like local file work in your project and installing the dependencies your project declares. If it blocks three actions in a row, or 20 in total, it pauses and goes back to asking.</p>
+<p>When you enter auto mode it drops broad allow rules that would let any code run, such as <code>Bash(*)</code>. Narrow rules such as <code>Bash(npm test)</code> stay. Whether auto is available depends on your plan, provider, model and version. The documentation is clear that it reduces prompts and <b>does not guarantee safety</b>.</p>
+<h2>Bypass: read this part twice</h2>
+<ul>
+<li>It switches off prompts and safety checks, including for protected paths, and offers no protection against prompt injection (text inside a page or file trying to steer Claude).</li>
+<li>Use it only in an isolated container or virtual machine, ideally with no internet access.</li>
+<li>You enable it at launch with <code>--permission-mode bypassPermissions</code> or <code>--dangerously-skip-permissions</code>. It only appears in the Shift+Tab cycle if you started with a bypass option (or set it as your default in your user settings).</li>
+<li>On Linux and macOS it refuses to run as root.</li>
+<li>If you need a hard guarantee, write <b>deny rules</b>. They hold in every mode. See <a href="/claude-code-permissions-starter">a starter list of permission rules</a>.</li>
+</ul>
+<h2>What is never approved automatically</h2>
+<p>Writes to protected paths are not auto-approved, except in bypass mode. Protected directories include <code>.git</code>, <code>.vscode</code>, <code>.idea</code> and <code>.claude</code>. Protected files include shell startup files such as <code>.bashrc</code>, <code>.npmrc</code> and <code>.mcp.json</code>. An allow rule in a settings file does not pre-approve a write there.</p>
+<h2>Which one to pick</h2>
+<ul>
+<li>Not sure what a project will do: Manual, or Plan first.</li>
+<li>Editing code you are watching: Accept edits.</li>
+<li>A long, well-defined task on a project you trust: Auto, with deny rules for what must never happen.</li>
+<li>An unattended script: Don't ask, with the tools you need allowed. Or an isolated container if you must use bypass.</li>
+</ul>
+<h2>Limits</h2>
+<ul>
+<li>Modes, defaults and requirements change between versions, and several depend on your plan, provider and model. The permission modes page is the authority.</li>
+<li>This is general information about a tool, not a security audit.</li>
+</ul>
+<p>This follows <a href="https://code.claude.com/docs/en/permission-modes">Anthropic's permission modes documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every mode on every system.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
