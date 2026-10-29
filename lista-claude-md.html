@@ -5,40 +5,98 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lista de comprobación de CLAUDE.md: 10 puntos antes de fiarte de tu configuración</title>
 <meta name="description" content="Diez comprobaciones prácticas para tu CLAUDE.md: longitud, reglas verificables, comandos reales, sin contradicciones, sin secretos y cómo ver qué cargó Claude de verdad.">
+<meta name="theme-color" content="#14213d">
 <link rel="canonical" href="https://happy-program-zero.github.io/lista-claude-md">
 
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
 <meta property="og:title" content="Lista de comprobación de CLAUDE.md: 10 puntos antes de fiarte de tu configuración">
 <meta property="og:description" content="Diez comprobaciones prácticas para tu CLAUDE.md: longitud, reglas verificables, comandos reales, sin contradicciones, sin secretos y cómo ver qué cargó Claude de verdad.">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
 <meta property="og:url" content="https://happy-program-zero.github.io/lista-claude-md">
-<style>:root{--bg:#faf8f4;--fg:#1d1b18;--mu:#6b655c;--card:#fff;--line:#e4dfd6;--ac:#b4530b;--ac-fg:#fff}
-@media (prefers-color-scheme:dark){:root{--bg:#16161a;--fg:#ece8e1;--mu:#a29c91;--card:#202026;--line:#33333b;--ac:#f0a060;--ac-fg:#16161a}}
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f7f5ef;--fg:#18213a;--mu:#5b6579;--card:#fff;--line:#e2ded2;--ac:#0b7a52;--tint:#e3f5ec;--mint:#3ddc97;--navy:#14213d;--navy2:#1e3a6b;--paper:#f7f5ef;--sh:0 1px 2px rgba(20,33,61,.06),0 6px 18px rgba(20,33,61,.06)}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1424;--fg:#ecebe6;--mu:#a3adc2;--card:#141f38;--line:#25325a;--ac:#3ddc97;--tint:#123a33;--sh:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);color-scheme:dark}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 Georgia,"Times New Roman",serif;padding-block:32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-main{max-width:660px;margin:0 auto}
-h1{font-size:32px;line-height:1.15;margin:0 0 8px;text-wrap:balance}
-h2{font-size:21px;line-height:1.25;margin:34px 0 8px;text-wrap:balance}
-p,li{margin:0 0 12px}ol,ul{padding-left:22px}
-.lead{color:var(--mu);font-size:18px}
-a{color:var(--ac)}
-.links{display:grid;gap:10px;margin-top:8px}
-a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;color:var(--fg);text-decoration:none}
-a.card:hover,a.card:focus-visible{border-color:var(--ac)}
-a.card b{display:block;font:600 16px/1.3 system-ui,sans-serif}
-a.card span{display:block;color:var(--mu);font-size:15px;margin-top:3px}
-.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:22px 0}
-.note,small{color:var(--mu);font-size:14px}
-code{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:.92em}
-nav{font:14px system-ui,sans-serif;margin-bottom:22px}nav a{margin-right:14px}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
+.w{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.top{background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%);color:var(--paper)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;padding-block:16px}
+.brand{display:flex;align-items:center;gap:11px;color:var(--paper);text-decoration:none;font-weight:700;font-size:19px;letter-spacing:-.01em}
+.brand svg{width:36px;height:36px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:4px 6px;font-size:15px}
+nav a{color:#cdd8ee;text-decoration:none;padding:6px 11px;border-radius:999px}
+nav a:hover,nav a:focus-visible{background:rgba(255,255,255,.12);color:#fff}
+nav a.on{background:rgba(255,255,255,.14);color:#fff}
+.hero{display:grid;grid-template-columns:1fr auto;align-items:center;gap:32px;padding-block:44px 64px}
+.hero h1{font-size:clamp(38px,7vw,64px);line-height:1.04;margin:0 0 14px;letter-spacing:-.025em;text-wrap:balance}
+.hero .lead{font-size:clamp(18px,2.4vw,22px);color:#cdd8ee;margin:0 0 8px;max-width:30em;text-wrap:balance}
+.hero .tag{color:var(--mint);font-size:18px;margin:0 0 26px}
+.hero .big{width:min(220px,28vw);height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:650;font-size:16px;text-decoration:none;line-height:1.2;border:1.5px solid transparent}
+.btn.p{background:var(--mint);color:#0e1b36}
+.btn.p:hover,.btn.p:focus-visible{background:#6ee8b4}
+.btn.g{border-color:rgba(255,255,255,.4);color:var(--paper)}
+.btn.g:hover,.btn.g:focus-visible{background:rgba(255,255,255,.12)}
+.page-head{padding-block:22px 44px}
+.page-head h1{font-size:clamp(28px,5vw,42px);line-height:1.12;margin:6px 0 14px;letter-spacing:-.02em;text-wrap:balance;max-width:20em}
+.page-head .lead{font-size:19px;color:#cdd8ee;margin:0;max-width:34em}
+.facts{display:flex;flex-wrap:wrap;gap:10px 28px;padding-block:18px;color:var(--mu);font-size:15px}
+.facts span{display:inline-flex;align-items:center;gap:8px}
+.facts svg{width:18px;height:18px;stroke:var(--ac);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+section{padding-block:30px 6px}
+h2.sec{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+a.card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;color:var(--fg);text-decoration:none;box-shadow:var(--sh);transition:transform .15s,border-color .15s}
+a.card:hover,a.card:focus-visible{transform:translateY(-2px);border-color:var(--ac)}
+a.card .ico{width:44px;height:44px;border-radius:12px;background:var(--tint);display:grid;place-items:center;margin-bottom:6px}
+a.card .ico svg{width:22px;height:22px;stroke:var(--ac);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+a.card b{font-size:18px;line-height:1.3;letter-spacing:-.01em}
+a.card span.d{color:var(--mu);font-size:15.5px;line-height:1.5}
+a.card .badge{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ac);background:var(--tint);padding:3px 9px;border-radius:999px;margin-bottom:2px}
+a.card .go{margin-top:auto;padding-top:8px;color:var(--ac);font-weight:650;font-size:15px}
+.status{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--mint);border-radius:14px;padding:20px 22px;margin:34px 0 10px;box-shadow:var(--sh)}
+.status svg{width:26px;height:26px;flex:none;stroke:var(--ac);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;margin-top:3px}
+.status h3{margin:0 0 4px;font-size:18px}
+.status p{margin:0;color:var(--mu)}
+main.art{max-width:720px;margin:0 auto;padding:36px max(20px,env(safe-area-inset-left,0px)) 8px;font:18px/1.75 Georgia,"Times New Roman",serif}
+main.art h2{font:700 20px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:-.01em;margin:34px 0 8px;text-wrap:balance}
+main.art p,main.art li{margin:0 0 14px}
+main.art ul,main.art ol{padding-left:24px}
+main.art li::marker{color:var(--ac);font-weight:700}
+main.art a{color:var(--ac);text-underline-offset:3px}
+main.art ol.checks{list-style:none;padding:0;counter-reset:c;display:grid;gap:14px;margin-top:22px}
+ol.checks>li{counter-increment:c;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px 6px 72px;position:relative;box-shadow:var(--sh);margin:0}
+ol.checks>li::before{content:counter(c);position:absolute;left:18px;top:18px;width:38px;height:38px;border-radius:50%;background:var(--mint);color:#0e1b36;font:800 17px/38px system-ui,sans-serif;text-align:center}
+ol.checks h2{margin:0 0 4px;font-size:19px}
+.box{background:var(--tint);border:1px solid var(--line);border-radius:16px;padding:20px 22px 6px;margin:30px 0 8px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main.art .lead{color:var(--mu)}
+code{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+footer{margin-top:46px;border-top:1px solid var(--line);padding-block:26px 40px}
+footer .fb{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-bottom:12px;font-size:15px}
+footer .fb svg{width:28px;height:28px;display:block}
+footer .fb a{color:var(--ac);text-decoration:none;font-weight:600}
+footer .fb a:hover{text-decoration:underline}
+footer .note{max-width:52em;margin:0}
+:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+@media (max-width:700px){.hero{grid-template-columns:1fr;padding-block:30px 48px}.hero .big{display:none}.bar{padding-block:12px}nav{font-size:14px}a.card{padding:18px}ol.checks>li{padding:62px 18px 4px}ol.checks>li::before{left:18px;top:16px}}
 </style>
 </head>
 <body>
-<main>
-<nav><a href="/es">Plain Skills</a><a href="/lista-claude-md">Lista CLAUDE.md</a><a href="/">English</a></nav>
-<h1>Lista de comprobación de CLAUDE.md: 10 puntos antes de fiarte</h1>
-<p class="lead">CLAUDE.md es el archivo que Claude Code lee al empezar cada sesión para saber cómo funciona tu proyecto. Uno flojo es fácil de escribir y difícil de notar. Usa estos diez puntos.</p>
-<p class="note">Basada en nuestro uso diario y en la página oficial de Anthropic sobre la memoria (en inglés), <a href="https://code.claude.com/docs/en/memory">code.claude.com/docs/en/memory</a>. Mírala para los detalles actuales.</p>
-<ol>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/lista-claude-md" class="on">Lista CLAUDE.md</a><a href="/">English</a></nav></div><div class="page-head"><h1>Lista de comprobación de CLAUDE.md: 10 puntos antes de fiarte</h1><p class="lead">CLAUDE.md es el archivo que Claude Code lee al empezar cada sesión para saber cómo funciona tu proyecto. Uno flojo es fácil de escribir y difícil de notar. Usa estos diez puntos.</p></div></div></header>
+<main class="art"><p class="note">Basada en nuestro uso diario y en la página oficial de Anthropic sobre la memoria (en inglés), <a href="https://code.claude.com/docs/en/memory">code.claude.com/docs/en/memory</a>. Mírala para los detalles actuales.</p>
+<ol class="checks">
 <li><h2>¿Es corto?</h2><p>La guía de Anthropic es no pasar de unas 200 líneas por archivo. Los largos gastan más contexto y hacen menos probable que se cumpla cada regla. Si una regla vale solo para una carpeta, ponla en una regla por rutas en vez de en el archivo principal.</p></li>
 <li><h2>¿Se puede comprobar cada regla?</h2><p>«Ejecuta <code>npm test</code> antes de hacer commit» se puede verificar. «Prueba tus cambios» no. Reescribe cada línea vaga hasta que, viendo el resultado, sepas si se cumplió.</p></li>
 <li><h2>¿Son reales los comandos?</h2><p>Copia los comandos de compilar, probar y revisar del README o de la integración continua y ejecuta cada uno una vez. Un comando erróneo en CLAUDE.md se sigue al pie de la letra.</p></li>
@@ -53,8 +111,7 @@ nav{font:14px system-ui,sans-serif;margin-bottom:22px}nav a{margin-right:14px}
 <div class="box">
 <p><b>¿Quieres ir más rápido?</b> <code>/init</code> genera un primer CLAUDE.md a partir de tu código; refínalo con lo que Claude no puede descubrir solo.</p>
 <p>Gratis y de código abierto: <a href="https://github.com/happy-program-zero/loop-stop">Loop-Stop</a>, una skill que da a una tarea larga un encargo, un límite y una regla de parada. Para este mismo trabajo ya hecho, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> revisa tu CLAUDE.md y tus permisos y el <a href="https://buy.polar.sh/polar_cl_ku5n5rd7aow1FRLluJXxOGiQ85A1w8EAfoUCz2OdubK">Project Starter Kit</a> trae 10 plantillas de CLAUDE.md (las fichas están en inglés; la <a href="https://plainskills.gumroad.com">tienda</a> tiene versión en español de los packs principales). Son archivos de texto plano que lees y adaptas; los probamos a mano pero no hemos medido resultados en otros proyectos y no prometemos ninguno.</p>
-</div>
-<p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p>
-</main>
+</div></main>
+<footer><div class="w"><div class="fb"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg><b>Plain Skills</b><a href="https://github.com/happy-program-zero/loop-stop">Muestra gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
 </body>
 </html>
