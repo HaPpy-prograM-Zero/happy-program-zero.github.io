@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLAUDE.md, skill, hook o subagente: ¿cuál usar?</title>
+<meta name="description" content="Una forma corta de elegir entre CLAUDE.md, skill, hook, subagente, MCP y plugin en Claude Code, con el motivo para cada uno y lo que cuesta cada uno en contexto.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-md-skill-o-hook-cual-usar">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-md-vs-skill-vs-hook">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-md-skill-o-hook-cual-usar">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="CLAUDE.md, skill, hook o subagente: ¿cuál usar?">
+<meta property="og:description" content="Una forma corta de elegir entre CLAUDE.md, skill, hook, subagente, MCP y plugin en Claude Code, con el motivo para cada uno y lo que cuesta cada uno en contexto.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-md-skill-o-hook-cual-usar">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/lista-claude-md">Lista CLAUDE.md</a><a href="/nota-de-relevo-claude-code">Nota de relevo</a><a href="/como-escribir-una-skill-claude-code">Escribir una skill</a><a href="/permisos-claude-code">Permisos</a><a href="/hooks-claude-code-tres-para-pegar">Hooks</a><a href="/claude-md-skill-o-hook-cual-usar" class="on">¿Cuál usar?</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>CLAUDE.md, skill, hook o subagente: ¿cuál necesitas?</h1>
+<p class="lead">Claude Code tiene varios sitios donde poner una instrucción. Se parecen, pero se cargan en momentos distintos, gastan distinto contexto y solo algunos se cumplen a la fuerza.</p>
+<h2>La respuesta corta</h2>
+<ul class="plain">
+<li><span class="n">CLAUDE.md</span><span class="d">Lo que Claude debe saber siempre: comandos de compilación, convenciones, «nunca hagas X». Se carga en cada sesión.</span></li>
+<li><span class="n">Skill</span><span class="d">Material de consulta o un flujo que solo necesitas a veces, como una lista para publicar una versión. Se carga al usarla o cuando escribes su nombre.</span></li>
+<li><span class="n">Hook</span><span class="d">Algo que debe pasar siempre igual sin que decida el modelo, como dar formato tras una edición o bloquear un archivo.</span></li>
+<li><span class="n">Subagente</span><span class="d">Una tarea lateral que inundaría tu conversación. Trabaja en su propio contexto y devuelve un resumen.</span></li>
+<li><span class="n">Servidor MCP</span><span class="d">Una conexión con algo de fuera, como una base de datos o un navegador.</span></li>
+<li><span class="n">Plugin</span><span class="d">Un paquete de lo anterior, para que un segundo repositorio reutilice la misma configuración.</span></li>
+</ul>
+<h2>Empieza por lo que falló</h2>
+<p>La visión general de Anthropic sugiere añadir cada pieza cuando se repite algo concreto, no todas a la vez:</p>
+<ul>
+<li>Claude se equivoca dos veces con una convención o un comando: ponlo en <b>CLAUDE.md</b>.</li>
+<li>Pegas el mismo procedimiento en el chat por tercera vez: hazlo una <b>skill</b>.</li>
+<li>Quieres que algo pase siempre sin pedirlo: escribe un <b>hook</b>.</li>
+<li>Una tarea lateral llena la conversación de salida que no vas a volver a mirar: pásala por un <b>subagente</b>.</li>
+<li>Sigues copiando datos de una pestaña que Claude no ve: conéctala como <b>servidor MCP</b>.</li>
+<li>Un segundo repositorio necesita lo mismo: empaquétalo como <b>plugin</b>.</li>
+</ul>
+<h2>¿CLAUDE.md o skill?</h2>
+<p>Las dos guardan instrucciones. CLAUDE.md se carga al empezar cada sesión. Una skill carga su descripción corta en cada sesión y el texto completo solo cuando se usa. La pregunta es con qué frecuencia lo necesita Claude.</p>
+<p>La documentación da una regla práctica: mantén CLAUDE.md por debajo de 200 líneas y, si crece, pasa el material de consulta a skills o a archivos de <code>.claude/rules/</code>. Un archivo de reglas con <code>paths</code> en su frontmatter solo se carga cuando Claude trabaja con archivos que encajan. Si quieres ayuda para recortar, nuestra <a href="/lista-claude-md">lista de diez comprobaciones de CLAUDE.md</a> lo cubre.</p>
+<h2>¿Skill o subagente?</h2>
+<p>Una skill añade su texto a tu conversación principal. Un subagente tiene su propia ventana de contexto y devuelve solo un resumen. Usa un subagente cuando el trabajo lee muchos archivos y solo quieres la conclusión. Usa una skill cuando el contenido debe estar junto a la conversación.</p>
+<p>También se combinan: un subagente puede precargar skills y una skill puede correr en un contexto aislado. Mira <a href="/como-escribir-una-skill-claude-code">cómo escribir un SKILL.md</a> para el archivo en sí.</p>
+<h2>¿Instrucción o candado?</h2>
+<p>Esta es la que más cuesta. «No edites nunca <code>.env</code>» en CLAUDE.md o en una skill es una petición. El modelo suele cumplirla, pero nada se lo impide. Un hook <code>PreToolUse</code> que bloquea la edición sí la aplica a la fuerza. La documentación dice que, si una regla debe cumplirse siempre, se ponga en un hook.</p>
+<p>Dos guías de esta web cubren la parte que se aplica a la fuerza: <a href="/permisos-claude-code">una lista de partida de reglas de permisos</a> y <a href="/hooks-claude-code-tres-para-pegar">tres hooks para pegar</a>.</p>
+<h2>Lo que cuesta cada uno en contexto</h2>
+<ul>
+<li><b>CLAUDE.md:</b> su texto completo va en cada petición.</li>
+<li><b>Skill:</b> la descripción va en cada petición y el texto completo solo al usarla. Una skill con efectos secundarios puede llevar <code>disable-model-invocation: true</code> para que corra solo cuando la nombras.</li>
+<li><b>Hook:</b> nada, salvo que el hook devuelva algo escrito.</li>
+<li><b>Subagente:</b> queda fuera de tu ventana principal; solo vuelve el resumen.</li>
+<li><b>Servidor MCP:</b> poco hasta que se usa una herramienta, porque la búsqueda de herramientas viene activada por defecto.</li>
+</ul>
+<h2>Cuatro ejemplos pequeños</h2>
+<ul>
+<li>«Usa pnpm, no npm»: una línea en <b>CLAUDE.md</b>.</li>
+<li>«Nuestra lista para publicar una versión»: una <b>skill</b>, que llamas por su nombre al publicar.</li>
+<li>«Pasa Prettier por cada archivo que edite Claude»: un <b>hook</b>.</li>
+<li>«Busca de dónde viene este error entre cuarenta archivos»: un <b>subagente</b>, para que a tu conversación solo llegue la respuesta.</li>
+</ul>
+<h2>Límites</h2>
+<ul>
+<li>Las categorías se solapan y la documentación de Anthropic es la que manda. Funciones y límites pueden cambiar.</li>
+<li>No hemos medido ahorro de tokens. Los costes de arriba son cómo describe la documentación la carga.</li>
+<li>Esta página no cubre a fondo plugins, servidores MCP ni estilos de salida.</li>
+</ul>
+<p>Esta página sigue <a href="https://code.claude.com/docs/en/features-overview">la visión general «Extend Claude Code» de Anthropic</a> tal como la leemos en octubre de 2026. Esa página manda, y no tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todas las afirmaciones.</p>
+<p>Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
