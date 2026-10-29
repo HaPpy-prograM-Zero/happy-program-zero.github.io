@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arreglar «command not found: claude» tras instalar Claude Code</title>
+<meta name="description" content="La instalación terminó pero la terminal dice que no encuentra claude. Cómo comprobar que el archivo está, añadir su carpeta al PATH en macOS, Linux y Windows, abrir una terminal nueva, detectar instalaciones duplicadas y recuperar un claude.exe que desapareció tras una actualización.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-command-not-found-solucion">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/fix-claude-command-not-found">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-command-not-found-solucion">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Arreglar «command not found: claude» tras instalar Claude Code">
+<meta property="og:description" content="La instalación terminó pero la terminal dice que no encuentra claude. Cómo comprobar que el archivo está, añadir su carpeta al PATH en macOS, Linux y Windows, abrir una terminal nueva, detectar instalaciones duplicadas y recuperar un claude.exe que desapareció tras una actualización.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-command-not-found-solucion">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Arreglar «command not found: claude» tras instalar Claude Code</h1>
+<p class="lead">Ejecutaste el instalador, dijo que había terminado y la terminal responde <code>command not found: claude</code>. Casi siempre el programa está en tu disco, pero su carpeta no está en el PATH, la lista de sitios donde tu terminal busca comandos. Aquí tienes cómo comprobarlo, arreglarlo una sola vez y descartar las otras causas habituales.</p>
+<h2>Cómo se ve el error</h2>
+<ul>
+<li><strong>macOS (zsh):</strong> <code>zsh: command not found: claude</code></li>
+<li><strong>Linux (bash):</strong> <code>bash: claude: command not found</code></li>
+<li><strong>Windows CMD:</strong> <code>'claude' is not recognized as an internal or external command</code></li>
+<li><strong>PowerShell:</strong> <code>claude : The term 'claude' is not recognized as the name of a cmdlet</code></li>
+</ul>
+<p>Es la misma causa con distinto texto. Si empezó justo después de que Claude Code se actualizara solo en Windows, ve a <a href="#missing">la sección del claude.exe desaparecido</a>.</p>
+<h2>Dónde lo deja el instalador</h2>
+<p>Según la documentación, tal como la leemos, el instalador nativo coloca el programa en <code>~/.local/bin/claude</code> en macOS y Linux, y en <code>%USERPROFILE%\.local\bin\claude.exe</code> en Windows. Si esa carpeta no está en el PATH, el instalador lo avisa bajo <code>Setup notes:</code> al final de su salida. Ahí imprime el arreglo, pero no cambia tu PATH, así que es fácil que se te pase.</p>
+<p>Una trampa: la extensión de VS Code guarda su propia copia privada del programa para su panel de chat y no pone <code>claude</code> en tu PATH. Si solo instalaste la extensión, en esa ruta no hay nada. Haz la instalación independiente para usar <code>claude</code> en una terminal.</p>
+<h2>Paso 1: ¿está el archivo?</h2>
+<p>macOS o Linux:</p>
+<pre><code>ls -la ~/.local/bin/claude</code></pre>
+<p>Windows PowerShell:</p>
+<pre><code>Test-Path "$env:USERPROFILE\.local\bin\claude.exe"</code></pre>
+<p>Windows CMD:</p>
+<pre><code>dir "%USERPROFILE%\.local\bin\claude.exe"</code></pre>
+<ul>
+<li><strong>«No such file», <code>False</code> o «File Not Found»:</strong> no hay instalación nativa. Si instalaste de otra forma (npm, Homebrew, WinGet, un paquete de Linux), salta a <a href="#duplicates">instalaciones duplicadas</a>. Si no has instalado nada, ejecuta primero el instalador de la página oficial de instalación.</li>
+<li><strong>Ves el archivo:</strong> el programa está. Pasa al paso 2.</li>
+</ul>
+<h2>Paso 2: ¿está su carpeta en el PATH?</h2>
+<p>macOS o Linux:</p>
+<pre><code>echo $PATH | tr ':' '\n' | grep -Fx "$HOME/.local/bin"</code></pre>
+<p>Windows PowerShell:</p>
+<pre><code>$env:PATH -split ';' | Select-String '\.local\\bin'</code></pre>
+<p>Windows CMD:</p>
+<pre><code>echo %PATH% | findstr /i "local\bin"</code></pre>
+<p>Si imprime la carpeta, el PATH está bien y puedes saltar a <a href="#duplicates">instalaciones duplicadas</a>. Si no imprime nada, añade la carpeta. Se hace una sola vez.</p>
+<h2>Paso 3: añadir la carpeta</h2>
+<p><strong>zsh, el de serie en macOS.</strong> La primera línea guarda el ajuste para todas las terminales nuevas; la segunda lo aplica a la ventana en la que estás:</p>
+<pre><code>echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.zshrc
+source ~/.zshrc</code></pre>
+<p><strong>bash en Linux:</strong></p>
+<pre><code>echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.bashrc
+source ~/.bashrc</code></pre>
+<p><strong>bash en macOS</strong> lee <code>~/.bash_profile</code>, porque Terminal lo arranca como shell de inicio de sesión. Según la documentación, tal como la leemos, si ya tienes un <code>~/.bash_login</code> o un <code>~/.profile</code> y ningún <code>~/.bash_profile</code>, pon la línea en ese archivo existente en vez de crear uno nuevo.</p>
+<pre><code>echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.bash_profile
+source ~/.bash_profile</code></pre>
+<p>Con fish, Nushell y otras shells, añade <code>~/.local/bin</code> con la sintaxis propia de tu shell y reinicia la terminal.</p>
+<p><strong>Windows PowerShell</strong> (lo añade a tu PATH de usuario; después reinicia la terminal):</p>
+<pre><code>$currentPath = [Environment]::GetEnvironmentVariable('PATH', 'User')
+[Environment]::SetEnvironmentVariable('PATH', "$currentPath;$env:USERPROFILE\.local\bin", 'User')</code></pre>
+<p><strong>Windows CMD:</strong> abre los ajustes del sistema, ve a Variables de entorno, añade <code>%USERPROFILE%\.local\bin</code> a la variable PATH de <em>usuario</em> y reinicia la terminal.</p>
+<p>Comprueba que funciona:</p>
+<pre><code>claude --version</code></pre>
+<h2>¿Sigue sin encontrarlo? Cuatro motivos habituales</h2>
+<ul>
+<li><strong>La ventana es anterior al cambio.</strong> Una terminal abierta conserva el PATH con el que arrancó. Abre una ventana nueva. Una terminal dentro de un editor toma el PATH del editor, así que cierra el editor del todo y ábrelo otra vez.</li>
+<li><strong>La línea nunca se guardó.</strong> Ejecuta <code>grep -n '.local/bin' ~/.zshrc</code> (con el archivo de tu shell). Si no imprime nada, vuelve a ejecutar los dos comandos.</li>
+<li><strong>Fue al archivo de otra shell.</strong> Ejecuta <code>echo $0</code> para ver en qué shell estás y usa el archivo de esa shell.</li>
+<li><strong>Windows: el cambio no se guardó.</strong> Ejecuta <code>[Environment]::GetEnvironmentVariable('PATH', 'User')</code> y busca <code>.local\bin</code> en lo que imprime. Si falta, repite las dos líneas.</li>
+</ul>
+<h2>«Permission denied» al añadir la línea</h2>
+<p>Si el comando <code>echo</code> responde <code>permission denied</code> sobre tu <code>.zshrc</code> o <code>.bashrc</code>, no se guardó nada porque tu usuario no puede escribir en ese archivo. Mira quién es el dueño:</p>
+<pre><code>ls -l ~/.zshrc</code></pre>
+<p>La tercera columna es el dueño. Si es otro usuario, como <code>root</code>, hazte con el archivo con <code>sudo chown $(whoami) ~/.zshrc</code> (necesita permisos de administrador). Si eres tú, el archivo es de solo lectura: <code>chmod u+w ~/.zshrc</code>. Después repite los dos comandos del PATH.</p>
+<h2 id="duplicates">Instalaciones duplicadas</h2>
+<p>Dos copias de Claude Code en el mismo equipo pueden dar la versión equivocada o comportamientos raros. Mira qué encuentra tu shell:</p>
+<pre><code>which -a claude</code></pre>
+<p>En Windows usa <code>where.exe claude</code>. Después revisa los sitios de los que puede venir una copia: la nativa en <code>~/.local/bin/claude</code> (en una instalación nativa es un enlace simbólico a <code>~/.local/share/claude/versions/</code>), una instalación local antigua de npm en <code>~/.claude/local/</code> y un paquete global de npm (<code>npm -g ls @anthropic-ai/claude-code</code>). Un «No such file» ahí no es un error: solo significa que en ese sitio no hay nada instalado.</p>
+<p>Según la documentación, la instalación nativa es la recomendada, así que quédate con ella y quita las demás:</p>
+<ul>
+<li><strong>npm global:</strong> <code>npm uninstall -g @anthropic-ai/claude-code</code></li>
+<li><strong>Homebrew en macOS:</strong> <code>brew uninstall --cask claude-code</code> (usa <code>claude-code@latest</code> si ese es el cask que instalaste)</li>
+<li><strong>WinGet en Windows:</strong> <code>winget uninstall Anthropic.ClaudeCode</code></li>
+<li><strong>Instalación local antigua de npm:</strong> borra solo la carpeta <code>local</code> dentro de <code>~/.claude</code>. Mira antes qué hay dentro y no borres <code>~/.claude</code> entera, porque ahí viven tus ajustes y tu historial.</li>
+</ul>
+<h2 id="missing">Windows: claude.exe desapareció tras una actualización</h2>
+<p>En Windows, una actualización renombra el <code>claude.exe</code> actual a una copia de seguridad y mueve el nuevo a su sitio. Si el movimiento falla y la copia no se puede renombrar de vuelta, la carpeta se queda con la copia pero sin <code>claude.exe</code>. Primero confirma que la carpeta está en el PATH (paso 2); si lo está, busca en <code>%USERPROFILE%\.local\bin</code> un archivo que empiece por <code>claude.exe.old.</code> seguido de un número. Esta línea de PowerShell renombra la más reciente de vuelta:</p>
+<pre><code>Get-ChildItem "$env:USERPROFILE\.local\bin\claude.exe.old.*" | Sort-Object Name | Select-Object -Last 1 | Rename-Item -NewName claude.exe</code></pre>
+<p>Luego ejecuta <code>claude --version</code>. Si no hay copia de seguridad, o sigue fallando, vuelve a ejecutar el instalador de la página oficial de instalación. La documentación añade que las versiones antiguas también podían borrar la copia mientras faltaba <code>claude.exe</code>.</p>
+<h2>Mapa rápido</h2>
+<ul>
+<li>Falta el archivo → instalar, o buscar el otro método de instalación.</li>
+<li>Está el archivo, su carpeta no está en el PATH → paso 3 y una terminal nueva.</li>
+<li>Lo añadiste y sigue igual → ventana vieja, archivo de otra shell o no se guardó.</li>
+<li>Dos copias → quédate con la nativa.</li>
+<li>Windows, justo tras una actualización → recupera la copia de seguridad.</li>
+</ul>
+<p>Todas las guías están en el <a href="/guias">índice de guías</a>. Si tu terminal se porta raro después de esto, mira <a href="/terminal-claude-code">la guía de la terminal</a> y <a href="/depurar-configuracion-claude-code">cómo depurar tu configuración</a>. Esta página sigue <a href="https://code.claude.com/docs/en/troubleshoot-install">la documentación de solución de problemas de instalación de Anthropic</a> tal como la leemos en octubre de 2026. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todos los sistemas. Las rutas, el comportamiento del instalador y los detalles de versión pueden cambiar, y donde esta página y la documentación no coincidan, manda la documentación.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada, cuando el comando ya funciona. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
