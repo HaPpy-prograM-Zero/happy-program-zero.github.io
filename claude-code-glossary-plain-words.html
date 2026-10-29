@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code glossary in plain words</title>
+<meta name="description" content="The terms Claude Code's documentation uses, explained in one or two plain sentences each: agentic loop, context window, compaction, CLAUDE.md, skill, hook, subagent, MCP, permission mode, worktree, cloud session and more.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-glossary-plain-words">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/glosario-claude-code-en-llano">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-glossary-plain-words">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code glossary in plain words">
+<meta property="og:description" content="The terms Claude Code's documentation uses, explained in one or two plain sentences each: agentic loop, context window, compaction, CLAUDE.md, skill, hook, subagent, MCP, permission mode, worktree, cloud session and more.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-glossary-plain-words">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code glossary in plain words</h1>
+<p class="lead">The Claude Code documentation is full of terms that assume you already know them. This is a short glossary in everyday language, grouped by what you are trying to understand. Where we have a longer guide on a term, it is linked.</p>
+<h2>How it works</h2>
+<ul>
+<li><strong>Agentic coding.</strong> Claude can read files, run commands and edit code on its own while you watch or step away, instead of only answering with text you have to apply yourself.</li>
+<li><strong>Harness.</strong> Everything around the model that makes it a coding agent: file access, running commands, asking permission, loading memory, and the loop that chains steps together. Claude Code is the harness; Claude is the model inside it.</li>
+<li><strong>Agentic loop.</strong> The cycle Claude repeats on every task: gather context, act, check the result, repeat until done. You can interrupt at any point. See <a href="/how-claude-code-works">how Claude Code works</a>.</li>
+<li><strong>Tool.</strong> One action Claude can take: read a file, edit code, run a shell command, search the web, start a subagent. Without tools it could only talk.</li>
+<li><strong>Turn.</strong> One full response from Claude, from your message to the moment it finishes, with any number of tool calls in between.</li>
+<li><strong>Session.</strong> A conversation tied to your current directory, with its own context window. You can resume it, fork it, or run several in parallel. <code>/clear</code> starts a new one and the old one stays stored.</li>
+<li><strong>Transcript.</strong> The saved record of a session, kept as a file so a conversation can continue after you close it.</li>
+</ul>
+<h2>Memory and context</h2>
+<ul>
+<li><strong>Context window.</strong> Claude's working memory for the session: the conversation, file contents, command output, your instructions and loaded skills. It fills up as you work. <code>/context</code> shows what is using space.</li>
+<li><strong>Compaction.</strong> When the context window nears its limit, the conversation is summarized automatically; <code>/compact</code> does it on demand. Instructions you only gave in chat may not survive. See <a href="/claude-code-context-window-what-survives-compact">what survives compaction</a>.</li>
+<li><strong>CLAUDE.md.</strong> A markdown file of standing instructions you write, loaded at the start of every session. See <a href="/claude-md-vs-skill-vs-hook">CLAUDE.md, skill or hook</a>.</li>
+<li><strong>Auto memory.</strong> Notes Claude writes for itself from your corrections and preferences. The counterpart of CLAUDE.md, which you write. See <a href="/claude-code-memory-claude-md-vs-auto-memory">the memory guide</a>.</li>
+<li><strong>Rules.</strong> Extra instruction files in <code>.claude/rules/</code>. A rule can be tied to certain file paths so it only loads when Claude touches those files.</li>
+<li><strong>System prompt.</strong> The built-in instructions sent ahead of your conversation on every request. Your CLAUDE.md and output style are not part of it; they arrive inside the conversation.</li>
+<li><strong>System reminder.</strong> A note the harness adds to the conversation to give Claude context, such as your CLAUDE.md, the list of skills, or a warning that a file changed on disk. You do not send these yourself.</li>
+<li><strong>Checkpoint.</strong> A restore point made at each prompt that starts a turn. <kbd>Esc</kbd> twice or <code>/rewind</code> goes back to one. See <a href="/undo-claude-code-changes-rewind">undoing changes with rewind</a>.</li>
+<li><strong><code>.claude</code> directory.</strong> Where project settings, hooks, skills, subagents, rules and memory live. Your personal defaults live in <code>~/.claude/</code>. See <a href="/claude-folder-explained-claude-code">the .claude folder explained</a>.</li>
+</ul>
+<h2>Control and safety</h2>
+<ul>
+<li><strong>Permission mode.</strong> The baseline approval behavior for the session, cycled with <kbd>Shift</kbd>+<kbd>Tab</kbd>. See <a href="/claude-code-permission-modes">permission modes</a>.</li>
+<li><strong>Permission rule.</strong> A settings entry that allows, asks about or blocks a specific tool use. Rules sit on top of the mode. See <a href="/claude-code-permissions-starter">a starter set of permissions</a>.</li>
+<li><strong>Plan mode.</strong> A permission mode where Claude researches and proposes a plan without editing your files, then waits for approval.</li>
+<li><strong>Auto mode.</strong> A permission mode where a separate model reviews actions instead of you, so most run without a prompt. It still asks where your own ask rules match.</li>
+<li><strong>Sandboxing.</strong> Operating-system limits on what shell commands can touch, so Claude can work freely inside a boundary. A separate layer from permission rules. See <a href="/claude-code-sandbox">the sandbox guide</a>.</li>
+<li><strong>Project trust.</strong> The dialog where you accept a folder before Claude Code loads the configuration it ships with.</li>
+<li><strong>Prompt injection.</strong> Hostile instructions hidden in a file, web page or tool result that try to steer Claude toward things you never asked for. The permission system and trust checks are part of the defence.</li>
+<li><strong>Settings layers.</strong> The order Claude Code reads configuration in, from organization policy down to your user file. See <a href="/claude-code-settings-precedence">which settings.json wins</a>.</li>
+<li><strong>Managed settings.</strong> Settings an organization enforces for everyone. Users and projects cannot override them.</li>
+</ul>
+<h2>Extending it</h2>
+<ul>
+<li><strong>Skill.</strong> A <code>SKILL.md</code> file with instructions or a workflow Claude loads when relevant, or when you type <code>/skill-name</code>. As we read the docs, skills are the recommended successor to custom commands. See <a href="/how-to-write-a-claude-code-skill">how to write one</a>.</li>
+<li><strong>Command.</strong> A reusable instruction you run by typing <code>/name</code>. The word is also used for CLI subcommands like <code>claude mcp add</code>, which are unrelated.</li>
+<li><strong>Frontmatter.</strong> The block of settings between two <code>---</code> lines at the very top of a Markdown file. Skills, subagents, output styles and rules read their configuration from it.</li>
+<li><strong>Hook.</strong> A handler that runs automatically at a fixed point, such as before a tool runs or after a file edit. It fires every time, not when the model feels like it. See <a href="/claude-code-hooks-three-to-paste">three hooks to paste</a>.</li>
+<li><strong>Subagent.</strong> A specialized assistant with its own context window, prompt and tool access, which does a delegated job and reports back a summary. See <a href="/write-a-claude-code-subagent">writing one</a>.</li>
+<li><strong>Agent teams.</strong> Several separate sessions coordinated by a lead, each with its own context. Unlike subagents, you can talk to any of them directly. The docs describe this as experimental and off by default.</li>
+<li><strong>MCP and MCP server.</strong> An open standard for connecting outside tools and data, and a program that provides them to Claude. See <a href="/add-mcp-server-claude-code">adding an MCP server</a>.</li>
+<li><strong>Plugin.</strong> A bundle of skills, hooks, subagents and MCP servers installed as one unit. See <a href="/install-claude-code-plugins">installing plugins</a>.</li>
+<li><strong>Output style.</strong> A setting that changes the instructions Claude gets, to adjust tone or format. See <a href="/claude-code-output-styles">output styles</a>.</li>
+<li><strong>Bundled skills.</strong> Prompt-based playbooks that ship with Claude Code, such as <code>/loop</code> and <code>/debug</code>. See <a href="/claude-code-loop-scheduled-tasks">scheduling with /loop</a>.</li>
+</ul>
+<h2>Running it without you</h2>
+<ul>
+<li><strong>Non-interactive mode.</strong> Run one prompt and exit, with <code>-p</code>. For scripts, CI and pipes. Older material calls it headless mode. See <a href="/run-claude-code-from-a-script">running Claude Code from a script</a>.</li>
+<li><strong>Bare mode.</strong> <code>--bare</code> starts without loading hooks, skills, plugins, MCP servers, memory or CLAUDE.md, so a scripted run behaves the same on every machine.</li>
+<li><strong>Verification loop.</strong> Giving Claude a check it can run, such as a test suite or a build, so it keeps going until the check passes instead of stopping at something that merely looks right. It is the groundwork for <a href="/claude-code-goal-command">the /goal command</a>.</li>
+<li><strong>Worktree isolation.</strong> Running Claude in a separate git worktree, so parallel agents each edit their own copy. See <a href="/claude-code-git-worktrees-parallel-sessions">worktrees and parallel sessions</a>.</li>
+</ul>
+<h2>Where it runs</h2>
+<ul>
+<li><strong>Surface.</strong> Any place you use Claude Code: the terminal, VS Code, JetBrains, the desktop app or claude.ai. They share one engine.</li>
+<li><strong>Local session and cloud session.</strong> A cloud session runs on cloud infrastructure and keeps going after you close your laptop. A session in your terminal or IDE is local.</li>
+<li><strong>Remote Control.</strong> Continue a local session from your phone or browser. The code and files stay on your machine; only the interface is remote.</li>
+<li><strong>Teleport.</strong> <code>/teleport</code> pulls a cloud session into your local terminal. <code>--cloud</code> goes the other way.</li>
+<li><strong>Channel.</strong> An MCP server that pushes events into a running session, so Claude can react while you are away.</li>
+<li><strong>Connector.</strong> An MCP server added to your claude.ai account instead of configured locally.</li>
+</ul>
+<h2>Old names you may still meet</h2>
+<ul>
+<li><strong>Headless mode</strong> is now non-interactive mode.</li>
+<li><strong>Custom commands</strong> are now skills; older command files still work.</li>
+<li><strong>Slash commands</strong> are now just commands.</li>
+<li><strong>“Claude Code on the web”</strong> as the name for every cloud session has narrowed to the browser surface at claude.ai/code.</li>
+</ul>
+<p>All the guides are in the <a href="/guides">guides index</a>. This follows <a href="https://code.claude.com/docs/en/glossary">Anthropic's glossary</a> as we read it in October 2026, simplified and shortened on purpose. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every feature. Names, defaults and version limits change, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
