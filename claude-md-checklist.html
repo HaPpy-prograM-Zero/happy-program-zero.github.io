@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A CLAUDE.md checklist: 10 checks before you trust your Claude Code setup</title>
 <meta name="description" content="Ten practical checks for your CLAUDE.md: length, verifiable rules, real commands, no contradictions, no secrets, and how to see what Claude actually loaded.">
-<meta name="theme-color" content="#14213d">
+<meta name="theme-color" content="#f6f3ea">
 <link rel="canonical" href="https://happy-program-zero.github.io/claude-md-checklist">
 
 <link rel="icon" type="image/png" href="/logo.png">
@@ -18,75 +18,50 @@
 <meta property="og:image" content="https://happy-program-zero.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
-<style>:root{--bg:#f7f5ef;--fg:#18213a;--mu:#5b6579;--card:#fff;--line:#e2ded2;--ac:#0b7a52;--tint:#e3f5ec;--mint:#3ddc97;--navy:#14213d;--navy2:#1e3a6b;--paper:#f7f5ef;--sh:0 1px 2px rgba(20,33,61,.06),0 6px 18px rgba(20,33,61,.06)}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1424;--fg:#ecebe6;--mu:#a3adc2;--card:#141f38;--line:#25325a;--ac:#3ddc97;--tint:#123a33;--sh:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);color-scheme:dark}}
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
-.w{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-.top{background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%);color:var(--paper)}
-.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;padding-block:16px}
-.brand{display:flex;align-items:center;gap:11px;color:var(--paper);text-decoration:none;font-weight:700;font-size:19px;letter-spacing:-.01em}
-.brand svg{width:36px;height:36px;display:block}
-nav{display:flex;flex-wrap:wrap;gap:4px 6px;font-size:15px}
-nav a{color:#cdd8ee;text-decoration:none;padding:6px 11px;border-radius:999px}
-nav a:hover,nav a:focus-visible{background:rgba(255,255,255,.12);color:#fff}
-nav a.on{background:rgba(255,255,255,.14);color:#fff}
-.hero{display:grid;grid-template-columns:1fr auto;align-items:center;gap:32px;padding-block:44px 64px}
-.hero h1{font-size:clamp(38px,7vw,64px);line-height:1.04;margin:0 0 14px;letter-spacing:-.025em;text-wrap:balance}
-.hero .lead{font-size:clamp(18px,2.4vw,22px);color:#cdd8ee;margin:0 0 8px;max-width:30em;text-wrap:balance}
-.hero .tag{color:var(--mint);font-size:18px;margin:0 0 26px}
-.hero .big{width:min(220px,28vw);height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
-.btns{display:flex;flex-wrap:wrap;gap:12px}
-.btn{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:650;font-size:16px;text-decoration:none;line-height:1.2;border:1.5px solid transparent}
-.btn.p{background:var(--mint);color:#0e1b36}
-.btn.p:hover,.btn.p:focus-visible{background:#6ee8b4}
-.btn.g{border-color:rgba(255,255,255,.4);color:var(--paper)}
-.btn.g:hover,.btn.g:focus-visible{background:rgba(255,255,255,.12)}
-.page-head{padding-block:22px 44px}
-.page-head h1{font-size:clamp(28px,5vw,42px);line-height:1.12;margin:6px 0 14px;letter-spacing:-.02em;text-wrap:balance;max-width:20em}
-.page-head .lead{font-size:19px;color:#cdd8ee;margin:0;max-width:34em}
-.facts{display:flex;flex-wrap:wrap;gap:10px 28px;padding-block:18px;color:var(--mu);font-size:15px}
-.facts span{display:inline-flex;align-items:center;gap:8px}
-.facts svg{width:18px;height:18px;stroke:var(--ac);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
-section{padding-block:30px 6px}
-h2.sec{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin:0 0 14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-a.card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;color:var(--fg);text-decoration:none;box-shadow:var(--sh);transition:transform .15s,border-color .15s}
-a.card:hover,a.card:focus-visible{transform:translateY(-2px);border-color:var(--ac)}
-a.card .ico{width:44px;height:44px;border-radius:12px;background:var(--tint);display:grid;place-items:center;margin-bottom:6px}
-a.card .ico svg{width:22px;height:22px;stroke:var(--ac);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-a.card b{font-size:18px;line-height:1.3;letter-spacing:-.01em}
-a.card span.d{color:var(--mu);font-size:15.5px;line-height:1.5}
-a.card .badge{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ac);background:var(--tint);padding:3px 9px;border-radius:999px;margin-bottom:2px}
-a.card .go{margin-top:auto;padding-top:8px;color:var(--ac);font-weight:650;font-size:15px}
-.status{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--mint);border-radius:14px;padding:20px 22px;margin:34px 0 10px;box-shadow:var(--sh)}
-.status svg{width:26px;height:26px;flex:none;stroke:var(--ac);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;margin-top:3px}
-.status h3{margin:0 0 4px;font-size:18px}
-.status p{margin:0;color:var(--mu)}
-main.art{max-width:720px;margin:0 auto;padding:36px max(20px,env(safe-area-inset-left,0px)) 8px;font:18px/1.75 Georgia,"Times New Roman",serif}
-main.art h2{font:700 20px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:-.01em;margin:34px 0 8px;text-wrap:balance}
-main.art p,main.art li{margin:0 0 14px}
-main.art ul,main.art ol{padding-left:24px}
-main.art li::marker{color:var(--ac);font-weight:700}
-main.art a{color:var(--ac);text-underline-offset:3px}
-main.art ol.checks{list-style:none;padding:0;counter-reset:c;display:grid;gap:14px;margin-top:22px}
-ol.checks>li{counter-increment:c;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px 6px 72px;position:relative;box-shadow:var(--sh);margin:0}
-ol.checks>li::before{content:counter(c);position:absolute;left:18px;top:18px;width:38px;height:38px;border-radius:50%;background:var(--mint);color:#0e1b36;font:800 17px/38px system-ui,sans-serif;text-align:center}
-ol.checks h2{margin:0 0 4px;font-size:19px}
-.box{background:var(--tint);border:1px solid var(--line);border-radius:16px;padding:20px 22px 6px;margin:30px 0 8px}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
 .box p{font-size:17px;line-height:1.65}
 .note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
-main.art .lead{color:var(--mu)}
-code{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font:.88em ui-monospace,Consolas,Menlo,monospace}
-footer{margin-top:46px;border-top:1px solid var(--line);padding-block:26px 40px}
-footer .fb{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-bottom:12px;font-size:15px}
-footer .fb svg{width:28px;height:28px;display:block}
-footer .fb a{color:var(--ac);text-decoration:none;font-weight:600}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
 footer .fb a:hover{text-decoration:underline}
-footer .note{max-width:52em;margin:0}
-:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
-@media (max-width:700px){.hero{grid-template-columns:1fr;padding-block:30px 48px}.hero .big{display:none}.bar{padding-block:12px}nav{font-size:14px}a.card{padding:18px}ol.checks>li{padding:62px 18px 4px}ol.checks>li::before{left:18px;top:16px}}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
 </style>
 </head>
 <body>
@@ -94,8 +69,10 @@ footer .note{max-width:52em;margin:0}
 <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </defs></svg>
-<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/claude-md-checklist" class="on">CLAUDE.md checklist</a><a href="/stop-claude-code-loops">Stop loops</a><a href="/es">Español</a></nav></div><div class="page-head"><h1>A CLAUDE.md checklist: 10 checks before you trust your setup</h1><p class="lead">CLAUDE.md is the file Claude Code reads at the start of every session to learn how your project works. A weak one is easy to write and hard to notice. Use these ten checks.</p></div></div></header>
-<main class="art"><p class="note">Based on our own daily use and on Anthropic's official page about memory, <a href="https://code.claude.com/docs/en/memory">code.claude.com/docs/en/memory</a>. Check that page for the current details.</p>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/claude-md-checklist" class="on">CLAUDE.md checklist</a><a href="/stop-claude-code-loops">Stop loops</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>A CLAUDE.md checklist: 10 checks before you trust your setup</h1>
+<p class="lead">CLAUDE.md is the file Claude Code reads at the start of every session to learn how your project works. A weak one is easy to write and hard to notice. Use these ten checks.</p>
+<p class="note">Based on our own daily use and on Anthropic's official page about memory, <a href="https://code.claude.com/docs/en/memory">code.claude.com/docs/en/memory</a>. Check that page for the current details.</p>
 <ol class="checks">
 <li><h2>Is it short?</h2><p>Anthropic's guidance is to aim for under 200 lines per file. Longer files use more context and make it less likely that each rule is followed. If a rule matters for only one folder, move it into a path-scoped rule instead of the main file.</p></li>
 <li><h2>Can every rule be checked?</h2><p>"Run <code>npm test</code> before committing" can be verified. "Test your changes" cannot. Rewrite each vague line until you could tell, from the result, whether it was followed.</p></li>
@@ -111,7 +88,7 @@ footer .note{max-width:52em;margin:0}
 <div class="box">
 <p><b>Want a head start?</b> <code>/init</code> generates a first CLAUDE.md from your codebase; refine it with what Claude cannot discover on its own.</p>
 <p>Free and open source: <a href="https://github.com/happy-program-zero/loop-stop">Loop-Stop</a>, a skill that gives a long task a brief, a limit and a stop rule. If you want ready-made help with this exact job, our <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> reviews your CLAUDE.md and permission settings, and the <a href="https://buy.polar.sh/polar_cl_ku5n5rd7aow1FRLluJXxOGiQ85A1w8EAfoUCz2OdubK">Project Starter Kit</a> gives 10 CLAUDE.md templates. They are plain-text files you read and adapt; we have tested them by hand but have not measured results on other projects, and we promise none. <a href="https://plainskills.gumroad.com">All products</a>.</p>
-</div></main>
-<footer><div class="w"><div class="fb"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg><b>Plain Skills</b><a href="https://github.com/happy-program-zero/loop-stop">Free sample</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</div></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
 </body>
 </html>
