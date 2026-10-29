@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atajos de teclado de Claude Code que merece la pena aprender</title>
+<meta name="description" content="Los atajos de teclado de Claude Code que más tiempo ahorran, agrupados por lo que estás haciendo: parar, deshacer, cambiar de modo, escribir peticiones largas, buscar en el historial y editar texto.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/atajos-de-teclado-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-keyboard-shortcuts">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/atajos-de-teclado-claude-code">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Atajos de teclado de Claude Code que merece la pena aprender">
+<meta property="og:description" content="Los atajos de teclado de Claude Code que más tiempo ahorran, agrupados por lo que estás haciendo: parar, deshacer, cambiar de modo, escribir peticiones largas, buscar en el historial y editar texto.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/atajos-de-teclado-claude-code">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Atajos de teclado de Claude Code que merece la pena aprender</h1>
+<p class="lead">Claude Code tiene una lista larga de atajos. No vas a necesitar la mayoría. Estos son los que más tiempo ahorran, agrupados por lo que estás haciendo. Pulsa <code>?</code> con la caja vacía para ver la lista de tu configuración.</p>
+<h2>Parar, deshacer, salir</h2>
+<ul class="plain">
+<li><span class="n"><code>Esc</code></span><span class="d">Para la respuesta o la llamada a una herramienta a mitad de turno para que puedas reconducir. Claude conserva el trabajo hecho hasta ese momento. En un diálogo, lo cierra.</span></li>
+<li><span class="n"><code>Esc</code> dos veces</span><span class="d">Con texto en la caja, lo borra y guarda el borrador para recuperarlo con la flecha arriba. Con la caja vacía, abre el <a href="/deshacer-cambios-claude-code-rewind">menú de rewind</a>.</span></li>
+<li><span class="n"><code>Ctrl+C</code></span><span class="d">Interrumpe una operación en marcha. Si no hay nada en marcha, la primera pulsación borra la caja y la segunda sale.</span></li>
+<li><span class="n"><code>Ctrl+D</code></span><span class="d">Sale. La primera pulsación muestra un aviso y una segunda enseguida sale. Con texto en la caja, borra el carácter que hay tras el cursor.</span></li>
+<li><span class="n"><code>Ctrl+_</code></span><span class="d">Deshace la última edición del texto de tu petición.</span></li>
+</ul>
+<h2>Modos y modelo</h2>
+<ul class="plain">
+<li><span class="n"><code>Shift+Tab</code></span><span class="d">Recorre los <a href="/modos-de-permisos-claude-code">modos de permisos</a>. En Windows, <code>Alt+M</code> hace lo mismo cuando tu Node o Bun no activa el modo de entrada VT.</span></li>
+<li><span class="n"><code>Option+P</code> / <code>Alt+P</code></span><span class="d">Cambia de modelo sin borrar lo que has escrito (Option en macOS, Alt en Windows y Linux).</span></li>
+<li><span class="n"><code>Option+O</code> / <code>Alt+O</code></span><span class="d">Activa o desactiva el modo rápido.</span></li>
+</ul>
+<h2>Escribir peticiones largas</h2>
+<ul class="plain">
+<li><span class="n"><code>\</code> y luego <code>Enter</code></span><span class="d">Una línea nueva. Funciona en todas las terminales.</span></li>
+<li><span class="n"><code>Ctrl+J</code></span><span class="d">Una línea nueva, sin configurar nada, en cualquier terminal.</span></li>
+<li><span class="n"><code>Shift+Enter</code></span><span class="d">Una línea nueva. Funciona de serie en iTerm2, WezTerm, Ghostty, Kitty, Warp, Apple Terminal y Windows Terminal. Otras terminales necesitan un ajuste.</span></li>
+<li><span class="n"><code>Ctrl+G</code></span><span class="d">Abre tu petición en tu editor de texto por defecto.</span></li>
+<li><span class="n"><code>Ctrl+S</code></span><span class="d">Aparta lo que estás escribiendo y deja la caja vacía. Púlsalo otra vez con la caja vacía para recuperar el texto.</span></li>
+<li><span class="n"><code>Ctrl+V</code> / <code>Alt+V</code></span><span class="d">Pega una imagen del portapapeles (<code>Alt+V</code> en Windows y WSL).</span></li>
+</ul>
+<h2>Empezar una petición con un símbolo</h2>
+<ul class="plain">
+<li><span class="n"><code>/</code></span><span class="d">Un comando o una skill. Escribe letras detrás para filtrar la lista.</span></li>
+<li><span class="n"><code>!</code></span><span class="d">Modo terminal: ejecuta un comando directamente, añade su salida a la sesión y hace que Claude responda.</span></li>
+<li><span class="n"><code>@</code></span><span class="d">Menciona un archivo, con autocompletado de rutas.</span></li>
+<li><span class="n"><code>?</code></span><span class="d">Con la caja vacía, muestra el panel de ayuda de atajos.</span></li>
+</ul>
+<h2>Mirar atrás y llevar el control</h2>
+<ul class="plain">
+<li><span class="n"><code>Ctrl+R</code></span><span class="d">Busca entre tus peticiones anteriores.</span></li>
+<li><span class="n"><code>Ctrl+O</code></span><span class="d">Abre el visor de transcripción, con el uso detallado de herramientas, y la hora y el modelo de cada respuesta. También expande las líneas que van plegadas por defecto.</span></li>
+<li><span class="n"><code>Ctrl+T</code></span><span class="d">Muestra u oculta la lista de tareas de Claude.</span></li>
+<li><span class="n"><code>Ctrl+B</code></span><span class="d">Manda a segundo plano los comandos de terminal y los agentes en marcha. Con tmux se pulsa dos veces.</span></li>
+<li><span class="n"><code>Ctrl+L</code></span><span class="d">Redibuja la pantalla si se ve mal. Tu texto y la conversación se quedan.</span></li>
+</ul>
+<h2>Editar texto rápido</h2>
+<ul class="plain">
+<li><span class="n"><code>Ctrl+A</code> / <code>Ctrl+E</code></span><span class="d">Saltan al principio o al final de la línea.</span></li>
+<li><span class="n"><code>Ctrl+K</code> / <code>Ctrl+U</code></span><span class="d">Borran hasta el final o hasta el principio de la línea. El texto borrado se guarda para pegarlo.</span></li>
+<li><span class="n"><code>Ctrl+W</code></span><span class="d">Borra hacia atrás hasta el espacio anterior, así que una pulsación quita una ruta entera como <code>src/utils/foo.ts</code>.</span></li>
+<li><span class="n"><code>Ctrl+Y</code></span><span class="d">Pega lo último que borraste con alguno de esos atajos.</span></li>
+</ul>
+<h2>Bueno saber</h2>
+<ul>
+<li>Los atajos varían según la plataforma y la terminal. En macOS, los atajos de palabra con <code>Alt</code> (<code>Alt+B</code>, <code>Alt+F</code>, <code>Alt+D</code>) necesitan que Option actúe como Meta en tu terminal.</li>
+<li>Claude Code tiene un archivo para tus propios atajos, <code>keybindings.json</code>. Los atajos de edición por palabras de arriba no se pueden reasignar ahí. Para saber dónde está el archivo, mira <a href="/carpeta-claude-explicada-claude-code">la carpeta .claude explicada</a>.</li>
+<li>Algunos detalles dependen de tu versión. Mira la página de documentación de la tuya.</li>
+</ul>
+<h2>Pruébalo con algo inofensivo</h2>
+<ol>
+<li>Escribe una frase larga, pulsa <code>Esc</code> dos veces y luego la flecha arriba para recuperarla.</li>
+<li>Pulsa <code>?</code> con la caja vacía y lee el panel.</li>
+<li>Pulsa <code>Ctrl+O</code> una vez para ver el visor de transcripción y <code>Esc</code> para salir.</li>
+</ol>
+<p>Esta página sigue <a href="https://code.claude.com/docs/en/interactive-mode">la documentación del modo interactivo de Anthropic</a> tal como la leemos en octubre de 2026. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todos los atajos en todas las terminales.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>

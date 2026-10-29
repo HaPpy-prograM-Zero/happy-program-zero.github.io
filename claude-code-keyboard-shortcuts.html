@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code keyboard shortcuts worth learning</title>
+<meta name="description" content="The Claude Code keyboard shortcuts that save the most time, grouped by what you are doing: stop, undo, switch modes, write longer prompts, search history and edit text.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-keyboard-shortcuts">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/atajos-de-teclado-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-keyboard-shortcuts">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code keyboard shortcuts worth learning">
+<meta property="og:description" content="The Claude Code keyboard shortcuts that save the most time, grouped by what you are doing: stop, undo, switch modes, write longer prompts, search history and edit text.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-keyboard-shortcuts">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code keyboard shortcuts worth learning</h1>
+<p class="lead">Claude Code has a long list of shortcuts. You will not need most of them. These are the ones that save the most time, grouped by what you are doing. Press <code>?</code> on an empty prompt to see the list for your setup.</p>
+<h2>Stop, undo, leave</h2>
+<ul class="plain">
+<li><span class="n"><code>Esc</code></span><span class="d">Stops the current response or tool call mid-turn so you can redirect. Claude keeps the work done so far. In a dialog, it closes the dialog.</span></li>
+<li><span class="n"><code>Esc</code> twice</span><span class="d">With text in the prompt, clears it and saves the draft so the Up arrow brings it back. With an empty prompt, opens the <a href="/undo-claude-code-changes-rewind">rewind menu</a>.</span></li>
+<li><span class="n"><code>Ctrl+C</code></span><span class="d">Interrupts a running operation. If nothing is running, the first press clears the prompt and a second press exits.</span></li>
+<li><span class="n"><code>Ctrl+D</code></span><span class="d">Exits. The first press shows a hint, and a second press within a moment exits. With text in the prompt, it deletes the character after the cursor instead.</span></li>
+<li><span class="n"><code>Ctrl+_</code></span><span class="d">Undoes the last edit to your prompt text.</span></li>
+</ul>
+<h2>Modes and model</h2>
+<ul class="plain">
+<li><span class="n"><code>Shift+Tab</code></span><span class="d">Cycles the <a href="/claude-code-permission-modes">permission modes</a>. On Windows, <code>Alt+M</code> does the same when your Node or Bun runtime does not enable VT input mode.</span></li>
+<li><span class="n"><code>Option+P</code> / <code>Alt+P</code></span><span class="d">Switches the model without clearing your prompt (Option on macOS, Alt on Windows and Linux).</span></li>
+<li><span class="n"><code>Option+O</code> / <code>Alt+O</code></span><span class="d">Toggles fast mode.</span></li>
+</ul>
+<h2>Write longer prompts</h2>
+<ul class="plain">
+<li><span class="n"><code>\</code> then <code>Enter</code></span><span class="d">A new line. Works in every terminal.</span></li>
+<li><span class="n"><code>Ctrl+J</code></span><span class="d">A new line, with no setup, in any terminal.</span></li>
+<li><span class="n"><code>Shift+Enter</code></span><span class="d">A new line. Works out of the box in iTerm2, WezTerm, Ghostty, Kitty, Warp, Apple Terminal and Windows Terminal. Other terminals need a setting.</span></li>
+<li><span class="n"><code>Ctrl+G</code></span><span class="d">Opens your prompt in your default text editor.</span></li>
+<li><span class="n"><code>Ctrl+S</code></span><span class="d">Stashes the prompt you are typing and clears the box. Press it again on an empty prompt to bring the text back.</span></li>
+<li><span class="n"><code>Ctrl+V</code> / <code>Alt+V</code></span><span class="d">Pastes an image from the clipboard (<code>Alt+V</code> on Windows and WSL).</span></li>
+</ul>
+<h2>Start a prompt with a symbol</h2>
+<ul class="plain">
+<li><span class="n"><code>/</code></span><span class="d">A command or a skill. Type letters after it to filter the list.</span></li>
+<li><span class="n"><code>!</code></span><span class="d">Shell mode: runs a command directly, adds its output to the session and has Claude respond to it.</span></li>
+<li><span class="n"><code>@</code></span><span class="d">Mentions a file, with path autocomplete.</span></li>
+<li><span class="n"><code>?</code></span><span class="d">On an empty prompt, shows the shortcut help panel.</span></li>
+</ul>
+<h2>Look back and keep track</h2>
+<ul class="plain">
+<li><span class="n"><code>Ctrl+R</code></span><span class="d">Searches your earlier prompts.</span></li>
+<li><span class="n"><code>Ctrl+O</code></span><span class="d">Opens the transcript viewer, with detailed tool usage and a timestamp and the model on each reply. It also expands lines that are collapsed by default.</span></li>
+<li><span class="n"><code>Ctrl+T</code></span><span class="d">Shows or hides Claude's task checklist.</span></li>
+<li><span class="n"><code>Ctrl+B</code></span><span class="d">Moves running shell commands and agents to the background. Tmux users press it twice.</span></li>
+<li><span class="n"><code>Ctrl+L</code></span><span class="d">Redraws the screen if the display gets garbled. Your input and conversation stay.</span></li>
+</ul>
+<h2>Edit text fast</h2>
+<ul class="plain">
+<li><span class="n"><code>Ctrl+A</code> / <code>Ctrl+E</code></span><span class="d">Jump to the start or the end of the line.</span></li>
+<li><span class="n"><code>Ctrl+K</code> / <code>Ctrl+U</code></span><span class="d">Delete to the end or to the start of the line. The deleted text is kept for pasting.</span></li>
+<li><span class="n"><code>Ctrl+W</code></span><span class="d">Deletes back to the previous whitespace, so one press removes a whole path such as <code>src/utils/foo.ts</code>.</span></li>
+<li><span class="n"><code>Ctrl+Y</code></span><span class="d">Pastes what you last deleted with one of those shortcuts.</span></li>
+</ul>
+<h2>Good to know</h2>
+<ul>
+<li>Shortcuts vary by platform and terminal. On macOS, the <code>Alt</code>-based word shortcuts (<code>Alt+B</code>, <code>Alt+F</code>, <code>Alt+D</code>) need Option set as Meta in your terminal.</li>
+<li>Claude Code has a file for your own keyboard shortcuts, <code>keybindings.json</code>. The word-editing shortcuts above cannot be remapped there. For where the file lives, see <a href="/claude-folder-explained-claude-code">the .claude folder explained</a>.</li>
+<li>Some details depend on your version. Check the documentation page for yours.</li>
+</ul>
+<h2>Try it on something harmless</h2>
+<ol>
+<li>Type a long sentence, press <code>Esc</code> twice, then <code>Up</code> to get it back.</li>
+<li>Press <code>?</code> on an empty prompt and read the panel.</li>
+<li>Press <code>Ctrl+O</code> once to see the transcript viewer, then <code>Esc</code> to leave it.</li>
+</ol>
+<p>This follows <a href="https://code.claude.com/docs/en/interactive-mode">Anthropic's interactive mode documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every shortcut on every terminal.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
