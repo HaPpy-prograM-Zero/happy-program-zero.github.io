@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arreglar un Claude Code lento o atascado</title>
+<meta name="description" content="Qué hacer cuando Claude Code gasta demasiada CPU o memoria, se cuelga, deja de compactar, muestra texto raro, no copia al portapapeles o no encuentra archivos: los arreglos de la página oficial de problemas, en llano.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-lento-o-se-cuelga">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/fix-slow-claude-code">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-code-lento-o-se-cuelga">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Arreglar un Claude Code lento o atascado">
+<meta property="og:description" content="Qué hacer cuando Claude Code gasta demasiada CPU o memoria, se cuelga, deja de compactar, muestra texto raro, no copia al portapapeles o no encuentra archivos: los arreglos de la página oficial de problemas, en llano.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-lento-o-se-cuelga">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Arreglar un Claude Code lento o atascado</h1>
+<p class="lead">Esta página es para cuando Claude Code ya está en marcha pero va mal: mucha CPU o memoria, un cuelgue, una compactación que no acaba, caracteres raros, un portapapeles que queda vacío o búsquedas que no encuentran nada. Empieza por la comprobación rápida y salta a tu síntoma.</p>
+<h2>Empieza por la revisión</h2>
+<p>Ejecuta <code>/doctor</code> dentro de Claude Code. Revisa tu instalación, tus ajustes, las extensiones y el uso de contexto, y propone arreglos que puede aplicar cuando confirmes. Si <code>claude</code> no arranca, ejecuta <code>claude doctor</code> desde tu shell. <code>/mcp</code> muestra el estado de tus servidores MCP. Para errores de instalación o de inicio de sesión, o ajustes y hooks que no se aplican, la documentación oficial tiene páginas aparte; nuestra <a href="/depurar-configuracion-claude-code">guía de depuración</a> cubre la parte de ajustes.</p>
+<h2>Mucha CPU o memoria</h2>
+<ol>
+<li>Ejecuta <code>/compact</code> con regularidad. Si responde <em>Not enough messages to compact</em>, la conversación tiene muy pocos turnos para resumir, algo que puede pasar aunque el contexto esté lleno si un solo pegado enorme lo llenó.</li>
+<li>Cierra y reinicia Claude Code entre tareas grandes.</li>
+<li>Añade a tu <code>.gitignore</code> los directorios grandes de compilación.</li>
+<li>Reinicia con <code>claude --safe-mode</code>. Apaga todas las personalizaciones en esa sesión; si el uso baja, la causa es un plugin, un servidor MCP o un hook, y la guía de depuración explica cómo saber cuál.</li>
+</ol>
+<p>Si la memoria de una sesión pasa de 2,5 GB, aparece un aviso crítico de memoria. Reinicia Claude Code y ejecuta <code>claude --continue</code> para retomar la conversación en un proceso nuevo. Si la memoria sigue alta, <code>/heapdump</code> (escríbelo entero; está oculto en el menú de comandos) escribe dos archivos en tu Escritorio: una instantánea de memoria y un <code>-diagnostics.json</code>.</p>
+<p><strong>Ojo:</strong> la instantánea contiene todas las cadenas del proceso, incluida toda tu conversación y las credenciales que haya en ella. No la adjuntes nunca a una incidencia pública ni la compartas. La documentación dice que, para informar de un problema, adjuntes solo el archivo de diagnóstico.</p>
+<h2>La compactación falla: «Autocompact is thrashing»</h2>
+<p>Significa que la compactación funcionó pero un archivo o una salida de herramienta volvió a llenar el contexto enseguida, varias veces seguidas, así que Claude Code dejó de reintentar. Para recuperarte:</p>
+<ol>
+<li>Pide a Claude que lea el archivo grande por trozos, como un rango de líneas o una función, y no entero.</li>
+<li>Ejecuta <code>/compact</code> con un enfoque que descarte la salida grande, por ejemplo <code>/compact keep only the plan and the diff</code>.</li>
+<li>Pasa el trabajo con archivos grandes a un <a href="/escribir-un-subagente-claude-code">subagente</a>, que tiene su propia ventana de contexto.</li>
+<li>Ejecuta <code>/clear</code> si no necesitas la conversación anterior.</li>
+</ol>
+<p>Si vuelve después de <code>/clear</code>, ejecuta <code>/context</code> y compara la fila <em>Messages</em> con el resto. Si Messages es la mayor, un archivo o una salida está rellenando la ventana: repite los pasos de arriba. Si las demás filas juntas son mayores, lo que se carga al empezar deja poco sitio; mira <a href="/ventana-de-contexto-claude-code-que-sobrevive-a-compact">la ventana de contexto</a> y <a href="/gastar-menos-cuota-claude-code">gastar menos cuota</a>.</p>
+<h2>Se cuelga</h2>
+<p>Pulsa <kbd>Ctrl</kbd>+<kbd>C</kbd> para cancelar la operación en curso. Si nada responde, cierra la terminal y reinicia. No pierdes la conversación: ejecuta <code>claude --resume</code> en el mismo directorio para retomar la sesión.</p>
+<h2>Problemas de pantalla</h2>
+<ul>
+<li><strong>Cuadros, manchas o glifos equivocados en la terminal integrada de VS Code, Cursor y editores parecidos:</strong> lo más probable es el renderizado por GPU de la terminal. Ejecuta <code>/terminal-setup</code> para poner <code>terminal.integrated.gpuAcceleration</code> del editor en <code>"off"</code>, o ponlo a mano y recarga la ventana.</li>
+<li><strong>Un <code>&gt;0q</code> suelto al arrancar o un <code>&gt;4m</code> al salir:</strong> vienen de terminales construidas sobre una biblioteca VTE antigua. La documentación dice que actualices Claude Code; una versión más nueva omite esas secuencias en esas terminales.</li>
+<li><strong>La rueda del ratón va muy lenta en el modo de pantalla completa:</strong> ejecuta <code>/scroll-speed</code> para subir las líneas por muesca, o pulsa <kbd>PgUp</kbd> y <kbd>PgDn</kbd> para media pantalla. <code>/tui default</code> vuelve al renderizador clásico y al historial de tu propia terminal.</li>
+<li><strong>Una tabla larga sale cortada:</strong> solo se limita lo que se ve, a 200 filas. La tabla completa sigue en la conversación y <code>/copy</code> copia todas las filas. Si es enorme, pide a Claude que la escriba en un archivo.</li>
+</ul>
+<h2>El portapapeles queda vacío</h2>
+<ul>
+<li><strong>Con el <a href="/sandbox-claude-code">sandbox</a> activado,</strong> herramientas como <code>pbcopy</code>, <code>xclip</code> y <code>wl-copy</code> pueden fallar al llegar a tu portapapeles desde un comando dentro del sandbox. Pide a Claude que imprima el contenido en su respuesta y ejecuta <code>/copy</code>, que escribe en el portapapeles desde el propio Claude Code.</li>
+<li><strong>Por SSH,</strong> Claude Code no puede ejecutar una herramienta de portapapeles en tu equipo local. Fuera de tmux, envía el texto a tu terminal como una secuencia de escape OSC 52 y tu terminal decide si la usa. Algunas la ignoran: iTerm2 necesita activar un ajuste y el Terminal.app de macOS no la admite. <code>/copy</code> dice «Copied to clipboard» aunque el texto no haya llegado. Puedes mantener pulsada la tecla de selección nativa de tu terminal mientras arrastras, o poner <code>CLAUDE_CODE_DISABLE_MOUSE=1</code> en la máquina remota.</li>
+</ul>
+<h2>Las búsquedas no encuentran nada</h2>
+<p>Si la herramienta de búsqueda, las menciones <code>@archivo</code>, los agentes o las skills propias no encuentran archivos, puede que el <code>ripgrep</code> incluido no funcione en tu sistema. Instala el paquete de tu plataforma (por ejemplo <code>brew install ripgrep</code> en macOS, <code>sudo apt install ripgrep</code> en Ubuntu o Debian, <code>winget install BurntSushi.ripgrep.MSVC</code> en Windows) y pon <code>USE_BUILTIN_RIPGREP</code> a <code>0</code>, en tu shell o en el bloque <code>env</code> de tu <code>settings.json</code>:</p>
+<pre><code>{
+  "env": {
+    "USE_BUILTIN_RIPGREP": "0"
+  }
+}</code></pre>
+<p>Ejecuta <code>claude doctor</code> y comprueba que la línea Search muestra la ruta de tu ripgrep del sistema y no <em>OK (bundled)</em>. Mira <a href="/settings-json-claude-code-cual-manda">qué archivo de ajustes manda</a> si dudas de dónde ponerlo.</p>
+<h2>La búsqueda en WSL devuelve poco</h2>
+<p>Leer archivos entre los sistemas de archivos de Windows y Linux es lento en WSL, y eso puede dar menos coincidencias de las esperadas. <code>claude doctor</code> sigue mostrando Search como correcto. La documentación sugiere hacer búsquedas más concretas (nombra un directorio o un tipo de archivo), tener el proyecto en el sistema de archivos de Linux (<code>/home/</code>) y no en <code>/mnt/c/</code>, o ejecutar Claude Code de forma nativa en Windows.</p>
+<h2>Sigues atascado</h2>
+<p>Ejecuta <code>/doctor</code> y <code>/mcp</code>, usa <code>/feedback</code> dentro de Claude Code para informar de un problema a Anthropic, o mira las incidencias del proyecto en GitHub. Para problemas de cuenta, facturación o suscripción, contacta con el soporte de Anthropic.</p>
+<p>Esta página sigue <a href="https://code.claude.com/docs/en/troubleshooting">la documentación de problemas de Anthropic</a> tal como la leemos en octubre de 2026. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todos los casos. Los comandos, los límites y los arreglos cambian entre versiones, y donde esta página y la documentación no coincidan, manda la documentación. Todas las guías están en el <a href="/guias">índice de guías</a>.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada, que además evita que las sesiones crezcan hasta atragantarse. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>

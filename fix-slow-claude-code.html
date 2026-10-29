@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fix a slow or stuck Claude Code</title>
+<meta name="description" content="What to do when Claude Code uses too much CPU or memory, freezes, stops compacting, shows garbled text, can't copy to your clipboard, or can't find files: the fixes from the official troubleshooting page, in plain words.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/fix-slow-claude-code">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-code-lento-o-se-cuelga">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/fix-slow-claude-code">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Fix a slow or stuck Claude Code">
+<meta property="og:description" content="What to do when Claude Code uses too much CPU or memory, freezes, stops compacting, shows garbled text, can't copy to your clipboard, or can't find files: the fixes from the official troubleshooting page, in plain words.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/fix-slow-claude-code">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Fix a slow or stuck Claude Code</h1>
+<p class="lead">This page is for when Claude Code is already running but misbehaves: heavy CPU or memory, a freeze, compaction that keeps failing, odd characters, a clipboard that stays empty, or searches that find nothing. Start with the quick check, then jump to your symptom.</p>
+<h2>Start with the checkup</h2>
+<p>Run <code>/doctor</code> inside Claude Code. It checks your installation, settings, extensions and context usage, and proposes fixes it can apply after you confirm. If <code>claude</code> won't start at all, run <code>claude doctor</code> from your shell instead. <code>/mcp</code> shows the state of your MCP servers. For install and login errors, or settings and hooks that don't apply, the official docs have separate pages; our <a href="/debug-claude-code-configuration">debugging guide</a> covers the settings side.</p>
+<h2>High CPU or memory</h2>
+<ol>
+<li>Run <code>/compact</code> regularly. If it answers <em>Not enough messages to compact</em>, the conversation has too few turns to summarize, which can happen even with a full context when one huge paste filled it.</li>
+<li>Close and restart Claude Code between big tasks.</li>
+<li>Add large build directories to your <code>.gitignore</code>.</li>
+<li>Restart with <code>claude --safe-mode</code>. It turns off all customizations for that session; if usage drops, a plugin, MCP server or hook is the cause, and the debugging guide shows how to find which.</li>
+</ol>
+<p>If a session's memory passes 2.5 GB, a critical memory warning appears. Restart Claude Code and run <code>claude --continue</code> to resume the conversation in a fresh process. If memory stays high, <code>/heapdump</code> (type it in full; it is hidden from the command menu) writes two files to your Desktop: a heap snapshot and a <code>-diagnostics.json</code>.</p>
+<p><strong>Careful:</strong> the snapshot contains every string in the process, including your whole conversation and any credentials in it. Never attach it to a public issue or share it. The docs say to attach only the diagnostics file when you report a problem.</p>
+<h2>Compaction keeps failing: "Autocompact is thrashing"</h2>
+<p>This means compaction worked but a file or tool output refilled the context right away, several times in a row, so Claude Code stopped retrying. To recover:</p>
+<ol>
+<li>Ask Claude to read the big file in pieces, such as a line range or one function, not all of it.</li>
+<li>Run <code>/compact</code> with a focus that drops the large output, for example <code>/compact keep only the plan and the diff</code>.</li>
+<li>Move the large-file work to a <a href="/write-a-claude-code-subagent">subagent</a>, which has its own context window.</li>
+<li>Run <code>/clear</code> if you don't need the earlier conversation.</li>
+</ol>
+<p>If it comes back after <code>/clear</code>, run <code>/context</code> and compare the <em>Messages</em> row with the rest. If Messages is the biggest, a file or output is refilling the window, so repeat the steps above. If the other rows together are bigger, what loads at startup leaves too little room; see <a href="/claude-code-context-window-what-survives-compact">the context window</a> and <a href="/reduce-claude-code-token-usage">using less quota</a>.</p>
+<h2>It freezes</h2>
+<p>Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to cancel the current operation. If nothing responds, close the terminal and restart. You don't lose the conversation: run <code>claude --resume</code> in the same directory to pick the session back up.</p>
+<h2>Display problems</h2>
+<ul>
+<li><strong>Boxes, smears or wrong glyphs in the integrated terminal of VS Code, Cursor and similar editors:</strong> the terminal's GPU renderer is the likely cause. Run <code>/terminal-setup</code> to set the editor's <code>terminal.integrated.gpuAcceleration</code> to <code>"off"</code>, or set it by hand and reload the window.</li>
+<li><strong>Stray <code>&gt;0q</code> at startup or <code>&gt;4m</code> after exit:</strong> these come from terminals built on an old VTE library. The docs say to update Claude Code; a newer version skips those sequences on such terminals.</li>
+<li><strong>The mouse wheel scrolls too slowly in fullscreen rendering:</strong> run <code>/scroll-speed</code> to raise the lines per notch, or press <kbd>PgUp</kbd> and <kbd>PgDn</kbd> for half a screen. <code>/tui default</code> switches back to the classic renderer and your terminal's own scrollback.</li>
+<li><strong>A long table is cut off:</strong> only the display is capped at 200 rows. The full table is still in the conversation and <code>/copy</code> copies every row. For a huge one, ask Claude to write it to a file.</li>
+</ul>
+<h2>The clipboard stays empty</h2>
+<ul>
+<li><strong>With the <a href="/claude-code-sandbox">sandbox</a> on,</strong> tools like <code>pbcopy</code>, <code>xclip</code> and <code>wl-copy</code> can fail to reach your clipboard from a sandboxed command. Ask Claude to print the content in its reply, then run <code>/copy</code>, which writes to the clipboard from Claude Code itself.</li>
+<li><strong>Over SSH,</strong> Claude Code can't run a clipboard tool on your local machine. Outside tmux, it sends the text to your terminal as an OSC 52 escape sequence, and your terminal decides whether to use it. Some ignore it: iTerm2 needs a setting turned on, and macOS Terminal.app doesn't support it. <code>/copy</code> says "Copied to clipboard" even when the text didn't arrive. You can hold your terminal's native-selection key while you drag, or set <code>CLAUDE_CODE_DISABLE_MOUSE=1</code> on the remote machine.</li>
+</ul>
+<h2>Searches find nothing</h2>
+<p>If the Search tool, <code>@file</code> mentions, custom agents or custom skills don't find files, the bundled <code>ripgrep</code> may not run on your system. Install your platform's package (for example <code>brew install ripgrep</code> on macOS, <code>sudo apt install ripgrep</code> on Ubuntu or Debian, <code>winget install BurntSushi.ripgrep.MSVC</code> on Windows), then set <code>USE_BUILTIN_RIPGREP</code> to <code>0</code>, in your shell or in the <code>env</code> block of your <code>settings.json</code>:</p>
+<pre><code>{
+  "env": {
+    "USE_BUILTIN_RIPGREP": "0"
+  }
+}</code></pre>
+<p>Run <code>claude doctor</code> and check that the Search line shows your system ripgrep path, not <em>OK (bundled)</em>. See <a href="/claude-code-settings-precedence">which settings file wins</a> if you are unsure where to put it.</p>
+<h2>Search on WSL returns too little</h2>
+<p>Reading files across the Windows and Linux file systems is slow on WSL, which can mean fewer matches than you expect. <code>claude doctor</code> still shows Search as OK. The docs suggest asking more specific searches (name a directory or file type), keeping your project on the Linux filesystem (<code>/home/</code>) rather than <code>/mnt/c/</code>, or running Claude Code natively on Windows.</p>
+<h2>Still stuck</h2>
+<p>Run <code>/doctor</code> and <code>/mcp</code>, use <code>/feedback</code> inside Claude Code to report a problem to Anthropic, or check the project's GitHub issues. For account, billing or subscription problems, contact Anthropic support instead.</p>
+<p>This follows <a href="https://code.claude.com/docs/en/troubleshooting">Anthropic's troubleshooting documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Commands, limits and fixes change between versions, and where this page and the documentation disagree, the documentation wins. All the guides are in the <a href="/guides">guides index</a>.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule, which also keeps sessions from growing until they choke. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
