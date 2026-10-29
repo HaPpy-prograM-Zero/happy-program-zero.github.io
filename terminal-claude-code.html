@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configurar tu terminal para Claude Code</title>
+<meta name="description" content="Arregla Shift+Enter para saltos de línea, haz que funcionen los atajos con Option en macOS, recibe un aviso cuando Claude termine, configura tmux, evita el parpadeo, gestiona pegados grandes y activa las teclas Vim: los arreglos de terminal, en llano.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/terminal-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-terminal-setup">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/terminal-claude-code">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Configurar tu terminal para Claude Code">
+<meta property="og:description" content="Arregla Shift+Enter para saltos de línea, haz que funcionen los atajos con Option en macOS, recibe un aviso cuando Claude termine, configura tmux, evita el parpadeo, gestiona pegados grandes y activa las teclas Vim: los arreglos de terminal, en llano.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/terminal-claude-code">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Configurar tu terminal para Claude Code</h1>
+<p class="lead">Claude Code funciona en cualquier terminal sin configurar nada. Esta página es para cuando algo concreto va mal: Shift+Enter envía tu mensaje, los atajos con Option no hacen nada, no te enteras de cuándo acaba una tarea larga o la pantalla parpadea. Busca tu síntoma y sáltate el resto.</p>
+<h2>Shift+Enter envía en vez de añadir una línea</h2>
+<p>Enter envía tu mensaje. Para añadir un salto de línea sin enviar, pulsa <kbd>Ctrl</kbd>+<kbd>J</kbd>, o escribe <code>\</code> y pulsa Enter. Las dos formas funcionan en cualquier terminal sin configurar nada. Shift+Enter también funciona en muchas terminales, pero depende de la que uses:</p>
+<ul>
+<li><strong>Sin configurar nada:</strong> Ghostty, Kitty, iTerm2, WezTerm, Warp, Apple Terminal y Windows Terminal. Las terminales que admiten el protocolo de teclado de kitty, como foot y las Alacritty recientes, también funcionan con una versión de Claude Code suficientemente reciente.</li>
+<li><strong>Ejecuta <code>/terminal-setup</code> una vez:</strong> VS Code, Cursor, Zed y Alacritty antiguas. Escribe un atajo de Shift+Enter en el archivo de configuración de la terminal y respeta los que ya existen. Ejecútalo en la propia terminal anfitriona, no dentro de tmux o screen.</li>
+<li><strong>No disponible:</strong> gnome-terminal y los IDE de JetBrains como PyCharm. Usa Ctrl+J o <code>\</code> y Enter.</li>
+</ul>
+<p>En VS Code y Cursor, <code>/terminal-setup</code> también apaga la aceleración por GPU del editor para la terminal, lo que evita el texto distorsionado (mira <a href="/claude-code-lento-o-se-cuelga">arreglar una sesión lenta o atascada</a>). Para que Enter inserte una línea y Shift+Enter envíe, asigna las acciones <code>chat:newline</code> y <code>chat:submit</code> en tu archivo de atajos; la <a href="/atajos-de-teclado-claude-code">guía de atajos</a> tiene lo básico.</p>
+<h2>Los atajos con Option no hacen nada en macOS</h2>
+<p>Algunos atajos usan Option, como Option+Enter para una línea nueva u Option+P para cambiar de modelo. La mayoría de terminales de macOS no envían Option como modificador por defecto; el ajuste suele llamarse «Use Option as Meta Key».</p>
+<ul>
+<li><strong>Apple Terminal:</strong> Ajustes, Perfiles, Teclado, marca «Use Option as Meta Key».</li>
+<li><strong>iTerm2:</strong> Ajustes, Profiles, Keys, General, pon las dos teclas Option en «Esc+».</li>
+<li><strong>VS Code:</strong> añade <code>"terminal.integrated.macOptionIsMeta": true</code> a sus ajustes.</li>
+</ul>
+<p>Otras terminales tienen un ajuste de Option como Alt o como Meta en su propia configuración.</p>
+<h2>Un sonido o aviso cuando Claude termina</h2>
+<p>Cuando Claude termina o se para a pedir permiso y pareces estar lejos, lanza un evento de notificación. Por defecto Ghostty, Kitty e iTerm2 reciben una notificación de escritorio (iTerm2 solo cuando activas sus ajustes de alertas), Apple Terminal recibe en algunos casos un carácter de campana silencioso y las demás terminales no reciben nada. Para enviar el carácter de campana en cualquier terminal, pon esto en <code>~/.claude/settings.json</code>:</p>
+<pre><code>{
+  "preferredNotifChannel": "terminal_bell"
+}</code></pre>
+<p>En Apple Terminal activa además «Audible bell» en Ajustes, Perfiles, Avanzado para oírla. Para un sonido o un comando propio en cualquier terminal, usa un <a href="/hooks-claude-code-tres-para-pegar">hook</a> de Notification; los hooks se ejecutan junto a la notificación incluida. La notificación de escritorio llega también a tu equipo local por SSH. Si aun así no aparecen, comprueba que tu aplicación de terminal tiene permiso de notificaciones en tu sistema operativo.</p>
+<h2>Dentro de tmux</h2>
+<p>Por defecto dentro de tmux, Shift+Enter envía, y las notificaciones de escritorio y la barra de progreso no llegan a la terminal exterior. Añade estas líneas a <code>~/.tmux.conf</code> y ejecuta <code>tmux source-file ~/.tmux.conf</code>:</p>
+<pre><code>set -g allow-passthrough on
+set -g focus-events on
+set -s extended-keys on
+set -as terminal-features 'xterm*:extkeys'</code></pre>
+<p>La primera línea deja pasar las notificaciones y el progreso. Las líneas de extended-keys permiten a tmux distinguir Shift+Enter de Enter.</p>
+<h2>Retroceso borra una palabra entera en Windows</h2>
+<p>En Windows, Claude Code lee como Ctrl+Retroceso un Retroceso que llega como <code>^H</code>, y eso borra la palabra anterior. Si cada pulsación borra una palabra, pon la variable de entorno <code>CLAUDE_CODE_BS_AS_CTRL_BACKSPACE=0</code>. Si en cambio Ctrl+Retroceso borra un solo carácter en macOS o Linux, ponla a <code>1</code>.</p>
+<h2>Colores y parpadeo de pantalla</h2>
+<p>Usa <code>/theme</code> (o el selector de <code>/config</code>) para ajustarlo a tu terminal; la opción automática sigue tu fondo claro u oscuro. Si la pantalla parpadea o el desplazamiento salta mientras Claude trabaja, ejecuta <code>/tui fullscreen</code>, que guarda la elección. Después te desplazas con el ratón o con RePág dentro de Claude Code y no con el historial de tu terminal. El mismo cambio está disponible como <code>CLAUDE_CODE_NO_FLICKER=1</code>, en tu shell o en el bloque <code>env</code> de <code>settings.json</code> (mira <a href="/settings-json-claude-code-cual-manda">qué archivo de ajustes manda</a>). En una ventana muy ancha, <code>maxProseWidth</code> en tus ajustes ajusta la prosa de Claude a un número fijo de columnas.</p>
+<h2>Pegados grandes</h2>
+<p>Pegar más de 800 caracteres o más de tres líneas contrae la entrada en un marcador como <code>[Pasted text #1 +120 lines]</code>, y el contenido completo se envía igualmente al enviar. Para archivos enteros o registros largos, escribe el contenido en un archivo y pide a Claude que lo lea. La terminal integrada de VS Code también puede perder caracteres en pegados muy grandes, así que usa un archivo ahí. La documentación dice además que a Claude se le avisa de que un texto pegado puede contener instrucciones que no escribiste y que las siga solo donde tu propio mensaje se lo pida.</p>
+<h2>Teclas Vim en el prompt</h2>
+<p>Actívalo en <code>/config</code> en Editor mode, o pon <code>"editorMode": "vim"</code> en <code>~/.claude/settings.json</code>. Cubre un subconjunto de movimientos y operadores de Vim. A diferencia del Vim estándar, Enter sigue enviando en modo INSERT; usa <code>o</code> u <code>O</code> en modo NORMAL, o Ctrl+J, para una línea nueva.</p>
+<p>También puedes mostrar el modelo, la carpeta y la rama de git al pie de la pantalla con una <a href="/linea-de-estado-claude-code">línea de estado personalizada</a>. Todas las guías están en el <a href="/guias">índice de guías</a>.</p>
+<p>Esta página sigue <a href="https://code.claude.com/docs/en/terminal-config">la documentación de configuración de la terminal de Anthropic</a> tal como la leemos en octubre de 2026. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todas las terminales. Las terminales, los atajos y los valores por defecto cambian entre versiones (algunas cosas piden una versión reciente), y donde esta página y la documentación no coincidan, manda la documentación.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
