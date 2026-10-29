@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Claude Code remembers your project: CLAUDE.md and auto memory</title>
+<meta name="description" content="Claude Code starts every session with a fresh context. Two things carry knowledge across sessions: the CLAUDE.md you write and the notes Claude writes itself. What each one is for, where it lives, and what to check when Claude ignores it.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-memory-claude-md-vs-auto-memory">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/memoria-claude-code-claude-md-y-memoria-automatica">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-memory-claude-md-vs-auto-memory">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="How Claude Code remembers your project: CLAUDE.md and auto memory">
+<meta property="og:description" content="Claude Code starts every session with a fresh context. Two things carry knowledge across sessions: the CLAUDE.md you write and the notes Claude writes itself. What each one is for, where it lives, and what to check when Claude ignores it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-memory-claude-md-vs-auto-memory">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>How Claude Code remembers your project</h1>
+<p class="lead">Every Claude Code session starts with a fresh context window. Two things carry knowledge from one session to the next: a <code>CLAUDE.md</code> file you write, and notes Claude writes for itself, called auto memory. They do different jobs, and knowing which is which saves a lot of confusion.</p>
+<h2>The two, side by side</h2>
+<ul class="plain">
+<li><span class="n">CLAUDE.md</span><span class="d">Written by you. Instructions and rules: coding standards, workflows, how the project is laid out. Can live at project, user or organization level. Loaded at the start of every session.</span></li>
+<li><span class="n">Auto memory</span><span class="d">Written by Claude. Learnings and patterns: your preferences, corrections you gave it, project context it cannot work out from the code. Kept per repository. Only the start of its index file is loaded each session.</span></li>
+</ul>
+<p>Use CLAUDE.md when you want to steer Claude's behavior. Auto memory is there so Claude can learn from your corrections without you having to write anything down.</p>
+<h2>What auto memory saves</h2>
+<p>Claude files its notes under four kinds: <code>user</code> (your role and how you like to work), <code>feedback</code> (corrections and approaches you confirmed), <code>project</code> (ongoing work and decisions it cannot derive from the code or git history) and <code>reference</code> (where to find things outside the project, such as a tracker or a dashboard). It skips what it can read from the codebase, and what your CLAUDE.md already says. It does not save something every session.</p>
+<h3>Where it lives</h3>
+<p>Each project gets a folder at <code>~/.claude/projects/&lt;project&gt;/memory/</code>. All worktrees and subdirectories of the same git repository share it. It holds a <code>MEMORY.md</code> index, one line per memory, and one file per topic. At the start of a session Claude loads the first 200 lines or 25 KB of the index, whichever comes first. The topic files are read on demand. The files are plain markdown on your machine: not shared across machines, and yours to read, edit or delete.</p>
+<h3>Look, edit, switch off</h3>
+<ul>
+<li><code>/memory</code> lists the memory files, opens one in your editor and has the auto memory toggle and a link to its folder.</li>
+<li>Ask Claude to "remember that the API tests need a local Redis" and it saves that to auto memory. To put something in CLAUDE.md instead, say so: "add this to CLAUDE.md".</li>
+<li>To turn it off for one project, set <code>autoMemoryEnabled</code> to <code>false</code> in that project's settings. An environment variable, <code>CLAUDE_CODE_DISABLE_AUTO_MEMORY=1</code>, does the same.</li>
+</ul>
+<h2>When Claude ignores your CLAUDE.md</h2>
+<p>The documentation is direct about this: CLAUDE.md is context, not enforced configuration. Claude reads it and tries to follow it, but there is no guarantee, especially with vague or conflicting instructions. Check, in this order:</p>
+<ol>
+<li><strong>Is it loaded?</strong> Run <code>/context</code> and look under <em>Memory files</em>. If your file is not listed there, Claude cannot see it. (A CLAUDE.md in a subdirectory loads on demand, so it will not be listed at launch.)</li>
+<li><strong>Is it in the right place?</strong> Project, user and organization files load from different locations. See <a href="/claude-folder-explained-claude-code">the .claude folder explained</a>.</li>
+<li><strong>Is it specific?</strong> "Use 2-space indentation" works better than "format code nicely".</li>
+<li><strong>Do two files disagree?</strong> If two files give different guidance for the same thing, Claude may pick one arbitrarily.</li>
+<li><strong>Is it too long?</strong> The docs say files over 200 lines use more context and may reduce adherence. Trim what Claude can find in the code, such as directory listings and dependency lists. Splitting into <code>@path</code> imports tidies the file but does not save context, because imported files load with the file that imports them. Our <a href="/claude-md-checklist">CLAUDE.md checklist</a> goes through this.</li>
+<li><strong>Must it happen every time?</strong> Then it is not a CLAUDE.md job. A <a href="/claude-code-hooks-three-to-paste">hook</a> runs as a shell command at a fixed point whatever Claude decides. See <a href="/claude-md-vs-skill-vs-hook">CLAUDE.md, skill, hook or subagent</a> for how to choose.</li>
+</ol>
+<h2>When it seems to forget after /compact</h2>
+<p>According to the documentation, the project-root CLAUDE.md survives compaction: Claude re-reads it from disk afterwards. Nested CLAUDE.md files and path-scoped rules load again when needed. If an instruction vanished, it was probably given only in the conversation. Put anything that must persist in CLAUDE.md. For carrying work between sessions, a <a href="/claude-code-session-handoff">handoff note</a> helps too.</p>
+<h2>Already have an AGENTS.md?</h2>
+<p>Recent versions of Claude Code can read a repository's <code>AGENTS.md</code> as the project instructions, but by default only when there is no CLAUDE.md in your working directory or above. If both exist, it reads CLAUDE.md. The simple way to share one file is a CLAUDE.md that imports it with an <code>@AGENTS.md</code> line. This depends on your version and settings, so check the memory page of the documentation for yours.</p>
+<h2>Try it on something harmless</h2>
+<ol>
+<li>Run <code>/memory</code> and open the auto memory folder. Read what is in there.</li>
+<li>Run <code>/context</code> and check that the CLAUDE.md files you expect are listed.</li>
+<li>Find one vague line in your CLAUDE.md and rewrite it so a stranger could check whether it was followed.</li>
+</ol>
+<p>This follows <a href="https://code.claude.com/docs/en/memory">Anthropic's memory documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
