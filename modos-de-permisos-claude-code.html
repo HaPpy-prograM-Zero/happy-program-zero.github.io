@@ -113,7 +113,7 @@ footer .note{margin:0}
 <li>Si necesitas una garantía firme, escribe <b>reglas deny</b>. Valen en todos los modos. Mira <a href="/permisos-claude-code">una lista de partida de reglas de permisos</a>.</li>
 </ul>
 <h2>Lo que nunca se aprueba solo</h2>
-<p>Las escrituras en rutas protegidas no se aprueban automáticamente, salvo en el modo bypass. Entre los directorios protegidos están <code>.git</code>, <code>.vscode</code>, <code>.idea</code> y <code>.claude</code>. Entre los archivos protegidos están los de arranque de la terminal como <code>.bashrc</code>, además de <code>.npmrc</code> y <code>.mcp.json</code>. Una regla allow en un archivo de ajustes no aprueba de antemano una escritura ahí.</p>
+<p>Las escrituras en rutas protegidas no se aprueban automáticamente, salvo en el modo bypass. Entre los directorios protegidos están <code>.git</code>, <code>.vscode</code>, <code>.idea</code> y <code>.claude</code>. Entre los archivos protegidos están los de arranque de la terminal como <code>.bashrc</code>, además de <code>.npmrc</code> y <code>.mcp.json</code>. Una regla allow en un archivo de ajustes no aprueba de antemano una escritura ahí. Incluso en el modo bypass, una lista corta de acciones, como borrar con <code>rm</code> rutas críticas del sistema, sigue pidiendo confirmación o se rechaza.</p>
 <h2>Cuál elegir</h2>
 <ul>
 <li>No sabes qué va a hacer un proyecto: Manual, o Plan primero.</li>

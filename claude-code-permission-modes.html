@@ -113,7 +113,7 @@ footer .note{margin:0}
 <li>If you need a hard guarantee, write <b>deny rules</b>. They hold in every mode. See <a href="/claude-code-permissions-starter">a starter list of permission rules</a>.</li>
 </ul>
 <h2>What is never approved automatically</h2>
-<p>Writes to protected paths are not auto-approved, except in bypass mode. Protected directories include <code>.git</code>, <code>.vscode</code>, <code>.idea</code> and <code>.claude</code>. Protected files include shell startup files such as <code>.bashrc</code>, <code>.npmrc</code> and <code>.mcp.json</code>. An allow rule in a settings file does not pre-approve a write there.</p>
+<p>Writes to protected paths are not auto-approved, except in bypass mode. Protected directories include <code>.git</code>, <code>.vscode</code>, <code>.idea</code> and <code>.claude</code>. Protected files include shell startup files such as <code>.bashrc</code>, <code>.npmrc</code> and <code>.mcp.json</code>. An allow rule in a settings file does not pre-approve a write there. Even in bypass mode, a short list of actions, such as removing critical system paths with <code>rm</code>, still prompts or is refused.</p>
 <h2>Which one to pick</h2>
 <ul>
 <li>Not sure what a project will do: Manual, or Plan first.</li>
