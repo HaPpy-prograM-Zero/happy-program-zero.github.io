@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comandos con barra de Claude Code que conviene conocer, por orden de uso</title>
+<meta name="description" content="Un paseo corto por los comandos con barra de Claude Code que importan, agrupados por el momento en que los necesitas: primera sesión, durante una tarea, conversaciones largas, preguntas aparte, trabajo en paralelo, antes de entregar, entre sesiones y cuando algo falla. Y cómo se comporta el menú de la barra.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/comandos-claude-code-los-que-conviene-conocer">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-slash-commands-worth-knowing">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/comandos-claude-code-los-que-conviene-conocer">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Comandos con barra de Claude Code que conviene conocer, por orden de uso">
+<meta property="og:description" content="Un paseo corto por los comandos con barra de Claude Code que importan, agrupados por el momento en que los necesitas: primera sesión, durante una tarea, conversaciones largas, preguntas aparte, trabajo en paralelo, antes de entregar, entre sesiones y cuando algo falla. Y cómo se comporta el menú de la barra.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/comandos-claude-code-los-que-conviene-conocer">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Comandos con barra de Claude Code que conviene conocer, por orden de uso</h1>
+<p class="lead">Escribe <code>/</code> en Claude Code y sale un menú larguísimo. Nadie necesita todo eso. Estos son los comandos que de verdad se usan, agrupados por el momento en que los buscas, con lo que hace cada uno en una frase.</p>
+<h2>Cómo se comporta el menú</h2>
+<ul>
+<li>Escribe <code>/</code> para ver lo disponible, o <code>/</code> y unas letras para filtrar. Pulsa <kbd>Enter</kbd> sobre la sugerencia resaltada para ejecutarla.</li>
+<li>Un comando solo se reconoce al <strong>principio</strong> del mensaje. Lo que va detrás del nombre pasa a ser sus argumentos.</li>
+<li>Si te equivocas al escribirlo, no se resalta nada. Puedes elegir uno parecido con <kbd>Tab</kbd> o las flechas, pero <kbd>Enter</kbd> envía tu texto tal cual y recibes <code>Unknown command</code>.</li>
+<li>Si mandas un comando mientras Claude aún responde, espera a que termine la respuesta. Unos pocos se ejecutan al instante, como <code>/status</code>, <code>/tasks</code> y <code>/usage</code>.</li>
+<li>No todos los comandos salen para todo el mundo. Según la documentación, tal como la leemos, depende de tu plataforma, tu plan y tu configuración. Uno que no ves puede que simplemente no exista para ti.</li>
+<li>Tus propias <a href="/como-escribir-una-skill-claude-code">skills</a> y los prompts de tus <a href="/anadir-servidor-mcp-claude-code">servidores MCP</a> aparecen en el mismo menú, así que la lista de tu equipo es más larga que la de otro.</li>
+</ul>
+<h2>Primera sesión en un proyecto</h2>
+<ul>
+<li><code>/init</code> genera un <code>CLAUDE.md</code> inicial para el proyecto. Tómalo como un primer borrador y recórtalo.</li>
+<li><code>/memory</code> te deja editar tus archivos <code>CLAUDE.md</code>, activar o desactivar la memoria automática y ver lo que guardó. Mira <a href="/memoria-claude-code-claude-md-y-memoria-automatica">CLAUDE.md y memoria automática</a>.</li>
+<li><code>/mcp</code> gestiona las conexiones con servidores MCP, incluido iniciar sesión en los que lo piden.</li>
+<li><code>/permissions</code> abre tus reglas de permitir, preguntar y denegar. Un buen punto de partida está en <a href="/permisos-claude-code">la guía de permisos</a>.</li>
+<li><code>/config</code> abre los ajustes: tema, modelo, estilo de salida y otras preferencias. Si recuerdas un comando aparte para vim, la documentación dice que ahora la edición con vim está en <code>/config</code>, en Editor mode.</li>
+<li><code>/doctor</code> hace una revisión de la instalación, los ajustes, las extensiones y los problemas de <code>CLAUDE.md</code>, y propone arreglos que Claude aplica solo cuando tú confirmas.</li>
+</ul>
+<h2>Durante una tarea</h2>
+<ul>
+<li><code>/plan</code> entra en modo plan desde el prompt. Si añades una descripción, empieza ya con esa tarea, por ejemplo <code>/plan arregla el error del login</code>. Más sobre los modos en <a href="/modos-de-permisos-claude-code">modos de permisos</a>.</li>
+<li><code>/model</code> cambia el modelo y lo guarda como el de por defecto en las sesiones nuevas. En el selector, <kbd>s</kbd> sobre una fila cambia solo para la sesión actual.</li>
+<li><code>/effort</code> fija cuánto razonamiento aplica el modelo, desde <code>low</code> hacia arriba, o <code>auto</code>. <code>/effort status</code> muestra el nivel actual.</li>
+<li><code>/add-dir &lt;ruta&gt;</code> da a Claude acceso a otro directorio durante esta sesión. Según lo que leemos, la mayor parte de la configuración de <code>.claude/</code> no se recoge del directorio añadido.</li>
+<li><code>/goal</code> mantiene a Claude trabajando turno tras turno hasta que se cumple una condición que tú escribes. Mira <a href="/comando-goal-claude-code">la guía de goal</a>.</li>
+</ul>
+<h2>Cuando la conversación se alarga</h2>
+<ul>
+<li><code>/context</code> dibuja cuánto se ha llenado la ventana de contexto y sugiere qué recortar.</li>
+<li><code>/compact</code> resume la conversación para liberar espacio. Puedes añadir instrucciones de enfoque, por ejemplo <code>/compact conserva las decisiones de la API</code>. Lo que sobrevive está en <a href="/ventana-de-contexto-claude-code-que-sobrevive-a-compact">qué sobrevive a un compact</a>.</li>
+<li><code>/clear</code> empieza una conversación nueva con el contexto vacío y conserva la memoria del proyecto. Si le pasas un nombre, etiqueta la anterior en la lista de reanudar. <code>/new</code> y <code>/reset</code> hacen lo mismo.</li>
+<li><code>/usage</code> muestra el coste de la sesión, los límites de tu plan y la actividad. <code>/cost</code> y <code>/stats</code> son alias. Formas de gastar menos en <a href="/gastar-menos-cuota-claude-code">gastar menos cuota</a>.</li>
+</ul>
+<h2>Una pregunta que no debe ensuciar el chat</h2>
+<ul>
+<li><code>/btw</code> hace una pregunta aparte sobre la sesión sin añadirla al historial de la conversación. Ejecútalo sin pregunta para repasar las respuestas anteriores.</li>
+<li><code>/tasks</code> lista el trabajo en segundo plano de la sesión actual, incluidos los subagentes que ya terminaron.</li>
+</ul>
+<h2>Trabajar en paralelo</h2>
+<ul>
+<li><code>/background</code> separa toda la sesión para que siga como agente en segundo plano y te libera la terminal. Síguela con <code>claude agents</code>.</li>
+<li><code>/fork</code> copia la conversación en una sesión nueva en segundo plano y te deja seguir trabajando en esta. <code>/branch</code>, en cambio, te pasa a una copia para probar otro camino; la original sigue disponible con <code>/resume</code>.</li>
+<li><code>/batch</code> planifica un cambio grande que afecta a todo el código y, cuando apruebas el plan, ejecuta cada pieza independiente en su propio worktree. Gasta bastante más que una tarea normal, así que empieza pequeño. Relacionado: <a href="/worktrees-claude-code-sesiones-en-paralelo">worktrees y sesiones en paralelo</a>.</li>
+<li><code>/loop</code> repite un prompt con un horario mientras la sesión sigue abierta. Mira <a href="/programar-tareas-loop-claude-code">la guía de loop</a>.</li>
+</ul>
+<h2>Antes de entregar</h2>
+<ul>
+<li><code>/diff</code> muestra lo que cambió en tu árbol de trabajo, incluidas las ediciones de Claude.</li>
+<li><code>/code-review</code> revisa el diff actual en busca de errores de corrección, y <code>--fix</code> aplica lo que encuentre. Pásale el número de una pull request para revisar esa. <code>/review</code> es un alias.</li>
+<li><code>/security-review</code> revisa los cambios de tu rama en busca de problemas de seguridad, como inyecciones o datos expuestos. Necesita un remoto <code>origin</code>.</li>
+</ul>
+<h2>Entre sesiones</h2>
+<ul>
+<li><code>/resume</code> reabre una conversación anterior por nombre o ID, o muestra el selector.</li>
+<li><code>/rename</code> pone nombre a la sesión actual, o lo genera a partir de la conversación si no das ninguno.</li>
+<li><code>/export</code> escribe la conversación como texto plano en un archivo o en el portapapeles. <code>/copy</code> copia la última respuesta, o la N-ésima más reciente con un número, y ofrece un selector para los bloques de código.</li>
+</ul>
+<h2>Cuando algo falla</h2>
+<ul>
+<li><code>/rewind</code> devuelve el código y la conversación a un punto anterior. <code>/undo</code> y <code>/checkpoint</code> son alias. Detalles en <a href="/deshacer-cambios-claude-code-rewind">deshacer cambios con rewind</a>.</li>
+<li><code>/debug</code> activa el registro de depuración de la sesión y lee el registro para diagnosticar un problema en marcha. El registro empieza desde ese momento, no antes.</li>
+<li><code>/doctor</code> otra vez, para problemas de instalación y ajustes. Mira también <a href="/depurar-configuracion-claude-code">depurar tu configuración</a>.</li>
+<li><code>/feedback</code> envía un informe de error con el contexto de la sesión, tras un paso de consentimiento.</li>
+</ul>
+<h2>Aspecto</h2>
+<ul>
+<li><code>/theme</code> cambia el tema de color, con una opción automática que sigue a tu terminal.</li>
+<li><code>/statusline</code> configura la línea de abajo. Mira <a href="/linea-de-estado-claude-code">la guía de la línea de estado</a>.</li>
+<li><code>/tui</code> cambia el renderizado, y <code>/focus</code> oculta todo menos tu último mensaje, un resumen de herramientas y la respuesta. Los dos están en <a href="/pantalla-completa-claude-code-parpadeo">la guía de pantalla completa</a>.</li>
+<li><code>/terminal-setup</code> instala un salto de línea con <kbd>Shift</kbd>+<kbd>Enter</kbd> en algunas terminales. Mira <a href="/terminal-claude-code">la guía de la terminal</a>.</li>
+</ul>
+<h2>Cinco para aprender primero</h2>
+<p>Si solo memorizas unos pocos: <code>/clear</code> entre tareas sin relación, <code>/context</code> para ver qué llena la ventana, <code>/rewind</code> cuando una edición salió mal, <code>/btw</code> para preguntas rápidas y <code>/doctor</code> cuando algo no va bien. Los atajos equivalentes están en <a href="/atajos-de-teclado-claude-code">atajos de teclado que merece la pena aprender</a>.</p>
+<p>Todas las guías están en el <a href="/guias">índice de guías</a>, y las palabras raras en <a href="/glosario-claude-code-en-llano">el glosario</a>. Esta página sigue <a href="https://code.claude.com/docs/en/commands">la referencia de comandos de Anthropic</a> tal como la leemos en octubre de 2026, acortada a propósito. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos ejecutado todos los comandos en todas las configuraciones. Los comandos, los alias y los límites de versión cambian, y donde esta página y la documentación no coincidan, manda la documentación. Ejecuta <code>/help</code> o escribe <code>/</code> para ver lo que ofrece tu copia.</p>
+<p>La skill gratis <a href="https://github.com/happy-program-zero/loop-stop">loop-stop</a> da a las tareas largas un límite y una regla de parada. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
