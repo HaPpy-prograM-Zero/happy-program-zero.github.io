@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep Claude Code working toward a goal with /goal</title>
+<meta name="description" content="How /goal works in Claude Code: set a completion condition, write one that a checker can verify, bound it with a turn limit, check status, clear it, resume it, run it with -p, and what stops or pauses a goal.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-goal-command">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/comando-goal-claude-code">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-goal-command">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Keep Claude Code working toward a goal with /goal">
+<meta property="og:description" content="How /goal works in Claude Code: set a completion condition, write one that a checker can verify, bound it with a turn limit, check status, clear it, resume it, run it with -p, and what stops or pauses a goal.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-goal-command">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Keep Claude Code working toward a goal with /goal</h1>
+<p class="lead"><code>/goal</code> sets a finish line. After every turn, a second model checks whether the condition is true; if not, Claude starts another turn instead of handing control back to you. The goal clears when the condition is met, when the checker judges it impossible, or when an error you have to fix stops the turn. Here is how to use it without losing control of the clock or the bill.</p>
+<h2>When it fits</h2>
+<p>Substantial work with an end state you can verify: migrating a module until every call site compiles and the tests pass, implementing a design doc until each acceptance criterion holds, splitting a big file until each part is under a size limit, or working through a labeled backlog until the queue is empty. For vague or open-ended work, use a normal conversation.</p>
+<h2>/goal, /loop or a Stop hook?</h2>
+<ul>
+<li><strong><code>/goal</code>:</strong> the next turn starts when the last one finishes. It stops when the checker says the condition is met or impossible, when a turn fails on an error you have to fix, or when you clear it.</li>
+<li><strong><code>/loop</code>:</strong> the next turn starts when a time interval passes. It stops when you stop it or Claude decides the work is done. See <a href="/claude-code-loop-scheduled-tasks">scheduling with /loop</a>.</li>
+<li><strong>Stop hook:</strong> fires after every turn like <code>/goal</code>, but lives in your settings file, applies to every session in its scope, and can run your own script or prompt as the check.</li>
+</ul>
+<p>As we read the docs, <code>/goal</code> is a shortcut for a session-scoped, prompt-based Stop hook. It also pairs with auto mode: auto mode removes the per-tool prompts, <code>/goal</code> removes the per-turn prompts. A goal does not change your permission mode, so in manual mode Claude still asks before anything your settings don't already allow.</p>
+<h2>Set one</h2>
+<pre><code>/goal all tests in test/auth pass and the lint step is clean</code></pre>
+<p>Setting a goal starts a turn right away, with the condition as the instruction. One goal can be active per session; a new one replaces the old. A <code>/goal active</code> indicator shows how long it has been running, and you can press <kbd>Ctrl</kbd>+<kbd>O</kbd> to see the reason behind each verdict.</p>
+<h2>Write a condition the checker can verify</h2>
+<p>The checker only judges what Claude has put in the conversation. It does not run commands or open files itself. So write the condition as something Claude's own output can demonstrate: "all tests in test/auth pass" works because Claude runs the tests and the result appears in the transcript. A good condition usually has:</p>
+<ul>
+<li><strong>One measurable end state:</strong> a test result, a build exit code, a file count, an empty queue.</li>
+<li><strong>A stated check:</strong> "<code>npm test</code> exits 0", "<code>git status</code> is clean".</li>
+<li><strong>Constraints that matter:</strong> "no other test file is modified".</li>
+</ul>
+<p>It can be up to 4,000 characters. To bound how long it runs, put a limit in the condition itself, such as <code>or stop after 20 turns</code>; Claude reports progress against it each turn.</p>
+<h2>Status, clear, resume</h2>
+<ul>
+<li><code>/goal</code> alone shows the condition, how long it has run, turns evaluated, token spend so far and the checker's latest reason.</li>
+<li><code>/goal clear</code> removes it. <code>stop</code>, <code>off</code>, <code>reset</code>, <code>none</code> and <code>cancel</code> work too, and <code>/clear</code> removes any active goal.</li>
+<li>Resuming a session restores a goal that was still active. The condition carries over; the turn count, timer and token baseline start again. An achieved or cleared goal is not restored.</li>
+</ul>
+<h2>Without a screen</h2>
+<pre><code>claude -p "/goal CHANGELOG.md has an entry for every PR merged this week"</code></pre>
+<p>With <code>-p</code> the whole loop runs in one call. With the default text output you only see the final answer, so a long goal can look stuck; add <code>--output-format stream-json --verbose</code> to see each message as it happens. <kbd>Ctrl</kbd>+<kbd>C</kbd> stops it. More on non-interactive runs in <a href="/run-claude-code-from-a-script">running Claude Code from a script</a>.</p>
+<h2>How the check works, and what it costs</h2>
+<p>When Claude finishes a turn, Claude Code sends the condition and the conversation so far to your small, fast model, which answers <strong>not yet met</strong> (Claude continues, using the reason as guidance), <strong>met</strong> (the goal clears) or <strong>impossible</strong> (it clears with the reason recorded). If Claude keeps answering the checker without using any tool for several turns, Claude Code stops the loop and gives control back with the goal still set. The docs say the checker's tokens are billed on the small model and are typically small next to the main turns, so the real cost is the turns themselves; that is why a turn limit in the condition matters. One warning from the docs: <code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code>, which changes the checker's model, also changes the model used for the <code>haiku</code> alias, session titles and some other background tasks.</p>
+<h2>What clears or pauses a goal</h2>
+<ul>
+<li><strong>Errors you have to fix clear it:</strong> a sign-in failure (when Claude Code manages its own credentials), an exhausted credit balance, a context overflow that auto-compaction couldn't clear, or an unavailable model. Fix the cause and run <code>/goal</code> again.</li>
+<li><strong>Other errors keep it set.</strong> Ones that tend to clear alone, like an overloaded server or a dropped connection, are retried (after three tries it pauses). Ones a retry would only repeat, like a rate limit, a usage limit or a hook that ended the turn, pause it with a notice. Send any message to restart at once.</li>
+<li><strong>Background work delays the check:</strong> if a subagent or a background command is still running when a turn ends, that turn isn't evaluated. After about 30 minutes of waiting, Claude Code does a check-in: it lists what is running and asks Claude to read the output, keep waiting or stop stuck tasks.</li>
+</ul>
+<h2>Requirements</h2>
+<p><code>/goal</code> is part of the hooks system, so it follows the same workspace-trust rule as hooks in settings files. It is unavailable when <code>disableAllHooks</code> is true or when managed settings allow only managed hooks; the command says why instead of doing nothing.</p>
+<p>All the guides are in the <a href="/guides">guides index</a>. For the hooks behind it, see <a href="/claude-code-hooks-three-to-paste">the hooks guide</a>. This follows <a href="https://code.claude.com/docs/en/goal">Anthropic's /goal documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every case. Details such as retries, check-ins and requirements depend on your version, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule, which is the same idea as the turn limit above. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
