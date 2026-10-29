@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code fullscreen mode: flicker, scrolling and copying</title>
+<meta name="description" content="How Claude Code's fullscreen rendering works: switch it on or off with /tui, what changes for search, scrolling and copying, how to keep native text selection, tmux and Windows Terminal quirks, and what the fallback message at startup means.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-fullscreen-flicker-scrolling">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/pantalla-completa-claude-code-parpadeo">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-fullscreen-flicker-scrolling">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code fullscreen mode: flicker, scrolling and copying">
+<meta property="og:description" content="How Claude Code's fullscreen rendering works: switch it on or off with /tui, what changes for search, scrolling and copying, how to keep native text selection, tmux and Windows Terminal quirks, and what the fallback message at startup means.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-fullscreen-flicker-scrolling">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code fullscreen mode: flicker, scrolling and copying</h1>
+<p class="lead">If your screen flashes while Claude works, the scroll position jumps to the top, or a very long conversation makes your terminal sluggish, fullscreen rendering is the setting aimed at exactly that. It also changes how you search, scroll and copy, which is why it surprises people. Here is what it does and how to switch it on or off.</p>
+<h2>What it is</h2>
+<p>As we read the docs, fullscreen rendering draws Claude Code on the terminal's alternate screen, the way <code>vim</code> or <code>htop</code> do, and only renders the messages you can see. That cuts flicker, keeps memory flat in long conversations and adds mouse support. The input box stays fixed at the bottom. If it does not move while Claude is working, you are in fullscreen. The name has nothing to do with maximizing your window.</p>
+<p>The docs call it a research preview, so details can change. It helps most in terminals where drawing speed is the bottleneck, such as the VS Code terminal, tmux and iTerm2.</p>
+<h2>Switch it on or off</h2>
+<ul>
+<li><code>/tui fullscreen</code> relaunches into fullscreen with your conversation intact and saves the choice.</li>
+<li><code>/tui default</code> goes back to the classic renderer.</li>
+<li><code>/tui</code> alone tells you which one is active, and why if a failed start sent you to classic.</li>
+<li>For one launch, set <code>CLAUDE_CODE_NO_FLICKER=1</code> before <code>claude</code>. To force classic whatever your saved setting says, set <code>CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1</code>.</li>
+</ul>
+<pre><code>CLAUDE_CODE_NO_FLICKER=1 claude</code></pre>
+<p>Which renderer you start in depends on your setup and may differ between machines, so run <code>/tui</code> to see rather than guessing. Some sessions never switch, for example when launch flags it can't carry over are in use; Claude Code prints <code>Cannot switch renderers in this session</code> and changes nothing.</p>
+<h2>What changes when you use it</h2>
+<ul>
+<li><strong>Searching.</strong> Your terminal's <kbd>Cmd</kbd>+<kbd>F</kbd> and tmux search no longer see the conversation, because it is not in the normal scrollback. Press <kbd>Ctrl</kbd>+<kbd>O</kbd> for transcript mode, then <code>/</code> to search, <code>n</code> and <code>N</code> to jump between matches.</li>
+<li><strong>Handing it back to your terminal.</strong> In transcript mode, <code>[</code> writes the whole conversation into your terminal's own scrollback, so native search and tmux copy mode work. <code>v</code> opens it in your <code>$VISUAL</code> or <code>$EDITOR</code>.</li>
+<li><strong>Copying.</strong> Click and drag selects inside Claude Code and copies to your clipboard when you release the mouse. You can turn that off with Copy on select in <code>/config</code>.</li>
+<li><strong>Links.</strong> Hold <kbd>Cmd</kbd> on macOS, or <kbd>Ctrl</kbd> elsewhere, and click a URL or file path to open it.</li>
+<li><strong>A quieter view.</strong> <code>/focus</code> shows just your last prompt, a one-line summary of tool calls and the final answer. Run it again to turn it off.</li>
+</ul>
+<h2>Scrolling</h2>
+<ul>
+<li><kbd>PgUp</kbd> and <kbd>PgDn</kbd> scroll half a screen. <kbd>Ctrl</kbd>+<kbd>Home</kbd> jumps to the start and <kbd>Ctrl</kbd>+<kbd>End</kbd> to the latest message.</li>
+<li>On a MacBook keyboard, hold <kbd>Fn</kbd> with the arrow keys to get PgUp, PgDn, Home and End. The docs say the jump-to-bottom chord does not reach Claude Code there by default, so click the <code>Jump to bottom</code> button, scroll down, or rebind the <code>scroll:bottom</code> action (see <a href="/customize-claude-code-keybindings">customizing shortcuts</a>).</li>
+<li>Scrolling up pauses auto-follow so new output doesn't drag you down. Turn auto-follow off for good with Auto-scroll in <code>/config</code>.</li>
+<li>Wheel too slow or too fast? Set <code>CLAUDE_CODE_SCROLL_SPEED</code> (a positive number up to 20, fractions allowed), or run <code>/scroll-speed</code> and adjust it live.</li>
+<li>If the wheel does nothing but PgUp works, your terminal may not be forwarding mouse events. In iTerm2 that is the Enable mouse reporting option in the profile.</li>
+</ul>
+<h2>Keep your terminal's own selection</h2>
+<p>Mouse capture is the most common complaint, especially over SSH or inside tmux, because tmux copy mode and similar tools can't see a selection made inside Claude Code. Two ways around it:</p>
+<ul>
+<li><strong>One-off:</strong> hold a modifier while you drag so your terminal handles the selection. As we read the docs it is <kbd>Fn</kbd> in Terminal.app, <kbd>Option</kbd> in iTerm2 and <kbd>Shift</kbd> in most others. Claude Code shows the right key in its on-screen hint.</li>
+<li><strong>Always:</strong> <code>CLAUDE_CODE_DISABLE_MOUSE=1</code> keeps the flicker-free drawing and flat memory but gives up mouse capture. You lose click-to-position, click-to-expand and wheel scrolling inside Claude Code; PgUp and PgDn still work. <code>CLAUDE_CODE_DISABLE_MOUSE_CLICKS=1</code> keeps the wheel and disables only clicks. When both are set, <code>CLAUDE_CODE_DISABLE_MOUSE</code> wins.</li>
+</ul>
+<pre><code>CLAUDE_CODE_NO_FLICKER=1 CLAUDE_CODE_DISABLE_MOUSE=1 claude</code></pre>
+<h2>tmux</h2>
+<ul>
+<li>For wheel scrolling, turn tmux mouse mode on: <code>set -g mouse on</code> in <code>~/.tmux.conf</code>, then reload. PgUp and PgDn work either way.</li>
+<li>Do not use it with iTerm2's <code>tmux -CC</code> integration mode. The docs say the wheel does nothing there and double-click can corrupt the terminal. Plain tmux inside iTerm2 is fine.</li>
+<li>Older tmux releases lack synchronized output, so you may still see some flicker. Upgrade tmux, or run Claude Code in its own tab outside tmux.</li>
+</ul>
+<h2>When something looks wrong</h2>
+<ul>
+<li><strong>Garbled or half-blank screen:</strong> press <kbd>Ctrl</kbd>+<kbd>L</kbd> to redraw. Your conversation and input stay.</li>
+<li><strong>Stale fragments of old text, mostly in Windows Terminal:</strong> some terminals mishandle partial updates. Set <code>CLAUDE_CODE_ALT_SCREEN_FULL_REPAINT=1</code> so every cell is repainted each frame. In PowerShell: <code>$env:CLAUDE_CODE_ALT_SCREEN_FULL_REPAINT = "1"</code> and then <code>claude</code>.</li>
+<li><strong>“Fullscreen renderer didn't finish starting last time”:</strong> a fullscreen session on this machine crashed early, so Claude Code started the next one in classic. After repeated failures it stays classic until you update or run <code>/tui fullscreen</code>. <code>/tui</code> confirms this is the reason.</li>
+<li><strong>Still bad:</strong> go back with <code>/tui default</code>, and report it with <code>/feedback</code>, naming your terminal and its version.</li>
+</ul>
+<p>All the guides are in the <a href="/guides">guides index</a>. For the rest of your terminal setup, see <a href="/claude-code-terminal-setup">the terminal guide</a>, and if it is the whole app that drags, <a href="/fix-slow-claude-code">fix a slow or stuck Claude Code</a>. This follows <a href="https://code.claude.com/docs/en/fullscreen">Anthropic's fullscreen rendering documentation</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every terminal. This is a research preview, so keys, defaults and version limits can change, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
