@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to write a SKILL.md for Claude Code</title>
+<meta name="description" content="A plain walkthrough of a Claude Code SKILL.md: where the file goes, how to write the description so it triggers, what to put in the body, and how to test it.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/how-to-write-a-claude-code-skill">
+
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="How to write a SKILL.md for Claude Code">
+<meta property="og:description" content="A plain walkthrough of a Claude Code SKILL.md: where the file goes, how to write the description so it triggers, what to put in the body, and how to test it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/how-to-write-a-claude-code-skill">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/claude-md-checklist">CLAUDE.md checklist</a><a href="/stop-claude-code-loops">Stop loops</a><a href="/claude-code-session-handoff">Handoff notes</a><a href="/claude-code-ask-before-building">Ask first</a><a href="/how-to-write-a-claude-code-skill" class="on">Write a skill</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>How to write a SKILL.md for Claude Code</h1>
+<p class="lead">A skill is a folder with one text file in it. Most of the work is in the first two lines, because that is how Claude decides whether to use it.</p>
+<h2>Where it goes</h2>
+<p>One folder per skill, with a <code>SKILL.md</code> inside. Personal skills live in <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code>; skills for one project live in <code>.claude/skills/&lt;name&gt;/SKILL.md</code> inside that project. Restart the session after adding one.</p>
+<h2>The two lines that matter</h2>
+<pre><code>---
+name: session-handoff
+description: Use when the user ends a session. Writes a HANDOFF.md.
+---</code></pre>
+<p>The <code>name</code> is the folder name. The <code>description</code> is what Claude reads to decide whether the skill applies, so write it as a trigger, not as a title. Say <b>when</b> to use it, then <b>what it does</b>. Compare:</p>
+<ul>
+<li>Weak: <i>"Helps with notes."</i> It matches everything and nothing.</li>
+<li>Better: <i>"Use when the user ends a session or asks for a handoff. Writes HANDOFF.md from real git output."</i></li>
+</ul>
+<h2>The body: steps, one example, when to skip</h2>
+<ol>
+<li><b>One goal sentence</b> and a line on when <i>not</i> to use it.</li>
+<li><b>Numbered steps</b> in the order they happen. Verbs first: "Run <code>git status --short</code>", not "It is useful to check status".</li>
+<li><b>One worked example</b>: a real input and the output you want. It teaches more than a paragraph of rules.</li>
+<li><b>A check at the end</b>: what the agent confirms before it says it is done.</li>
+</ol>
+<p>Keep it short. Ours run from 15 to 48 lines. If a skill needs more, move the reasoning into a separate file next to it (we use a short <code>WHY.md</code>) and keep <code>SKILL.md</code> to the steps.</p>
+<h2>Test it before you trust it</h2>
+<ol>
+<li><b>Should trigger:</b> start a fresh session and ask for the task in plain words, without naming the skill. See whether it follows the steps.</li>
+<li><b>Should not trigger:</b> ask for something nearby that it does not cover. If the skill jumps in anyway, tighten the description.</li>
+<li><b>Read it as a stranger.</b> Any step that needs your memory to make sense will fail in another session.</li>
+<li><b>Scan for secrets.</b> Keys, paths with your name and private project names have no place in a file you share.</li>
+</ol>
+<h2>Common mistakes</h2>
+<ul>
+<li>A description that says what the skill is, not when to use it.</li>
+<li>Rules with no example, so the agent guesses the format.</li>
+<li>Three goals in one skill. Split it.</li>
+<li>No stop rule on anything that loops or searches.</li>
+</ul>
+<h2>Examples to read</h2>
+<p>Three small skills in this style, MIT licence, free to copy: <a href="https://github.com/happy-program-zero/loop-stop/tree/main/loop-stop">loop-stop</a>, <a href="https://github.com/happy-program-zero/loop-stop/tree/main/session-handoff">session-handoff</a> and <a href="https://github.com/happy-program-zero/loop-stop/tree/main/ask-before-building">ask-before-building</a>. We tested them by hand on our own projects; we have not measured them on other people's workflows.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
