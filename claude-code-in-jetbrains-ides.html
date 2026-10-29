@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code in JetBrains IDEs: plugin setup, shortcuts and fixes</title>
+<meta name="description" content="How to use Claude Code from IntelliJ, PyCharm, WebStorm and other JetBrains IDEs: install the CLI and the plugin, run claude in the IDE terminal or connect with /ide, the diff viewer and shortcuts, the settings worth knowing, the fixes for ESC, WSL and remote development, and a safety note about edit permissions.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/claude-code-in-jetbrains-ides">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/claude-code-en-jetbrains">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-in-jetbrains-ides">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Claude Code in JetBrains IDEs: plugin setup, shortcuts and fixes">
+<meta property="og:description" content="How to use Claude Code from IntelliJ, PyCharm, WebStorm and other JetBrains IDEs: install the CLI and the plugin, run claude in the IDE terminal or connect with /ide, the diff viewer and shortcuts, the settings worth knowing, the fixes for ESC, WSL and remote development, and a safety note about edit permissions.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/claude-code-in-jetbrains-ides">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Claude Code in JetBrains IDEs: plugin setup, shortcuts and fixes</h1>
+<p class="lead">If you work in IntelliJ IDEA, PyCharm, WebStorm, GoLand, PhpStorm or Android Studio, a plugin connects Claude Code to the IDE: changes open in the IDE's own diff viewer, your selection is shared automatically, and Claude can see the IDE's error markers. Here is how to set it up and what to check when it doesn't connect.</p>
+<h2>Install: two pieces</h2>
+<p>The plugin does not bundle Claude Code. It runs the <code>claude</code> command in the IDE's integrated terminal and connects to it, so you need both.</p>
+<ul>
+<li><strong>The CLI.</strong> Install Claude Code if you haven't (see the <a href="/guides">guides index</a> for the basics). If <code>claude</code> isn't on your PATH, the plugin shows a "Cannot launch Claude Code" notification.</li>
+<li><strong>The plugin.</strong> Install the Claude Code plugin from the JetBrains Marketplace and restart the IDE. If <code>claude</code> lives somewhere the IDE can't find, set the full path in the plugin's <strong>Claude command</strong> setting.</li>
+<li>Sign-in works with a paid Claude subscription or a Console account, and no API key is needed. You are asked to log in the first time you run <code>claude</code>.</li>
+</ul>
+<h2>Use it</h2>
+<ul>
+<li><strong>Inside the IDE:</strong> run <code>claude</code> in the integrated terminal and all the integration features are active. The shortcut to open it is <kbd>Ctrl</kbd>+<kbd>Esc</kbd> (<kbd>Cmd</kbd>+<kbd>Esc</kbd> on a Mac), or click the Claude Code button.</li>
+<li><strong>From an external terminal:</strong> start <code>claude</code> and type <code>/ide</code>. It confirms with a message like "Connected to IntelliJ IDEA." Start from the same directory as the project root if you want Claude to see the same files as the IDE.</li>
+<li><strong>Diffs:</strong> changes open in the IDE diff viewer instead of the terminal. In <code>/config</code>, the <strong>Diff tool</strong> setting switches between <code>auto</code> (IDE) and <code>terminal</code>. As we read the docs, that entry only appears while Claude Code is connected to the IDE.</li>
+<li><strong>Selection and files:</strong> your current selection or tab is shared with Claude, and <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>K</kbd> (<kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>K</kbd> on a Mac) inserts a reference such as <code>@src/auth.ts#L1-99</code>.</li>
+<li><strong>Diagnostics:</strong> Claude can read the IDE's inspection results (lint and syntax errors) when it asks for them. It does not ask for them on its own after every edit.</li>
+</ul>
+<p>It is the same idea as the <a href="/claude-code-in-vs-code-getting-started">VS Code extension</a>, with one difference: here Claude Code runs in the terminal and the plugin connects the IDE to it.</p>
+<h2>Settings worth knowing</h2>
+<p>Plugin settings are under <strong>Settings → Tools → Claude Code</strong>. The ones people need: the <strong>Claude command</strong> (a custom command or full path), a macOS option to use <kbd>Option</kbd>+<kbd>Enter</kbd> for new lines in a prompt, and automatic plugin updates. WSL users set the Claude command to run <code>claude</code> through <code>wsl -d</code> followed by your distribution name; the exact form is in the documentation.</p>
+<h2>When something doesn't work</h2>
+<ul>
+<li><strong>ESC doesn't interrupt Claude:</strong> in <strong>Settings → Tools → Terminal</strong>, untick "Move focus to the editor with Escape" (or remove the "Switch focus to Editor" shortcut under the terminal keybindings).</li>
+<li><strong>Features missing:</strong> run Claude Code from the project root, check the plugin is enabled, and restart the IDE completely (the docs say you may need to do it more than once).</li>
+<li><strong>"No available IDEs detected" after <code>/ide</code>:</strong> check the plugin is installed and enabled, restart the IDE, and if you expected an automatic connection, check you started <code>claude</code> from the IDE's terminal.</li>
+<li><strong>"Command not found" when clicking the icon:</strong> check <code>claude --version</code> works in a normal terminal, then set the command path in the plugin settings.</li>
+<li><strong>Remote Development:</strong> install the plugin on the remote host through <strong>Settings → Plugin (Host)</strong>, not on your local client.</li>
+<li><strong>WSL2 can't see the IDE:</strong> the usual cause is WSL2's network setup or Windows Firewall blocking the link between WSL2 and the IDE on Windows. The documentation describes two fixes: a firewall rule for the WSL2 subnet (an administrator step) or switching WSL2 to mirrored networking (Windows 11 22H2 or later). Follow its exact steps instead of copying commands from a summary.</li>
+</ul>
+<h2>A safety note</h2>
+<p>As we read the docs, in <code>acceptEdits</code> mode Claude may be able to change IDE configuration files that the IDE can run automatically, which could get around the permission prompts for shell commands. The docs suggest using manual approval for edits in a JetBrains IDE, using Claude only with prompts you trust, and knowing which files it can change. More on modes in <a href="/claude-code-permission-modes">permission modes</a>.</p>
+<p>The plugin also starts a local connection that the CLI uses to open diffs, read your selection and fetch diagnostics. Your selection and open file travel to Claude with each prompt; to keep a sensitive file such as <code>.env</code> out, add a Read deny rule for it (see <a href="/claude-code-permissions-starter">the permissions starter</a>). The setting "Accept connections from all network interfaces" makes that connection reachable from your local network and the traffic is not encrypted, so leave it off unless you have no other option.</p>
+<p>This follows <a href="https://code.claude.com/docs/en/jetbrains">Anthropic's JetBrains documentation</a> as we read it in October 2026, shortened on purpose. We are not affiliated with Anthropic or JetBrains. We wrote this from the documentation and have not tested every IDE or operating system. The plugin is still labelled beta, menu names and defaults change, and where this page and the documentation disagree, the documentation wins.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
