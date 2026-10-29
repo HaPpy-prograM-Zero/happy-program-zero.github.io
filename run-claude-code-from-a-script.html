@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run Claude Code from a script with claude -p</title>
+<meta name="description" content="How to run Claude Code non-interactively with claude -p: piping text in, JSON output, which tools to allow when nobody can click yes, bare mode, and one warning about repositories you did not write.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/run-claude-code-from-a-script">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/ejecutar-claude-code-desde-un-script">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/run-claude-code-from-a-script">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Run Claude Code from a script with claude -p">
+<meta property="og:description" content="How to run Claude Code non-interactively with claude -p: piping text in, JSON output, which tools to allow when nobody can click yes, bare mode, and one warning about repositories you did not write.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/run-claude-code-from-a-script">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Run Claude Code from a script with <code>claude -p</code></h1>
+<p class="lead">Add <code>-p</code> to a <code>claude</code> command and it answers once, prints the result and exits. That makes it usable inside shell scripts, build steps and scheduled jobs. The catch: nobody is there to click yes, so you have to decide in advance what it may do.</p>
+<h2>The basics</h2>
+<pre><code>claude -p "What does the auth module do?"</code></pre>
+<p>Claude Code exits with code 0 when the run succeeds and a non-zero code when it fails, so a script can branch on the exit status. It also reads standard input, so you can pipe text in and send the answer to a file:</p>
+<pre><code>cat build-error.txt | claude -p 'concisely explain the root cause of this build error' &gt; output.txt</code></pre>
+<p>Piped input is capped at 10 MB. For anything bigger, write it to a file and mention the file path in your prompt.</p>
+<h2>Choose the output format</h2>
+<ul class="plain">
+<li><span class="n"><code>text</code> (default)</span><span class="d">Plain text, for people or for a file.</span></li>
+<li><span class="n"><code>json</code></span><span class="d">One JSON object with the answer in <code>result</code>, plus the session ID and metadata, including <code>total_cost_usd</code> so a script can track spend.</span></li>
+<li><span class="n"><code>stream-json</code></span><span class="d">One JSON event per line as it happens. Needs <code>--verbose</code>, and <code>--include-partial-messages</code> for tokens as they arrive.</span></li>
+</ul>
+<pre><code>claude -p "Summarize this project" --output-format json | jq -r '.result'</code></pre>
+<p>To get an answer in a shape you define, add <code>--json-schema</code> with a JSON Schema. The data comes back in the <code>structured_output</code> field. If a run ends without valid structured output, for example because Claude declined, that field is missing, so check that it is there before you use it.</p>
+<h2>What it may do when nobody can click yes</h2>
+<p>In a <code>claude -p</code> run in the default Manual mode, a tool call that would normally ask for approval is denied unless something approves it. You have three simple ways to say yes ahead of time:</p>
+<ul>
+<li><b>Allow specific tools:</b> <code>--allowedTools "Read,Edit"</code>. Listing <code>Bash</code> allows shell commands, and you can narrow it with the same pattern rules as in settings: <code>"Bash(git diff *),Bash(git status *)"</code>. The trailing <code> *</code> matches any command that starts with those words, and the space before the star matters, because <code>Bash(git diff*)</code> would also match <code>git diff-index</code>.</li>
+<li><b>Pick a mode:</b> <code>--permission-mode acceptEdits</code> lets Claude write files without asking. <code>dontAsk</code> denies everything that is not pre-approved, which suits locked-down jobs. <code>auto</code> hands the decision to a classifier. See <a href="/claude-code-permission-modes">the permission modes explained</a>.</li>
+<li><b>No prompts at all:</b> <code>--permission-prompts none</code> denies anything that would have asked and tells Claude that nobody can approve it, so it does not keep retrying.</li>
+</ul>
+<p>A starting list of rules is in <a href="/claude-code-permissions-starter">a starter list of permission rules</a>. Deny rules still apply in a script run.</p>
+<h2>Bare mode, and why it matters</h2>
+<p>By default a <code>-p</code> run loads what an interactive session would: hooks, skills, subagents, plugins, MCP servers, auto memory and CLAUDE.md. Add <code>--bare</code> and it skips all of that. You then pass in only what you want, for example <code>--settings</code>, <code>--mcp-config</code> or <code>--append-system-prompt</code>.</p>
+<pre><code>claude --bare -p "Summarize README.md" --allowedTools "Read"</code></pre>
+<p>Two things to know. First, bare mode does not use your subscription login: it needs <code>ANTHROPIC_API_KEY</code> or another provider's credentials. Second, the documentation recommends bare mode for scripts and CI, because the result no longer depends on whatever hooks or servers happen to be on that machine.</p>
+<h2>One warning about repositories you did not write</h2>
+<p>Without <code>--bare</code>, a <code>-p</code> run executes the hooks in the project's <code>.claude/settings.json</code> and connects the servers in its <code>.mcp.json</code>, even in a folder you have never trusted. Print mode shows no trust dialog and no per-server approval prompt. So before you point a script at a repository you did not write, read those two files, or use <code>--bare</code>.</p>
+<h2>Keep a conversation going</h2>
+<pre><code>claude -p "Review this codebase for performance issues"
+claude -p "Now focus on the database queries" --continue</code></pre>
+<p><code>--continue</code> picks up the most recent conversation. To resume a specific one, capture its ID:</p>
+<pre><code>session_id=$(claude -p "Start a review" --output-format json | jq -r '.session_id')
+claude -p "Continue that review" --resume "$session_id"</code></pre>
+<h2>Good to know</h2>
+<ul>
+<li><b>Commands:</b> skills you invoke by name work if you put <code>/skill-name</code> in the prompt. Commands that only exist in the terminal interface, such as <code>/login</code>, are not available.</li>
+<li><b>Stopping a run:</b> SIGTERM exits with code 143 and leaves the turn in progress unfinished. Send SIGINT first if you want the turn to end cleanly.</li>
+<li><b>Spending:</b> the documentation mentions a <code>--max-budget-usd</code> option that caps a run's spend. Check the CLI reference for how it works in your version.</li>
+<li><b>Not every option combines with <code>-p</code>.</b> Claude Code rejects some with an error that names the conflict.</li>
+</ul>
+<h2>Try it on something harmless</h2>
+<ol>
+<li>Run <code>echo "hello" | claude -p "reply with one word"</code> and check that you get an answer.</li>
+<li>Run the same with <code>--output-format json</code> and look at the fields.</li>
+<li>Run <code>echo $?</code> right after (or <code>echo %errorlevel%</code> on Windows cmd) and confirm 0.</li>
+</ol>
+<h2>Limits</h2>
+<ul>
+<li>Flags and defaults change between versions, and several details on the documentation page need a minimum version. Check yours with <code>claude --version</code>.</li>
+<li>This covers the command line. The Python and TypeScript packages have their own documentation.</li>
+</ul>
+<p>This follows <a href="https://code.claude.com/docs/en/headless">Anthropic's documentation on running Claude Code programmatically</a> as we read it in October 2026. We are not affiliated with Anthropic. We wrote this from the documentation and have not tested every example.</p>
+<p>The free <a href="https://github.com/happy-program-zero/loop-stop">loop-stop skill</a> gives long tasks a limit and a stop rule. If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
