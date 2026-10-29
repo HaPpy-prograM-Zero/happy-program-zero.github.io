@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qué archivo de settings.json manda en Claude Code</title>
+<meta name="description" content="Los sitios de donde Claude Code lee settings.json, cuál gana cuando discrepan, cómo se suman las listas y cómo comprobar qué se cargó.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/settings-json-claude-code-cual-manda">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/claude-code-settings-precedence">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/settings-json-claude-code-cual-manda">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Qué archivo de settings.json manda en Claude Code">
+<meta property="og:description" content="Los sitios de donde Claude Code lee settings.json, cuál gana cuando discrepan, cómo se suman las listas y cómo comprobar qué se cargó.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/settings-json-claude-code-cual-manda">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/es"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/es">Inicio</a><a href="/guias" class="on">Guías</a><a href="/">English</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Qué archivo de settings.json manda en Claude Code</h1>
+<p class="lead">Cambias un ajuste, no pasa nada y no sabes por qué. Lo normal es que la misma clave esté puesta en un segundo archivo que va por encima del tuyo. Esta página lista los archivos y el orden.</p>
+<h2>Las cuatro fuentes</h2>
+<ul class="plain">
+<li><span class="n">Usuario</span><span class="d"><code>~/.claude/settings.json</code>. Tú, en todos los proyectos de esta máquina. Sirve para preferencias personales y tus propias reglas de permisos.</span></li>
+<li><span class="n">Proyecto compartido</span><span class="d"><code>.claude/settings.json</code> dentro del proyecto. Todos los que trabajan en esa carpeta. En un repositorio git lo subes para que lo tenga tu equipo.</span></li>
+<li><span class="n">Proyecto local</span><span class="d"><code>.claude/settings.local.json</code>. Tú, solo en este proyecto. Para cambios personales y para probar algo antes de compartirlo.</span></li>
+<li><span class="n">Gestionado</span><span class="d">Lo despliega una organización. Tú no lo creas ni lo editas.</span></li>
+</ul>
+<p>En Windows, <code>~/.claude</code> es <code>%USERPROFILE%\.claude</code>. Instalar Claude Code no crea ninguno de estos archivos. El menú <code>/config</code> escribe el archivo de usuario la primera vez que cambias una opción que se guarda ahí, y una aprobación permanente como «Yes, and don't ask again» en un aviso de permiso escribe el archivo local.</p>
+<p>Hay un quinto archivo, <code>~/.claude.json</code>. Lo escribe Claude Code para sí mismo y guarda cosas como los datos de la cuenta, la configuración de servidores MCP y las decisiones de confianza. No hace falta que lo edites.</p>
+<h2>Cuál gana</h2>
+<p>Cuando la misma clave está puesta en más de un sitio, Claude Code usa el valor del nivel más alto. De más alto a más bajo:</p>
+<ol>
+<li>Ajustes gestionados de tu organización.</li>
+<li>La línea de comandos: JSON que pasas con <code>--settings</code> para una sola sesión.</li>
+<li>Proyecto local: <code>.claude/settings.local.json</code>.</li>
+<li>Proyecto compartido: <code>.claude/settings.json</code>.</li>
+<li>Usuario: <code>~/.claude/settings.json</code>.</li>
+</ol>
+<p>Un ejemplo de la documentación: el archivo compartido de tu equipo activa un consejo y tu archivo de usuario lo desactiva. Gana el valor del proyecto, así que ves el consejo en ese proyecto y en ningún otro. Para recuperar tu valor en ese proyecto, ponlo en <code>.claude/settings.local.json</code>, que va por encima del compartido y no cambia nada a tus compañeros.</p>
+<h2>Las listas se suman</h2>
+<p>En las claves de lista, como <code>permissions.allow</code>, Claude Code combina las entradas de todos los archivos en lugar de elegir uno. Cada archivo puede añadir reglas sin quitar las de otro. Unas pocas claves de modelos siguen sus propias reglas, así que mira la entrada de la clave que te interese.</p>
+<h2>Las variables de entorno no son un nivel</h2>
+<p>Si manda una variable de la terminal o una clave de ajustes se decide clave por clave, no por nivel. Por ejemplo, <code>ANTHROPIC_MODEL</code> en tu terminal pasa por encima de la clave <code>model</code> de cualquier archivo. La página de cada clave dice cuál se aplica.</p>
+<h2>Un archivo para empezar</h2>
+<p>Los archivos de ajustes son JSON estricto. Un comentario o una coma al final es un error. Este ejemplo deja que Claude Code ejecute tus comandos de lint y de tests sin preguntar y le impide leer archivos <code>.env</code>. Ponlo en <code>~/.claude/settings.json</code>:</p>
+<pre><code>{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  }
+}</code></pre>
+<p>La línea <code>$schema</code> es opcional. Da autocompletado y avisos a los editores que entienden JSON schema. El esquema puede ir por detrás de las últimas versiones, así que un aviso en una clave recién añadida no significa que tu archivo esté mal. Cambia los comandos por los que use de verdad tu proyecto.</p>
+<h2>Comprueba qué se cargó</h2>
+<ul>
+<li>Ejecuta <code>/status</code>. La línea <code>Setting sources</code> lista los archivos de ajustes que Claude Code cargó en esta sesión. No dice qué archivo aportó cada clave.</li>
+<li>Ejecuta <code>claude doctor</code> para ver las entradas que Claude Code rechazó.</li>
+<li>Si un archivo tiene JSON inválido, Claude Code muestra un «Settings Error» al empezar una sesión interactiva. Si fallan solo entradas sueltas, se salta esas y conserva el resto.</li>
+<li>La mayoría de los cambios se aplican a una sesión en marcha sin reiniciar, incluidos permisos y hooks. Unas pocas claves se leen solo una vez al arrancar.</li>
+</ul>
+<h2>Por qué un ajuste no hace nada</h2>
+<ul>
+<li>Un nivel más alto pone la misma clave. Mira el orden de arriba.</li>
+<li>Una regla <code>allow</code> del proyecto espera a que cada compañero confíe en la carpeta. Las reglas <code>deny</code> y <code>ask</code> se aplican al instante.</li>
+<li>Algunas claves nunca surten efecto desde el archivo compartido del proyecto. La documentación las marca en su referencia de ajustes. Los modos de permisos <code>auto</code> y <code>bypassPermissions</code> no surten efecto desde los ajustes de proyecto ni locales.</li>
+<li>El archivo no está donde crees. En una sesión en la nube solo se lee el archivo compartido del proyecto, no el de usuario ni el local.</li>
+<li><code>/config</code> funciona en la terminal. El panel de chat de VS Code y la app de escritorio no lo abren, así que edita un archivo o usa los ajustes propios de esas apps.</li>
+</ul>
+<h2>Prueba una sesión sin guardar</h2>
+<pre><code>claude --settings '{"permissions": {"deny": ["Read(./.env)"]}}'</code></pre>
+<p>Eso se aplica a una sola sesión y no escribe nada en disco.</p>
+<h2>Límites</h2>
+<ul>
+<li>Las claves, los valores por defecto y las rutas de los archivos cambian entre versiones. La referencia de ajustes es la que manda.</li>
+<li>El archivo compartido se sube a git, así que lo recibe todo el que clone el repositorio. Deja los cambios personales en el archivo local.</li>
+<li>Es información general sobre una herramienta, no una auditoría de seguridad de tu configuración.</li>
+</ul>
+<p>Esta página sigue <a href="https://code.claude.com/docs/en/settings">la documentación de ajustes de Anthropic</a> tal como la leemos en octubre de 2026. No tenemos relación con Anthropic. La escribimos a partir de la documentación y no hemos probado todos los casos.</p>
+<p>Para las reglas de dentro de <code>permissions</code>, mira <a href="/permisos-claude-code">una lista de partida de reglas de permisos</a>. Si quieres una segunda mirada a tu CLAUDE.md y a tus ajustes, el <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> es una lista de comprobación para eso (la ficha está en inglés).</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Skills gratis</a><a href="https://plainskills.gumroad.com">Tienda</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Proyecto independiente, sin relación con Anthropic. «Claude» y «Claude Code» son marcas de Anthropic. Información general sobre flujos de trabajo con software; no es asesoramiento de inversión, legal ni fiscal, y nada aquí promete resultados. Contacto: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
