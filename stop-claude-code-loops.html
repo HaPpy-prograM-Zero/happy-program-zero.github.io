@@ -13,20 +13,20 @@
 <meta property="og:title" content="How to stop Claude Code agents from looping and burning your quota">
 <meta property="og:description" content="Signs that a Claude Code agent is stuck in a loop, four stop rules to write down in advance, and the real limits you can set (print-mode turns and budget).">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Plain Skills">
+<meta property="og:site_name" content="PlainSkillsZero0">
 <meta property="og:url" content="https://happy-program-zero.github.io/stop-claude-code-loops">
 <meta property="og:image" content="https://happy-program-zero.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
-<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
-@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#2f55df;--code:#ebe6d7;--hl:rgba(80,130,255,.30)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#8fb0ff;--code:#1b2130;--hl:rgba(120,150,255,.28);color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
 .w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 header.top{border-bottom:1px solid var(--line)}
 .bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
-.brand svg{width:26px;height:26px;display:block}
+.brand img{width:28px;height:28px;display:block;border-radius:7px}
 nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
 nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
 nav a:hover,nav a:focus-visible{color:var(--fg)}
@@ -71,7 +71,7 @@ footer .note{margin:0}
 <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </defs></svg>
-<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><img src="/logo.png" width="28" height="28" alt="">PlainSkillsZero0</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
 <div class="w"><main class="art"><h1>How to stop Claude Code agents from looping and burning your quota</h1>
 <p class="lead">The expensive part of an unattended agent is not the work. It is the work that goes nowhere.</p>
 <h2>Four signs it is stuck</h2>
@@ -94,10 +94,10 @@ footer .note{margin:0}
 <h2>A sentence is not a limit</h2>
 <p>Instructions in a prompt or in CLAUDE.md are context; the model usually follows them but nothing enforces them. For hard limits in scripts and automation, Claude Code's command line has <code>--max-turns</code> (limits agentic turns) and <code>--max-budget-usd</code> (stops once estimated spend reaches the amount), both for print mode (<code>claude -p</code>) only. Anthropic's <a href="https://code.claude.com/docs/en/cli-reference">CLI reference</a> has the current details; the spend figure is a client-side estimate and can differ from your bill.</p>
 <div class="box">
-<p>The four rules and the brief fit in one plain-text skill you can read in thirty seconds. It is free and open source (MIT): <a href="https://github.com/happy-program-zero/loop-stop">Loop-Stop on GitHub</a>. The full story is in <a href="https://dev.to/plainskillszero/a-15-line-skill-that-stops-claude-code-agents-from-burning-your-quota-in-loops-2ofo">our dev.to article</a>.</p>
-<p>If you want the rest of what we use (cross-checking a "done" by another route, a quota budget before long jobs, a daily hand-off report, file-based memory between sessions), there is a paid pack of seven skills in <a href="https://plainskills.gumroad.com">the shop</a>. It is optional; the free one stands on its own. We have not measured savings on other projects and promise none.</p>
+<p>The four rules and the brief fit in one plain-text skill you can read in thirty seconds. It is free and open source (MIT): <a href="https://github.com/happy-program-zero/loop-stop">Loop-Stop on GitHub</a>. The full story is in <a href="https://dev.to/plainskillszero0/a-15-line-skill-that-stops-claude-code-agents-from-burning-your-quota-in-loops-2ofo">our dev.to article</a>.</p>
+<p>If you want the rest of what we use (cross-checking a "done" by another route, a quota budget before long jobs, a daily hand-off report, file-based memory between sessions), there is a paid pack of seven skills in <a href="https://plainskillszero0.gumroad.com">the shop</a>. It is optional; the free one stands on its own. We have not measured savings on other projects and promise none.</p>
 </div><p><strong>See also:</strong> <a href="/claude-code-goal-command">Work toward a goal with /goal</a> · <a href="/claude-code-loop-scheduled-tasks">Run Claude on a schedule with /loop</a>.</p>
 </main></div>
-<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskillszero0.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero0">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
 </body>
 </html>
