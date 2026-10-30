@@ -13,20 +13,20 @@
 <meta property="og:title" content="How to make Claude Code ask before it builds">
 <meta property="og:description" content="A short routine that makes Claude Code ask a few questions, agree a five-line plan and wait for a yes before it writes any code.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Plain Skills">
+<meta property="og:site_name" content="PlainSkillsZero0">
 <meta property="og:url" content="https://happy-program-zero.github.io/claude-code-ask-before-building">
 <meta property="og:image" content="https://happy-program-zero.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
-<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
-@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#2f55df;--code:#ebe6d7;--hl:rgba(80,130,255,.30)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#8fb0ff;--code:#1b2130;--hl:rgba(120,150,255,.28);color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
 .w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 header.top{border-bottom:1px solid var(--line)}
 .bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
-.brand svg{width:26px;height:26px;display:block}
+.brand img{width:28px;height:28px;display:block;border-radius:7px}
 nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
 nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
 nav a:hover,nav a:focus-visible{color:var(--fg)}
@@ -71,7 +71,7 @@ footer .note{margin:0}
 <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </defs></svg>
-<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><img src="/logo.png" width="28" height="28" alt="">PlainSkillsZero0</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
 <div class="w"><main class="art"><h1>How to make Claude Code ask before it builds</h1>
 <p class="lead">Most rework does not start in the code. It starts in a request that left three choices open, and the agent quietly picked all three.</p>
 <p>"Add a reminder feature to my notes app" can mean a line printed at startup, a desktop notification or an email. Each is a different build. A short routine fixes this: questions first, a five-line agreement, then code.</p>
@@ -95,6 +95,6 @@ Go ahead?</code></pre>
 <p>Skip it for a one-line fix, or when you already gave exact details. If you say "just do it", the sensible answer is three stated assumptions and then the build, with the assumptions marked as such. And if more than five questions are being asked, it is interviewing you, not helping: it should pick defaults for the rest.</p>
 <h2>As a skill</h2>
 <p>We keep this as a plain-text skill so we do not retype it: <a href="https://github.com/happy-program-zero/loop-stop/tree/main/ask-before-building">ask-before-building</a>, one <code>SKILL.md</code> and a short <code>WHY.md</code>. MIT licence, free to copy into <code>~/.claude/skills/</code>. We tested it by hand on our own projects; we have not measured it with other people's workflows.</p></main></div>
-<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskillszero0.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero0">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
 </body>
 </html>
