@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One skill folder, four tools: SKILL.md in Codex, Cursor and Gemini CLI</title>
+<meta name="description" content="Where Claude Code, Codex, Cursor and Gemini CLI look for skills, the .agents/skills shortcut, how to check that a skill loaded and call it, and the traps: names, duplicates and consent prompts. Written from each tool's documentation.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/use-skill-md-in-codex-cursor-gemini-cli">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/una-skill-cuatro-herramientas-codex-cursor-gemini">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/use-skill-md-in-codex-cursor-gemini-cli">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="One skill folder, four tools: SKILL.md in Codex, Cursor and Gemini CLI">
+<meta property="og:description" content="Where Claude Code, Codex, Cursor and Gemini CLI look for skills, the .agents/skills shortcut, how to check that a skill loaded and call it, and the traps: names, duplicates and consent prompts. Written from each tool's documentation.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Plain Skills">
+<meta property="og:url" content="https://happy-program-zero.github.io/use-skill-md-in-codex-cursor-gemini-cli">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand svg{width:26px;height:26px;display:block}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>One skill folder, four tools: SKILL.md in Codex, Cursor and Gemini CLI</h1>
+<p class="lead">A skill is a folder with a SKILL.md file inside, and the format is an open one that several coding tools read. A skill you wrote or bought for one tool can often be used in another without changes. Here is where each tool looks, how to check that a skill loaded, and what trips people up.</p>
+<h2>What the format asks for</h2>
+<p>The folder name is lowercase letters, numbers and single hyphens. Inside is <code>SKILL.md</code>, which starts with a short header that every tool asks for: a <code>name</code>, which must match the folder name, and a <code>description</code> saying what the skill does and when to use it. The open specification at agentskills.io sets limits (a name up to 64 characters, a description up to 1,024) and recommends keeping the body under about 500 lines. Scripts or notes go in the same folder.</p>
+<h2>Where each tool looks</h2>
+<ul>
+<li><strong>Claude Code:</strong> <code>.claude/skills/</code> in the project, and <code>~/.claude/skills/</code> for all your projects.</li>
+<li><strong>Codex:</strong> <code>.agents/skills/</code> in the folder you run it from and in the folders above it up to the repository root; <code>~/.agents/skills/</code> for all your projects; <code>/etc/codex/skills/</code> for an administrator.</li>
+<li><strong>Cursor:</strong> <code>.agents/skills/</code> and <code>.cursor/skills/</code> in the project; <code>~/.agents/skills/</code> and <code>~/.cursor/skills/</code> for all your projects. It also reads <code>.claude/skills/</code> and <code>.codex/skills/</code>, and the same two in your home folder.</li>
+<li><strong>Gemini CLI:</strong> <code>.gemini/skills/</code> or the alias <code>.agents/skills/</code> in the workspace; <code>~/.gemini/skills/</code> or <code>~/.agents/skills/</code> for you. If both exist in the same place, <code>.agents/skills/</code> wins.</li>
+</ul>
+<h2>The shortcut: one folder for three tools</h2>
+<p>Codex, Cursor and Gemini CLI all read <code>.agents/skills/</code> and <code>~/.agents/skills/</code>, so you do not need three copies. Claude Code looks in its own folder, so copy or link the same skill folders into <code>.claude/skills/</code> if you use it too.</p>
+<pre><code>mkdir -p ~/.agents/skills
+cp -R my-skill ~/.agents/skills/</code></pre>
+<h2>Check that it loaded, and call it</h2>
+<ul>
+<li><strong>Codex:</strong> run <code>/skills</code>, or type <code>$</code> and the skill's name. It can also choose a skill by itself when your task matches the description. If a new skill does not show up, restart Codex.</li>
+<li><strong>Cursor:</strong> open <em>Customize</em> in the sidebar and go to <em>Skills</em>. In Agent chat, type <code>/</code> and pick the skill, or let the agent decide.</li>
+<li><strong>Gemini CLI:</strong> <code>/skills list</code> shows them and <code>/skills reload</code> refreshes the list after you copy a folder. When a task matches, the model asks to activate the skill and you get a consent prompt with its name and folder.</li>
+</ul>
+<h2>Things that trip people up</h2>
+<ul>
+<li><strong>The name must match the folder.</strong> Cursor's documentation says so and so does the open specification.</li>
+<li><strong>The same name in two places.</strong> Codex does not merge skills that share a name, so both appear in its lists. Gemini CLI lets the workspace skill beat the user one. Rename one of them.</li>
+<li><strong>Stopping automatic use.</strong> Codex has an optional <code>agents/openai.yaml</code> where <code>policy.allow_implicit_invocation: false</code> keeps a skill for explicit <code>$name</code> calls only. Cursor has <code>disable-model-invocation: true</code> in the skill header.</li>
+<li><strong>Installing from a git repository in Gemini CLI:</strong> <code>gemini skills install &lt;git-url&gt; --consent</code>. The <code>--consent</code> flag skips the security confirmation, so use it only on a repository you have read.</li>
+<li><strong>Names and plans change.</strong> Google's page says Gemini CLI was replaced by Antigravity CLI on 18 June 2026 for unpaid-tier and Google One users. Check which one you have and read its documentation.</li>
+</ul>
+<h2>Read a skill before you install it</h2>
+<p>A skill is instructions that an agent follows with your permissions, and it can ship scripts. Open the SKILL.md, look at every file in the folder, and be wary of anything that downloads and runs code. The free <a href="https://github.com/happy-program-zero/loop-stop">skill-check</a> skill in our GitHub repository is a read-only checklist for exactly this.</p>
+<p>How to write your own is in <a href="/how-to-write-a-claude-code-skill">how to write a SKILL.md</a>, and all the guides are in the <a href="/guides">guides index</a>. This page follows the documentation of <a href="https://learn.chatgpt.com/docs/build-skills">Codex</a>, <a href="https://cursor.com/docs/skills">Cursor</a> and <a href="https://geminicli.com/docs/cli/skills/">Gemini CLI</a>, and the <a href="https://agentskills.io/specification">open specification</a>, as we read them on 30 October 2026. We have run skills only in Claude Code, so check the current documentation of your tool and version.</p>
+<p>If you want ready-made ones, we put twelve plain-text coding skills (a tour of an unfamiliar repository, a plan in small steps, test first, a safe refactor, finding the cause, a review, a commit and PR draft and more) in this layout: <a href="https://buy.polar.sh/polar_cl_pA64o66RlSa8vgNApNSQLgNFAnFMQorIrrOGn1QUBCg">Dev Skills for Codex, Cursor and Gemini CLI</a>. The files pass the specification's format checks; we have not run them inside those three tools. Codex and ChatGPT are trademarks of OpenAI; Cursor and Gemini belong to their owners. We are not affiliated with any of them.</p></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
