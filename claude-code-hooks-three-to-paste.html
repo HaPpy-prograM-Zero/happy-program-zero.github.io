@@ -14,20 +14,20 @@
 <meta property="og:title" content="Claude Code hooks: three you can paste today">
 <meta property="og:description" content="Three short Claude Code hooks to paste into settings.json: a notification when Claude needs you, auto-format after edits, and a block on protected files.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Plain Skills">
+<meta property="og:site_name" content="PlainSkillsZero0">
 <meta property="og:url" content="https://happy-program-zero.github.io/claude-code-hooks-three-to-paste">
 <meta property="og:image" content="https://happy-program-zero.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
-<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#0b6b49;--code:#ebe6d7;--hl:rgba(61,220,151,.42)}
-@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#5fd6a0;--code:#1b2130;--hl:rgba(95,214,160,.28);color-scheme:dark}}
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#2f55df;--code:#ebe6d7;--hl:rgba(80,130,255,.30)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#8fb0ff;--code:#1b2130;--hl:rgba(120,150,255,.28);color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
 .w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 header.top{border-bottom:1px solid var(--line)}
 .bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
-.brand svg{width:26px;height:26px;display:block}
+.brand img{width:28px;height:28px;display:block;border-radius:7px}
 nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
 nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
 nav a:hover,nav a:focus-visible{color:var(--fg)}
@@ -72,7 +72,7 @@ footer .note{margin:0}
 <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </defs></svg>
-<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg>Plain Skills</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><img src="/logo.png" width="28" height="28" alt="">PlainSkillsZero0</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
 <div class="w"><main class="art"><h1>Claude Code hooks: three you can paste today</h1>
 <p class="lead">A hook is a shell command that Claude Code runs at a fixed point, such as after an edit or before a tool call. It happens every time, whether or not the model remembers.</p>
 <h2>Where a hook goes</h2>
@@ -175,6 +175,6 @@ exit 0</code></pre>
 <p>This follows <a href="https://code.claude.com/docs/en/hooks-guide">Anthropic's hooks guide</a> as we read it in October 2026. That page is the authority, and we are not affiliated with Anthropic. We wrote this from the documentation and have not tested every example on every system.</p>
 <p>If you want a second pair of eyes on your CLAUDE.md and settings, the <a href="https://buy.polar.sh/polar_cl_6l3bA5ddJ6eopPdSEP5cZ46VYugROMg36Wul20v93Ei">Tune-Up Kit</a> is a checklist for exactly that.</p><p><strong>See also:</strong> <a href="/claude-code-goal-command">Work toward a goal with /goal</a>.</p>
 </main></div>
-<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskills.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskillszero0.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero0">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
 </body>
 </html>
