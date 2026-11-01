@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting started with Claude: a plain guide for beginners</title>
+<meta name="description" content="A short guide with real screenshots for people who have never used Claude: your first message, files.">
+<meta name="theme-color" content="#f6f3ea">
+<link rel="canonical" href="https://happy-program-zero.github.io/getting-started-with-claude">
+<link rel="alternate" hreflang="es" href="https://happy-program-zero.github.io/empezar-con-claude">
+<link rel="alternate" hreflang="en" href="https://happy-program-zero.github.io/getting-started-with-claude">
+<link rel="icon" type="image/png" href="/logo.png">
+<link rel="apple-touch-icon" href="/logo.png">
+<meta property="og:title" content="Getting started with Claude: a plain guide for beginners">
+<meta property="og:description" content="A short guide with real screenshots for people who have never used Claude: your first message, files.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PlainSkillsZero0">
+<meta property="og:url" content="https://happy-program-zero.github.io/getting-started-with-claude">
+<meta property="og:image" content="https://happy-program-zero.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://happy-program-zero.github.io/og.png">
+<style>:root{--bg:#f6f3ea;--fg:#1c2233;--mu:#5d6475;--line:#d9d3c3;--ac:#2f55df;--code:#ebe6d7;--hl:rgba(80,130,255,.30)}
+@media (prefers-color-scheme:dark){:root{--bg:#12161f;--fg:#e8e6df;--mu:#a2a8b8;--line:#2b3244;--ac:#8fb0ff;--code:#1b2130;--hl:rgba(120,150,255,.28);color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,"Times New Roman",serif;-webkit-text-size-adjust:100%}
+.w{max-width:700px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:18px 14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;font-size:17px}
+.brand img{width:28px;height:28px;display:block;border-radius:7px}
+nav{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px}
+nav a{color:var(--mu);text-decoration:none;padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--fg)}
+nav a.on{color:var(--fg);border-bottom-color:var(--ac)}
+main.art{padding-block:6px 4px}
+h1{font:700 clamp(30px,5.5vw,42px)/1.14 Georgia,"Times New Roman",serif;letter-spacing:-.012em;margin:40px 0 12px;text-wrap:balance}
+h2{font:700 19px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:36px 0 8px;text-wrap:balance}
+p,li{margin:0 0 14px}
+mark{background:linear-gradient(transparent 60%,var(--hl) 60%);color:inherit;padding:0 2px}
+.lead{font-size:21px;line-height:1.55;color:var(--mu);margin-bottom:22px}
+a{color:var(--ac);text-underline-offset:3px}
+ul,ol{padding-left:24px}
+li::marker{color:var(--ac)}
+ul.plain{list-style:none;padding:0;margin:8px 0 18px}
+ul.plain li{padding:12px 0;border-top:1px solid var(--line);margin:0}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+ul.plain .n{display:block;font:600 16px ui-monospace,Consolas,Menlo,monospace;margin-bottom:2px}
+ul.plain .d{color:var(--mu);font-size:17px}
+ol.checks{list-style:none;padding:0;counter-reset:c;margin:26px 0}
+ol.checks>li{counter-increment:c;display:grid;grid-template-columns:2.2em 1fr;padding:14px 0 6px;border-top:1px solid var(--line);margin:0}
+ol.checks>li:last-child{border-bottom:1px solid var(--line)}
+ol.checks>li::before{content:counter(c);grid-row:1/span 2;font:italic 400 30px/1.15 Georgia,serif;color:var(--ac)}
+ol.checks h2{grid-column:2;margin:0 0 4px;font-size:18px}
+ol.checks p{grid-column:2;margin:0 0 8px}
+.box{border-left:3px solid var(--ac);padding:2px 0 2px 18px;margin:34px 0 10px}
+.box p{font-size:17px;line-height:1.65}
+.note,small{color:var(--mu);font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+code{background:var(--code);border-radius:3px;padding:1px 5px;font:.88em ui-monospace,Consolas,Menlo,monospace}
+pre{background:var(--code);border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0;font:.86em/1.55 ui-monospace,Consolas,Menlo,monospace}
+pre code{background:none;padding:0;font:inherit}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-block:20px 40px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+footer .fb{display:flex;flex-wrap:wrap;gap:6px 20px;margin-bottom:12px;font-size:15px}
+footer .fb a{text-decoration:none}
+footer .fb a:hover{text-decoration:underline}
+footer .note{margin:0}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+@media (max-width:600px){body{font-size:17px}.lead{font-size:19px}h1{margin-top:30px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset="1" stop-color="#1e3a6b"/></linearGradient>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="url(#lg)"/><rect x="18.4" y="14.5" width="27.4" height="35" rx="3.2" fill="#f7f5ef"/><g stroke="#14213d" stroke-width="1.8" stroke-linecap="round"><path d="M22.5 21.4h19M22.5 25.9h14M22.5 30.3h17M22.5 34.7h11.5"/></g><circle cx="43.8" cy="46" r="6.6" fill="#1a2d54"/><circle cx="43.8" cy="46" r="5.2" fill="#3ddc97"/><path d="M41.2 46.1l1.9 1.9 3.4-3.6" fill="none" stroke="#14213d" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs></svg>
+<header class="top"><div class="w"><div class="bar"><a class="brand" href="/"><img src="/logo.png" width="28" height="28" alt="">PlainSkillsZero0</a><nav aria-label="Main"><a href="/">Home</a><a href="/guides" class="on">Guides</a><a href="/es">Español</a></nav></div></div></header>
+<div class="w"><main class="art"><h1>Getting started with Claude</h1>
+<p class="lead"><b>What is Claude?</b> An AI assistant you talk to by typing. You ask, it answers: it writes, explains, summarises, translates and helps you think things through.</p>
+<p>Everything here comes with Claude as standard. You don't need to install or buy anything extra.</p>
+<p class="note">The screenshots come from the Spanish version of claude.ai. Yours will be in your language and may look slightly different, but the buttons sit in the same places.</p>
+<h2>1. Open Claude</h2>
+<p>Go to <b>claude.ai</b> in your browser, or install the Claude app on your computer or phone. Sign up with your email or a Google account.</p>
+<p>The free plan is enough to learn. It limits how much you can use in a few hours; paid plans have more room. Some features depend on your plan.</p>
+<h2>2. Write what you need</h2>
+<p>The big box in the middle is where you write <strong>(1)</strong>. Write the way you would to a helpful person, then press <b>Enter</b>. The <b>+</b> button <strong>(2)</strong> is for files and extras (step 4).</p>
+<figure style="margin:18px 0"><img style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px" loading="lazy" src='/guia-claude/paso2_inicio.png' alt='Claude home screen with the message box'><figcaption class="note" style="margin-top:6px">The home screen. Type in the box and press Enter.</figcaption></figure>
+<div class="box"><b>THINGS YOU CAN TRY</b><ul><li>Explain what a PDF is, as if I had never used a computer.</li><li>Help me write a polite email to my landlord about a water leak.</li><li>What can I cook with rice, eggs and tomatoes?</li></ul></div>
+<div class="box"><b>Tip:</b> the more detail you give, the better the answer. Say who it is for, the tone and how long it should be.</div>
+<h2>3. Read the answer and keep talking</h2>
+<p>Claude answers under your message. If it asks you something, just reply. If you want a change, say so: <i>“shorter”, “more formal”, “in English”</i>. You don't start again; it remembers the whole conversation.</p>
+<figure style="margin:18px 0"><img style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px" loading="lazy" src='/guia-claude/paso3_respuesta.png' alt='A conversation: a request for a birthday message and the answer from Claude'><figcaption class="note" style="margin-top:6px">Example: a request for a birthday message. Claude checked the tone and gave a text you can copy.</figcaption></figure>
+<p>Every conversation is saved in the list on the left. Click <b>New</b> to start a fresh topic.</p>
+<h2>4. The + button: files and extras</h2>
+<p>Click the <b>+</b> under the message box. These are the ones worth knowing:</p>
+<figure style="margin:18px 0"><img style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px" loading="lazy" src='/guia-claude/paso4_menu_mas.png' alt='The plus menu'><figcaption class="note" style="margin-top:6px">The + menu.</figcaption></figure>
+<ul><li><strong>(1)</strong> <b>Upload or add files</b>: attach a photo, a PDF or a document (a letter you received, a bill, a recipe) and ask about it: <i>“What does this letter say? Do I need to do anything?”</i></li><li><strong>(2)</strong> <b>Connectors</b>: link Claude to your other apps (next step).</li><li><strong>(3)</strong> <b>Research</b>: for bigger questions, Claude looks through many sources and writes a longer report. It takes a few minutes.</li><li><strong>(4)</strong> <b>Memory</b>: lets Claude remember useful things between chats (for example, that you like short answers). You can switch it off.</li></ul>
+<p class="note">You can ignore the other entries for now. Some depend on your plan.</p>
+<h2>5. Connectors: let Claude use your other apps</h2>
+<p>Connectors link Claude to apps you already use, such as Gmail, Google Calendar, Google Drive, Notion, Slack or Canva, plus thousands more. Then you can ask: <i>“What do I have on my calendar this week?”</i> or <i>“Summarise the last emails from my bank.”</i></p>
+<p><b>How:</b> in the + menu choose <b>Connectors</b>.</p>
+<figure style="margin:18px 0"><img style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px" loading="lazy" src='/guia-claude/paso5_submenu.png' alt='The Connectors submenu'><figcaption class="note" style="margin-top:6px">+ menu → Connectors: add a new one or manage the ones you have.</figcaption></figure>
+<p>You can also browse them all: <b>Customize</b> in the left menu → <b>Connectors</b> → <b>Discover</b> <strong>(1)</strong>. Click the <b>+</b> next to the one you want <strong>(2)</strong> and sign in on that service's own page.</p>
+<figure style="margin:18px 0"><img style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px" loading="lazy" src='/guia-claude/paso5_conectores.png' alt='Connector directory'><figcaption class="note" style="margin-top:6px">The connector directory. Thousands to choose from.</figcaption></figure>
+<div class="box"><b>Good to know:</b><ul><li>You choose what to connect, and you can disconnect at any time (Customize → Connectors → Yours).</li><li>Read what each connector is allowed to do before you accept.</li><li>You sign in on the other service's own page. Never type a password in the chat.</li></ul></div>
+<h2>6. Projects: one topic, one place</h2>
+<p>A project is like a folder. Put the files and instructions for one topic in it (“Mum's paperwork”, “Trip to Rome”, “Studying for my exam”) and every chat inside already knows them. Find it in the left menu: <b>Projects</b> → <b>New project</b> <strong>(1)</strong>.</p>
+<figure style="margin:18px 0"><img style="max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px" loading="lazy" src='/guia-claude/paso6_proyectos.png' alt='Projects page'><figcaption class="note" style="margin-top:6px">The Projects page.</figcaption></figure>
+<h2>7. Five good habits</h2>
+<ol><li>Never type passwords, card numbers or ID numbers in the chat.</li><li>Claude can be wrong. For health, money or legal matters, check with a professional or an official source.</li><li>Don't know what to ask? Ask Claude: <i>“What could you help me with in my daily life? Give me 10 ideas.”</i></li><li>Say what you want changed instead of starting over.</li><li>If you reach the usage limit, it resets after a few hours.</li></ol>
+<h2>8. That's all you need to start</h2><p>Pick one small task from your week today and ask Claude to help. That is the fastest way to learn.</p>
+<div class="box"><p><strong>Want it as a PDF?</strong> <a href="https://plainskillszero0.gumroad.com/l/getting-started-with-claude">Get the free PDF</a> (5 pages, same steps, same screenshots). More plain guides are in the <a href="/guides">guides index</a>.</p></div></main></div>
+<footer><div class="w"><div class="fb"><a href="https://github.com/happy-program-zero/loop-stop">Free skills</a><a href="https://plainskillszero0.gumroad.com">Shop</a><a href="https://dev.to/plainskillszero0">dev.to</a><a href="https://x.com/QuantBotAR">X</a><a href="https://github.com/happy-program-zero">GitHub</a></div><p class="note">Independent project, not affiliated with or endorsed by Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic. This is general information about software workflows, not investment, legal or tax advice, and nothing here promises any result. Contact: plantillas.ia.soporte@proton.me.</p></div></footer>
+</body>
+</html>
