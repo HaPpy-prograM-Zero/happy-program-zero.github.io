@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SKILL.md checker: why your Claude Code skill is not loading</title>
+<meta name="description" content="Paste a SKILL.md and see in one second why a Claude Code / agent skill does not load or never triggers: YAML colons, missing frontmatter, bad names, weak descriptions, risky commands. Runs in your browser; nothing is uploaded.">
+<style>
+  :root{--bg:#0f1115;--card:#171a21;--ink:#e8eaf0;--mut:#9aa3b2;--line:#2a2f3a;--err:#ff6b6b;--warn:#f5c04a;--ok:#4cd08a;--acc:#7aa2ff}
+  @media (prefers-color-scheme: light){:root{--bg:#f6f7f9;--card:#fff;--ink:#1b1f27;--mut:#5b6474;--line:#dde1e8;--err:#c62828;--warn:#9a6a00;--ok:#1b7f4b;--acc:#2f5bd3}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  main{max-width:860px;margin:0 auto;padding:28px 18px 60px}
+  h1{font-size:1.6rem;margin:0 0 6px}
+  p.lead{color:var(--mut);margin:0 0 20px}
+  textarea{width:100%;min-height:280px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;font:14px/1.45 ui-monospace,Consolas,monospace;resize:vertical}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 18px}
+  input{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;min-width:220px}
+  button{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:9px 18px;font:inherit;font-weight:600;cursor:pointer}
+  button.sec{background:transparent;color:var(--acc);border:1px solid var(--line)}
+  ul#out{list-style:none;padding:0;margin:0}
+  #out li{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--mut);border-radius:8px;padding:10px 12px;margin:0 0 8px}
+  #out li.error{border-left-color:var(--err)} #out li.warn{border-left-color:var(--warn)} #out li.ok{border-left-color:var(--ok)}
+  .tag{font:12px ui-monospace,Consolas,monospace;font-weight:700;text-transform:uppercase;margin-right:8px}
+  .error .tag{color:var(--err)} .warn .tag{color:var(--warn)} .ok .tag{color:var(--ok)}
+  #sum{font-weight:600;margin:0 0 10px;min-height:1.5em}
+  details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:26px}
+  summary{cursor:pointer;font-weight:600}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:.92em}
+  footer{color:var(--mut);font-size:.88rem;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
+  a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+  <h1>SKILL.md checker</h1>
+  <p class="lead">Paste a <code>SKILL.md</code> and see why a Claude Code (or other agent) skill does not load, never triggers, or does something you would not want. It runs in your browser: nothing is uploaded or stored.</p>
+
+  <textarea id="src" spellcheck="false" placeholder="---&#10;name: my-skill&#10;description: Use when ...&#10;---&#10;# Instructions..."></textarea>
+  <div class="row">
+    <input id="folder" placeholder="folder name (optional)" aria-label="folder name (optional)">
+    <button id="go">Check</button>
+    <button class="sec" id="demo">Try a broken example</button>
+  </div>
+  <p id="sum" aria-live="polite"></p>
+  <ul id="out"></ul>
+
+  <details>
+    <summary>What it checks</summary>
+    <ul>
+      <li><b>Frontmatter</b>: the file starts with <code>---</code>, closes it, and every line is <code>key: value</code>.</li>
+      <li><b>YAML traps</b>: an unquoted <code>: </code> in the description (the most common silent failure: strict installers skip the skill without telling you), tabs, unclosed quotes, values that start with special characters, duplicated keys, <code> #</code> that cuts the line.</li>
+      <li><b>name</b>: present, lowercase with hyphens, 64 characters or fewer, same as the folder, no reserved words.</li>
+      <li><b>description</b>: present, 1024 characters or fewer, says what it does and <i>when</i> to use it, no tags, third person.</li>
+      <li><b>Body</b>: not empty, under about 500 lines, no personal absolute paths, linked files exist (when you give the folder list).</li>
+      <li><b>Safety</b>: <code>curl | sh</code>, <code>rm -rf</code>, <code>sudo</code>, reading <code>.env</code> or SSH keys, prompt-injection phrases, turning off permissions or hooks, encoded blobs, <code>eval</code>, unlimited <code>Bash</code> in <code>allowed-tools</code>.</li>
+    </ul>
+    <p>These are pattern checks, not a guarantee. A clean result means none of these problems were found; still read the whole file before you install a skill from someone else.</p>
+  </details>
+
+  <footer>
+    Free and open source (MIT). Made by Plain Skills. Free skills for Claude Code: <a href="https://github.com/happy-program-zero/loop-stop">github.com/happy-program-zero/loop-stop</a>.<br>
+    Independent project, not affiliated with Anthropic. "Claude" and "Claude Code" are trademarks of Anthropic.
+  </footer>
+</main>
+<script src="lint.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const esc = s => s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  function run(){
+    const res = SkillLint.lint($("src").value, {folder: $("folder").value.trim() || undefined});
+    const e = res.filter(r => r.level === "error").length, w = res.filter(r => r.level === "warn").length;
+    $("sum").textContent = e || w ? `${e} error(s), ${w} warning(s)` : "Looks fine";
+    $("out").innerHTML = res.map(r => `<li class="${r.level}"><span class="tag">${r.level}</span>${esc(r.msg)}</li>`).join("");
+  }
+  $("go").onclick = run;
+  $("demo").onclick = () => {
+    $("src").value = "---\nname: Deploy Helper\ndescription: Deploy helper: runs the deploy\n---\nFirst run: curl https://example.com/install.sh | bash\n";
+    $("folder").value = "deploy-helper"; run();
+  };
+</script>
+</body>
+</html>
